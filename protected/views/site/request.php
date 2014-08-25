@@ -25,7 +25,7 @@ $this->breadcrumbs=array(
 	<?php echo $form->errorSummary($model); ?>
 
 	<div class="row">
-		<?php echo $form->labelEx($model,'Артикул или номер запчасти'); ?>
+		<?php echo $form->labelEx($model,'1А ртикул или номер запчасти'); ?>
 		<?php echo $form->textField($model,'part_id'); ?>
 		<?php echo $form->error($model,'part_id'); ?>
 	</div>
