@@ -106,4 +106,21 @@ class SiteController extends Controller
 		Yii::app()->user->logout();
 		$this->redirect(Yii::app()->homeUrl);
 	}
+	
+	public function actionRequest() {
+		$model=new RequestForm;
+		$answer = "werfew";
+		if(isset($_POST['request-form'])) {
+			// получаем данные от пользователя
+			$model->attributes=$_POST['request-form'];
+			// проверяем полученные данные и, если результат проверки положительный,
+			// перенаправляем пользователя на предыдущую страницу
+			/*if($model->validate())
+				$this->redirect(Yii::app()->user->returnUrl);*/
+		}
+		// рендерим представление
+		$this->render('request',array('model'=>$model,
+																	'answer'=>$answer));
+	}
+	
 }
