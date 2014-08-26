@@ -20,18 +20,13 @@ $this->breadcrumbs=array(
 	'clientOptions'=>array(
 		'validateOnSubmit'=>true,
 	),
-)); ?>
-
-	<?php echo $form->errorSummary($model); ?>
+)); ?>	
 
 	<div class="row">
-		<?php echo $form->labelEx($model,'1А ртикул или номер запчасти'); ?>
-		<?php echo $form->textField($model,'part_id'); ?>
-		<?php echo $form->error($model,'part_id'); ?>
-	</div>
-
-	<div class="row buttons">
-		<?php echo CHtml::submitButton('Найти'); ?>
+		<?php echo $form->labelEx($model,'part_id',array('label'=>'Артикул или номер запчасти')); ?>
+		<?php echo $form->textField($model,'part_id',array('size'=>'100%')); ?>		
+    <?php echo CHtml::submitButton('Найти', array('style'=>'width:20%' ) ); ?>
+    <?php echo $form->error($model,'part_id'); ?>
 	</div>
 
 <?php $this->endWidget(); ?>

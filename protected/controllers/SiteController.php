@@ -7,13 +7,7 @@ class SiteController extends Controller
 	 */
 	public function actions()
 	{
-		return array(
-			// captcha action renders the CAPTCHA image displayed on the contact page
-			'captcha'=>array(
-				'class'=>'CCaptchaAction',
-				'backColor'=>0xFFFFFF,
-			),
-			// page action renders "static" pages stored under 'protected/views/site/pages'
+		return array(		
 			// They can be accessed via: index.php?r=site/page&view=FileName
 			'page'=>array(
 				'class'=>'CViewAction',
@@ -109,14 +103,19 @@ class SiteController extends Controller
 	
 	public function actionRequest() {
 		$model=new RequestForm;
-		$answer = "werfew";
-		if(isset($_POST['request-form'])) {
-			// получаем данные от пользователя
-			$model->attributes=$_POST['request-form'];
-			// проверяем полученные данные и, если результат проверки положительный,
-			// перенаправляем пользователя на предыдущую страницу
-			/*if($model->validate())
-				$this->redirect(Yii::app()->user->returnUrl);*/
+		$answer = "";
+		if(isset($_POST['request-form'])) {			
+			$model->attributes=$_POST['request-form'];			
+      $ch = curl_init('http://online.atc58.ru?part_id='.$model->part_id);
+      curl_setopt($ch, CURLOPT_POST, FALSE);
+      curl_setopt($ch, CURLOPT_HEADER, FALSE);
+      $result = curl_exec($ch);
+      print_r($result);
+      if(curl_errno($ch)!=0) {
+        YII::app()->log("Request error: ".curl_error($ch));
+      } else {
+        $answer = $result;
+      }      
 		}
 		// рендерим представление
 		$this->render('request',array('model'=>$model,
