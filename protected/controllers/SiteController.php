@@ -103,15 +103,19 @@ class SiteController extends Controller
 	
 	public function actionRequest() {
 		$model=new RequestForm;
-		$answer = "";
+		$answer = "s1";
 		if(isset($_POST['request-form'])) {			
 			$model->attributes=$_POST['request-form'];			
       $ch = curl_init('http://online.atc58.ru?part_id='.$model->part_id);
       curl_setopt($ch, CURLOPT_POST, FALSE);
       curl_setopt($ch, CURLOPT_HEADER, FALSE);
+      curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
       $result = curl_exec($ch);
       print_r($result);
+      curl_close($ch);
+      print_r($result);
       if(curl_errno($ch)!=0) {
+        $answer = curl_error($ch);
         YII::app()->log("Request error: ".curl_error($ch));
       } else {
         $answer = $result;
@@ -122,4 +126,14 @@ class SiteController extends Controller
 																	'answer'=>$answer));
 	}
 	
+  public function actionClient_List() {
+    $sql    = "SELECT * FROM tbl_user WHERE role<>11";
+    $data   = YII::app()->db->createCommand()->
+              select('*')->
+              from('tbl_user')->
+              where('role<>:role',array(':role'=>11))->
+              queryAll();   
+    //print_r($data);
+    $this->render('client_list',array('items'=>$data));
+	}
 }

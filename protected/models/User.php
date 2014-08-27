@@ -17,7 +17,4 @@ class User extends CActiveRecord
         return 'tbl_user';
     }
 		
-		public function primaryKey() {
-			return 'id';		
-		}
 }
