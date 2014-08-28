@@ -102,28 +102,23 @@ class SiteController extends Controller
 	}
 	
 	public function actionRequest() {
-		$model=new RequestForm;
-		$answer = "s1";
+		$model=new RequestForm;		
+
 		if(isset($_POST['request-form'])) {			
-			$model->attributes=$_POST['request-form'];			
-      $ch = curl_init('http://online.atc58.ru?part_id='.$model->part_id);
-      curl_setopt($ch, CURLOPT_POST, FALSE);
-      curl_setopt($ch, CURLOPT_HEADER, FALSE);
-      curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-      $result = curl_exec($ch);
-      print_r($result);
-      curl_close($ch);
-      print_r($result);
-      if(curl_errno($ch)!=0) {
-        $answer = curl_error($ch);
-        YII::app()->log("Request error: ".curl_error($ch));
-      } else {
-        $answer = $result;
-      }      
+			$model->attributes=$_POST['request-form'];	
 		}
+
+		if(Yii::app()->request->isAjaxRequest){
+			$part_id = Yii::app()->request->getPost('part_id');
+			$answer = $model->load_data($part_id);
+			echo $answer;//CHtml::encode($answer);
+      Yii::app()->end();
+		} else {
 		// рендерим представление
 		$this->render('request',array('model'=>$model,
-																	'answer'=>$answer));
+																	'answer'=>'Запрос пуст',
+																	'part_id'=>'Введите номер запчасти'));
+		}
 	}
 	
   public function actionClient_List() {

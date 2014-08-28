@@ -3,6 +3,7 @@
 /* @var $model ContactForm */
 /* @var $form CActiveForm */
 /* @var $answer */
+/* @var $input*/
 
 $this->pageTitle=Yii::app()->name . ' - Цена и заказ';
 $this->breadcrumbs=array(
@@ -14,22 +15,20 @@ $this->breadcrumbs=array(
 
 <div class="form">
 
-<?php $form=$this->beginWidget('CActiveForm', array(
-	'id'=>'request-form',
-	'enableClientValidation'=>true,
-	'clientOptions'=>array(
-		'validateOnSubmit'=>true,
-	),
-)); ?>	
+<?php echo CHtml::form();?>	
 
 	<div class="row">
-		<?php echo $form->labelEx($model,'part_id',array('label'=>'Артикул или номер запчасти')); ?>
-		<?php echo $form->textField($model,'part_id',array('size'=>'100%')); ?>		
-    <?php echo CHtml::submitButton('Найти', array('style'=>'width:20%' ) ); ?>
-    <?php echo $form->error($model,'part_id'); ?>
+		<?php echo CHtml::label('Артикул или номер запчасти', 'part_id'); ?>
+		<?php echo CHtml::textField('part_id', $part_id,array('size'=>'100%')); ?>
+		<?php echo CHtml::ajaxSubmitButton('Найти','' , array(
+			'type' => 'POST',
+			'update' => '.text',
+			),array('style'=>'width:20%','type' => 'submit') 
+			); ?>    
+    <?php echo CHtml::error($model,'part_id'); ?>
 	</div>
 
-<?php $this->endWidget(); ?>
+<?php /*$this->endWidget();*/echo CHtml::endForm(); ?>
 
 </div><!-- form -->
 
