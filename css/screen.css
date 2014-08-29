@@ -12,7 +12,11 @@
 ----------------------------------------------------------------------- */
 
 .part-table {
-    font-size: 10em;
+    font-size: 8pt;
+}
+.part-table-head {
+    background-color: #c3d9ff;
+    border: 1px solid #09f;
 }
 
 /* reset.css */
