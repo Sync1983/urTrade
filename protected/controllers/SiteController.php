@@ -109,19 +109,33 @@ class SiteController extends Controller
 		}
 
 		if(Yii::app()->request->isAjaxRequest){
+			$part_id  = Yii::app()->request->getPost('part_id');
+      $filters   = Yii::app()->request->getPost('filters');      
+			$model->load_data($part_id,$filters);
+			echo $model->getAnswer();
+      Yii::app()->end();
+		} else
+      $this->render('request',array('model'   =>$model,'filters'=>$model->getFilters()/* 'Введите номер запчасти'*/));    
+	}
+  
+  public function actionRequestAddFilter() {
+    $model=new RequestForm;		
+
+		if(isset($_POST['request-form'])) {			
+			$model->attributes=$_POST['request-form'];	
+		}
+    
+    if(Yii::app()->request->isAjaxRequest){
 			$part_id = Yii::app()->request->getPost('part_id');
-			$answer = $model->load_data($part_id);
+      $filters = Yii::app()->request->getPost('filters');
+      $answer = $filters;              
+			//$answer = $model->load_data($part_id);
 			echo $answer;//CHtml::encode($answer);
       Yii::app()->end();
-		} else {
-		// рендерим представление
-		$this->render('request',array('model'=>$model,
-																	'answer'=>'Запрос пуст',
-																	'part_id'=>'Введите номер запчасти'));
-		}
-	}
-	
-  public function actionClient_List() {
+		}    
+  }
+
+    public function actionClient_List() {
     $sql    = "SELECT * FROM tbl_user WHERE role<>11";
     $data   = YII::app()->db->createCommand()->
               select('*')->

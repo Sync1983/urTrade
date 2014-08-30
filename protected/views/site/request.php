@@ -11,27 +11,69 @@ $this->breadcrumbs=array(
 );
 ?>
 
-<h1>Введите номер запчасти для поиска</h1>
+<h1>Введите артикул или номер запчасти для поиска</h1>
 
 <div class="form">
 
-<?php echo CHtml::form();?>	
+<?php echo CHtml::form('','POST',array('id'=>'request-form'));?>	
 
-	<div class="row">
-		<?php echo CHtml::label('Артикул или номер запчасти', 'part_id'); ?>
-		<?php echo CHtml::textField('part_id', $part_id,array('size'=>'100%')); ?>
+	<div class="row">		
+		<?php echo CHtml::textField('part_id', $model->part_id,array('class'=>'search-input')); ?>
 		<?php echo CHtml::ajaxSubmitButton('Найти','' , array(
 			'type' => 'POST',
-			'update' => '.text',
-			),array('style'=>'width:20%','type' => 'submit') 
+			'update' => '#answer-table',
+			),array('class'=>'search-button','id'=>'submit-button','type' => 'submit') 
 			); ?>    
     <?php echo CHtml::error($model,'part_id'); ?>
 	</div>
 
-<?php /*$this->endWidget();*/echo CHtml::endForm(); ?>
-
-</div><!-- form -->
-
 <div class="text">
-	<?php echo $answer ?>
+  <div class="request-filter">
+    <h5>Фильтр:</h5>
+    <input name="filters" type="hidden" value="">
+  </div>
+  <div id="answer-table">
+    <?php echo $model->getAnswer()?>
+  </div>
+  
+<?php echo CHtml::endForm(); ?>
+</div><!-- form -->  
 </div>
+<script type="text/javascript">
+  var ftr_obj = JSON.parse('<?php echo $model->getFilters()?>');
+  
+  makeView(ftr_obj);
+  
+  function makeView(obj){
+    $('div.request-filter').children("p").remove();
+    for(var key in obj){    
+      var elem = '<p class="request-filter item" id="'+key+'">'+ftr_obj[key].name+": "+ftr_obj[key].value+
+               '<img onClick="removeFilter(this);" src="/images/cross.png" style="cursor:pointer;" />'+
+               '</p>';      
+      $("div.request-filter").append(elem);
+    }    
+    $('div.request-filter>input').attr('value',JSON.stringify(obj));
+  }
+  
+  function removeFilter(filter) {
+    var key = $(filter).parent().attr('id');
+    delete ftr_obj[key];
+    makeView(ftr_obj);
+  }
+  
+  function addFilter(name,column,value) {
+    var change = false;
+    for(var key in ftr_obj) {
+      var item = ftr_obj[key];
+      if(item.column===column){
+        item.value = value;
+        change = true;
+        break;
+      }
+    }
+    if(!change) {
+      ftr_obj.push({name:name,value:value,column:column});
+    }
+    makeView(ftr_obj);
+  }
+</script>

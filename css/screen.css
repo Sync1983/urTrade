@@ -11,13 +11,61 @@
 
 ----------------------------------------------------------------------- */
 
-.part-table {
-    font-size: 8pt;
+.part-table {font-size: 8pt;width: 100%;border: 1px solid #09f;border-collapse: collapse;}
+.part-table-head {background-color: #c3d9ff;border: 1px solid #09f;}
+.part-table tr:hover{background-color: #80CFFF;}
+.part-table span.info{font-weight: bolder;cursor: pointer;color: red;}
+.part-table span.info:hover .info-hint {display: block;}
+.search-button {max-width: 120px; width: 20%; height: 40px; border-radius: 15px; background-color: #80CFFF; font-size: 20px;font-weight: bolder; color: #fff;}
+.search-button:hover{background-color: #09f;}
+.search-button:active {color: #227;}
+.search-input{height: 30px;color: #298dcd;border-radius: 10px;width: 80%;position: relative;font-size: 16px;padding-left: 10px;font-weight: bold;}
+.info-hint {display: none;position: absolute;width: auto;max-width: 500px;min-height: 50px;border: 2px solid #06c;background-color: rgba(195,217,255,0.7);border-radius: 15px;z-index: 10000;}
+.info-hint p{padding: 10px 10px 10px 10px;font-size: 14px;color: #060;}
+.request-filter {border: 1px solid #dadada;border-radius: 5px;height: 45px;background-color: #EFEFEF;}
+.request-filter h5 {padding-left: 5px;padding-top: 2px;}
+.request-filter p.item {padding-left: 4px;font-size: 16px;height: 20px;width: auto;float: left;margin-top: -18px;margin-left: 4px;margin-right: 6px;background-color: #c3d9ff;position: relative;}
+.request-filter p.item>img {width: 16px;height: 16px;position: relative;padding-left: 4px;padding-right: 4px;top:2px;}
+.select-panel {
+  position: fixed;
+  width: 200px;
+  left: 100%;
+  height: auto;
+  border: 1px solid #666;
+  top:50px;
+  margin-left: -210px;
+  border-radius: 10px;
+  z-index: 10000;
+  background-color: rgba(195,217,255,0.5);
+  max-height: 300px;
+  overflow-y: auto;
 }
-.part-table-head {
-    background-color: #c3d9ff;
-    border: 1px solid #09f;
+.select-panel ul {
+  list-style: none;
+  padding: 10px 10px 10px 10px;
+  margin: 0 0 0 0;  
 }
+.select-panel li {
+  width: 100%;
+  cursor: pointer;  
+  overflow-x: no-display;
+  overflow-y: no-display;
+  border-radius: 4px;
+  text-align: center;
+  vertical-align: central;
+}
+.select-panel li:hover {
+  background-color: #80CFFF;
+}
+
+.select-panel li.active {
+  background-color: #80CFFF;
+}
+
+.articul {
+  top: 360px;
+}
+
 
 /* reset.css */
 html {margin:0;padding:0;border:0;}
