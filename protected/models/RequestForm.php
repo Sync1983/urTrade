@@ -41,67 +41,84 @@ class RequestForm extends CFormModel
 		}
 		$this->part_id = $part_id;
 		
-		$answer = "
-			<table class='part-table'>
-				<tr class='part-table-head'>
-					<th>Склад</th>					
-					<th>Производитель</th>					
-					<th>Артикул</th>
-					<th>Наименование</th>
-					<th>Цена</th>
-					<th>Упаковка</th>
-					<th>Срок поставки</th>
-					<th>Количество</th>
-					<th>Обновление цен</th>					
-				</tr>";
-    $this->producer = array();
+		$answer = $this->addHtmlTableHead();
+            
+    $producer = array();
     $articul = array();    
+    
 		foreach ($obj as $detail) {
-      $this->producer[$detail[3]] = 1;
-      $articul[$detail[4]]=1;
-      if(!$this->inFilter($detail)) {
+      $this->setMinValue($producer, $detail[3], $detail[6]);
+      $this->setMinValue($articul, $detail[4], $detail[6]);      
+      if(!$this->inFilter($detail))
         continue;
-      }
-      $hint = '';
-      if($detail[10]!=="") {
-        $hint = "*<div class=\"info-hint\"><p>$detail[10]</p></div>";
-      }
-			$row = "<tr> 
-                <td><a href=\"#\" onClick=\"addFilter('Склад',2,'$detail[2]')\">      $detail[2]</a><span class=\"info\">$hint</span></td>
-								<td><a href=\"#\" onClick=\"addFilter('Производитель',3,'$detail[3]')\"> $detail[3]</a></td>
-								<td><a href=\"#\" onClick=\"addFilter('Артикул',4,'$detail[4]')\">       $detail[4]</a></td>
-								<td><a href=\"#\" onClick=\"addFilter('Наименование',5,'$detail[5]')\">  $detail[5]</a></td>
-								<td>$detail[6]</td>
-								<td>$detail[7]</td>
-								<td><a href=\"#\" onClick=\"addFilter('Срок поставки',8,'$detail[8]')\"> $detail[8]</a></td>
-								<td></td>
-								<td>$detail[9]</td></tr>";
-			$answer.= $row;
+      $answer.= $this->addHtmlTableRow($detail);      
 		}
-		$this->producer = array_keys($this->producer);    
-    sort($this->producer);    
-    $articul = array_keys($articul);
-    sort($articul);
     
 		$this->answer = $answer."</table>";    
+    
+    asort($producer);
+    asort($articul);    
+		
     $this->answer.= "<div class=\"select-panel\"><ul>";
-    foreach ($this->producer as $value) {
-       $this->answer.="<li onClick=\"addFilter('Производитель',3,'$value')\">$value</li>";
+    foreach ($producer as $key=>$value) {
+       $this->answer.="<li onClick=\"addFilter('Производитель',3,'$key',true)\">$key { $value }</li>";
     }  
     $this->answer .="</ul></div>";
     
-    $this->answer.= "<div class=\"select-panel articul\"><ul>";
-    foreach ($articul as $value) {
-      if($value===$part_id){
-        $this->answer.="<li class=\"active\" onClick=\"addFilter('Артикул',4,'$value')\">$value</li>";
+    $this->answer.= "<div class=\"select-panel articul\"><ul>";    
+    foreach ($articul as $key=>$value) {
+      if($key === $part_id){
+        $this->answer.="<li class=\"active\" onClick=\"addFilter('Артикул',4,'$key',true)\">$key {$value}</li>";
       } else {
-       $this->answer.="<li onClick=\"addFilter('Артикул',4,'$value')\">$value</li>";
+       $this->answer.="<li onClick=\"addFilter('Артикул',4,'$key',true)\">$key { $value }</li>";
       }
     }  
     $this->answer .="</ul></div>";
 	}
   
-  protected function inFilter($detail) {
+  protected function addHtmlTableHead() {
+    return "
+			<table class='part-table'>
+				<tr class='part-table-head'>
+					<th                 ><a onClick=\"changeSort(2,this);\" href=\"#\">Склад        </a>    </th>					
+					<th                 ><a onClick=\"changeSort(3,this);\" href=\"#\">Производитель</a>    </th>					
+					<th class=\"center\"><a onClick=\"changeSort(4,this);\" href=\"#\">Артикул      </a>    </th>
+					<th class=\"center\"><a onClick=\"changeSort(5,this);\" href=\"#\">Наименование </a>    </th>
+					<th class=\"center\"><a onClick=\"changeSort(6,this);\" href=\"#\">Цена         </a>    </th>
+					<th class=\"center\"><a onClick=\"changeSort(7,this);\" href=\"#\">Упаковка     </a>    </th>
+					<th class=\"center\"><a onClick=\"changeSort(8,this);\" href=\"#\">Срок поставки</a>    </th>
+					<th class=\"center\">В корзину</th>
+					<th class=\"right\"><a onClick=\"changeSort(9,this);\" href=\"#\">Обновление цен</a>   </th>					
+				</tr>";
+  }
+  
+  protected function addHtmlTableRow($detail) {
+    $hint = '';
+    if($detail[10]!=="") {
+      $hint = "<span class=\"info\">*<div class=\"info-hint\"><p>$detail[10]</p></div></span>";
+    }
+		return "<tr> 
+      <td><a href=\"#\" onClick=\"addFilter('Склад',2,'$detail[2]')\">$detail[2]</a>$hint</td>
+			<td><a href=\"#\" onClick=\"addFilter('Производитель',3,'$detail[3]')\"> $detail[3]</a></td>
+			<td class=\"center\"><a href=\"#\" onClick=\"addFilter('Артикул',4,'$detail[4]')\">       $detail[4]</a></td>
+			<td class=\"center\"><a href=\"#\" onClick=\"addFilter('Наименование',5,'$detail[5]')\">  $detail[5]</a></td>
+			<td class=\"center\">$detail[6]</td>
+			<td class=\"center\">$detail[7]</td>
+			<td class=\"center\"><a href=\"#\" onClick=\"addFilter('Срок поставки',8,'$detail[8]')\"> $detail[8]</a></td>
+			<td class=\"center\"><div onClick=\"addToBasket('".json_encode($detail)."');\" class=\"basket\">&nbsp</div></td>
+			<td class=\"right\">$detail[9]</td></tr>";			
+  }
+
+  protected function setMinValue(&$array,&$key,&$value){
+    $val = floatval($value);
+    if(!isset($array[$key])) {
+      $array[$key]=$val;
+    } elseif($array[$key]>$val){
+      $array[$key] = $val;      
+    }
+  }
+
+    protected function inFilter($detail) {
     if(!is_array($detail)||!(is_array($this->filters))){
       return false;
     }    

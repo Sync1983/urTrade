@@ -30,8 +30,10 @@ $this->breadcrumbs=array(
 <div class="text">
   <div class="request-filter">
     <h5>Фильтр:</h5>
-    <input name="filters" type="hidden" value="">
+    <input id="filters" name="filters" type="hidden" value="">
+    <input id="sort" name="sort" type="hidden" value="">
   </div>
+  
   <div id="answer-table">
     <?php echo $model->getAnswer()?>
   </div>
@@ -41,6 +43,7 @@ $this->breadcrumbs=array(
 </div>
 <script type="text/javascript">
   var ftr_obj = JSON.parse('<?php echo $model->getFilters()?>');
+  var ftr_srt = new Object();
   
   makeView(ftr_obj);
   
@@ -52,7 +55,7 @@ $this->breadcrumbs=array(
                '</p>';      
       $("div.request-filter").append(elem);
     }    
-    $('div.request-filter>input').attr('value',JSON.stringify(obj));
+    $('div.request-filter>input[name=filters]').attr('value',JSON.stringify(obj));
   }
   
   function removeFilter(filter) {
@@ -61,7 +64,7 @@ $this->breadcrumbs=array(
     makeView(ftr_obj);
   }
   
-  function addFilter(name,column,value) {
+  function addFilter(name,column,value,clear) {
     var change = false;
     for(var key in ftr_obj) {
       var item = ftr_obj[key];
@@ -72,8 +75,25 @@ $this->breadcrumbs=array(
       }
     }
     if(!change) {
+      if(clear) {
+        ftr_obj = new Array();
+      }
       ftr_obj.push({name:name,value:value,column:column});
     }
     makeView(ftr_obj);
+  }
+  
+  function changeSort(col,item) {
+    if(ftr_srt[col]){
+      ftr_srt[col] = 1-ftr_srt[col];
+      if(ftr_srt[col]==1){
+      } else {
+      }
+    } else {
+      ftr_srt = new Object();
+      ftr_srt[col] = 1;
+      $(item).text($(item).text()+" >"); 
+    }
+    $('div.request-filter>input[name=sort]').attr('value',JSON.stringify(ftr_srt));
   }
 </script>

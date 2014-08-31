@@ -66,6 +66,50 @@
   top: 360px;
 }
 
+input.count {
+  width: 50px;    
+  float:left;
+  padding-left: 10px;
+  text-align: center;  
+}
+
+td.center, th.center {
+  text-align: center;
+}
+
+td.right,th.right {
+  text-align: right;
+}
+
+div.basket {
+  background:url('/images/basket_icon.png');
+  background-repeat: no-repeat;
+  margin-left: 5px;
+  width: 30px;
+  max-width: 30px;
+  max-height: 30px;
+  height: 30px;  
+  left: 50%;
+  margin-left: -15px;
+  cursor: pointer;
+  position: relative;
+}
+
+div.basket:hover {
+  background:url('/images/basket_icon_active.png');
+  background-repeat: no-repeat;
+}
+
+div.sort {
+  background:url('/images/arrow-up.png');
+  background-repeat: no-repeat;
+  margin-left: 5px;
+  width: 30px;  
+  height: 30px;    
+  cursor: pointer;
+  position: relative;
+}
+
 
 /* reset.css */
 html {margin:0;padding:0;border:0;}
