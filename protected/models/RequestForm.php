@@ -6,6 +6,7 @@ class RequestForm extends CFormModel
 	public $object;
   protected $answer;
   protected $filters = array();
+  protected $sort = array();
   protected $producer = array();
 
   public function rules() {
@@ -26,11 +27,15 @@ class RequestForm extends CFormModel
     return $this->producer;
   }
 
-  public function load_data($part_id,$filter=null) {
+  public function load_data($part_id,$filter=null, $sort=null) {
 		$obj = array();
     if($filter) {
       $this->filters = json_decode($filter);      
     }
+    if($sort) {
+      $this->sort = json_decode($sort,true);      
+    }
+		
 		if(($part_id==$this->part_id)&&($this->object)) {
 			$obj = $this->object;      
 		} else {
@@ -45,12 +50,14 @@ class RequestForm extends CFormModel
             
     $producer = array();
     $articul = array();    
+		
+		usort($obj, array('RequestForm','sortTable'));
     
 		foreach ($obj as $detail) {
       $this->setMinValue($producer, $detail[3], $detail[6]);
       $this->setMinValue($articul, $detail[4], $detail[6]);      
       if(!$this->inFilter($detail))
-        continue;
+        continue;			
       $answer.= $this->addHtmlTableRow($detail);      
 		}
     
@@ -75,8 +82,36 @@ class RequestForm extends CFormModel
     }  
     $this->answer .="</ul></div>";
 	}
-  
-  protected function addHtmlTableHead() {
+	
+	public function sortTable($itemA,$itemB){
+		if(!$this->sort)
+			return 0;
+		$key = array_keys($this->sort);
+		if(!$key)
+				return[0];
+		$key = $key[0];
+		$type = $this->sort[$key];
+		if($type>0){
+			if($itemA[$key]>$itemB[$key]) {
+				return 1;
+			}elseif($itemA[$key]<$itemB[$key]) {
+				return -1;				
+			} else {
+				return 0;
+			}			
+		} else {
+			if($itemA[$key]>$itemB[$key]) {
+				return -1;
+			}elseif($itemA[$key]<$itemB[$key]) {
+				return 1;				
+			} else {
+				return 0;
+			}
+		}
+	}
+
+
+	protected function addHtmlTableHead() {
     return "
 			<table class='part-table'>
 				<tr class='part-table-head'>

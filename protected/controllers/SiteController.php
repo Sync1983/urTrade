@@ -110,8 +110,9 @@ class SiteController extends Controller
 
 		if(Yii::app()->request->isAjaxRequest){
 			$part_id  = Yii::app()->request->getPost('part_id');
-      $filters   = Yii::app()->request->getPost('filters');      
-			$model->load_data($part_id,$filters);
+      $filters  = Yii::app()->request->getPost('filters');      
+      $sort			= Yii::app()->request->getPost('sort');      
+			$model->load_data($part_id,$filters,$sort);
 			echo $model->getAnswer();
       Yii::app()->end();
 		} else
