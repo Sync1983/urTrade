@@ -6,7 +6,7 @@ class WebUser extends CWebUser {
   private $_model;
 	private $id;
 
-  function isAdmin(){
+  public function isAdmin(){
     $user = $this->loadUser(Yii::app()->user->getId());
     if(!$user) {
       return false;
@@ -14,6 +14,25 @@ class WebUser extends CWebUser {
 		return intval($user->role) == 11;
   }
  
+  public function convertPrice($price) {
+    $user = $this->loadUser(Yii::app()->user->getId());
+    if(!$user) {
+      return false;
+    }
+    $percent = $user->getPercent();
+    $price = floatval($price);
+    $price += $price * $percent/100;
+    return round($price,2);
+  }
+  
+  public function convertShiping($shiping) {
+    $user = $this->loadUser(Yii::app()->user->getId());
+    if(!$user) {
+      return false;
+    }
+    return $shiping+$user->getShiping();    
+  }
+  
   // Load user model.
   protected function loadUser($id=null) {
 		if($this->_model===null) {
@@ -23,4 +42,5 @@ class WebUser extends CWebUser {
     }
     return $this->_model;
   }	
+  
 }

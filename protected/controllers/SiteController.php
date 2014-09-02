@@ -111,8 +111,13 @@ class SiteController extends Controller
 		if(Yii::app()->request->isAjaxRequest){
 			$part_id  = Yii::app()->request->getPost('part_id');
       $filters   = Yii::app()->request->getPost('filters');      
-			$model->load_data($part_id,$filters);
-			echo $model->getAnswer();
+			/*$model->load_data($part_id,$filters);
+			echo $model->getAnswer();*/
+      $this->renderPartial('_searchTable', array(
+                            //'provider' => $model->load_data($part_id),
+                            'model'   => $model,
+                            'part_id' => $part_id,
+      ));
       Yii::app()->end();
 		} else
       $this->render('request',array('model'   =>$model,'filters'=>$model->getFilters()/* 'Введите номер запчасти'*/));    
@@ -129,8 +134,8 @@ class SiteController extends Controller
 			$part_id = Yii::app()->request->getPost('part_id');
       $filters = Yii::app()->request->getPost('filters');
       $answer = $filters;              
-			//$answer = $model->load_data($part_id);
-			echo $answer;//CHtml::encode($answer);
+			$answer = $model->load_data($part_id);
+			echo $answer;//CHtml::encode($answer);      
       Yii::app()->end();
 		}    
   }
