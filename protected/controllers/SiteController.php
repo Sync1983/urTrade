@@ -110,9 +110,12 @@ class SiteController extends Controller
 
 		if(Yii::app()->request->isAjaxRequest){
 			$part_id  = Yii::app()->request->getPost('part_id');
-      $filters   = Yii::app()->request->getPost('filters');      
+      $filters  = Yii::app()->request->getPost('filters');
+      $sort     = Yii::app()->request->getPost('sort');
 			/*$model->load_data($part_id,$filters);
 			echo $model->getAnswer();*/
+      $model->setFilter($filters);
+      $model->setSort($sort);
       $this->renderPartial('_searchTable', array(
                             //'provider' => $model->load_data($part_id),
                             'model'   => $model,
@@ -122,25 +125,8 @@ class SiteController extends Controller
 		} else
       $this->render('request',array('model'   =>$model,'filters'=>$model->getFilters()/* 'Введите номер запчасти'*/));    
 	}
-  
-  public function actionRequestAddFilter() {
-    $model=new RequestForm;		
 
-		if(isset($_POST['request-form'])) {			
-			$model->attributes=$_POST['request-form'];	
-		}
-    
-    if(Yii::app()->request->isAjaxRequest){
-			$part_id = Yii::app()->request->getPost('part_id');
-      $filters = Yii::app()->request->getPost('filters');
-      $answer = $filters;              
-			$answer = $model->load_data($part_id);
-			echo $answer;//CHtml::encode($answer);      
-      Yii::app()->end();
-		}    
-  }
-
-    public function actionClient_List() {
+  public function actionClient_List() {
     $sql    = "SELECT * FROM tbl_user WHERE role<>11";
     $data   = YII::app()->db->createCommand()->
               select('*')->

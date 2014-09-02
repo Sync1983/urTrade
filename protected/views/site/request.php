@@ -87,7 +87,7 @@ $this->breadcrumbs=array(
     if(ftr_srt[col]){
       ftr_srt[col] = 1-ftr_srt[col];
 			var text = $(item).text();
-			text = text.replace(/.[<,>]/g,"");
+			text = text.replace(/[<,>]/g,"");
       if(ftr_srt[col]===1){				
 				$(item).text(text+">");
       } else {
