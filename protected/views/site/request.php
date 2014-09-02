@@ -86,14 +86,24 @@ $this->breadcrumbs=array(
   function changeSort(col,item) {
     if(ftr_srt[col]){
       ftr_srt[col] = 1-ftr_srt[col];
-      if(ftr_srt[col]==1){
+			var text = $(item).text();
+			text = text.replace(/.[<,>]/g,"");
+      if(ftr_srt[col]===1){				
+				$(item).text(text+">");
       } else {
+				$(item).text(text+"<");
       }
     } else {
       ftr_srt = new Object();
       ftr_srt[col] = 1;
-      $(item).text($(item).text()+" >"); 
+			var text = $(item).text();
+			text = text.replace(/[<.>]/g,"");
+			$(item).text(text+">");
     }
     $('div.request-filter>input[name=sort]').attr('value',JSON.stringify(ftr_srt));
   }
+	
+	function addToBasket(item) {
+		console.log(item);
+	}
 </script>
