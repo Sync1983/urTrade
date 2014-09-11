@@ -11,7 +11,7 @@ class WebUser extends CWebUser {
     if(!$user) {
       return false;
     }
-		return intval($user->role) == 11;
+    return intval($user->role) == 11;
   }
  
   public function convertPrice($price) {
@@ -35,10 +35,10 @@ class WebUser extends CWebUser {
   
   // Load user model.
   protected function loadUser($id=null) {
-		if($this->_model===null) {
-			if($id!==null) {        
-				$this->_model=User::model()->findByPk($id,array('select'=>array('*')));				
-			}
+    if($this->_model===null) {
+        if($id!==null) {        
+            $this->_model=User::model()->findByPk($id,array('select'=>array('*')));				
+        }
     }
     return $this->_model;
   }	

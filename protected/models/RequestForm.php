@@ -2,18 +2,36 @@
 
 class RequestForm extends CFormModel
 {
-	public $part_id = "302060";
-	public $object;
+  public $part_id = "302060";
+  public $object;
   protected $answer;
   protected $filters = array();
   protected $sort = array();
   protected $producer = array();
+  protected $providers = array();
+  
+  public function __construct() {
+      $this->providers = array();
+      $providers = Yii::app()->params['providers_data'];
+      foreach ($providers as $name=>$params) {
+          $class = "Provider".$name;
+          if(!class_exists($class,false))
+              continue;
+          $data = $params;
+          unset($data['login']) ;
+          unset($data['pass']);
+          $provider = new   $class($params['login'],$params['pass'],$data);
+          if(!$provider)
+              continue;
+          $this->providers[$name]=$provider;
+      }      
+  }
 
   public function rules() {
-		return array(			
-			array('part_id', 'required','message'=>'Заполните поле Артикул'),
-		);
-	}
+    return array(			
+      array('part_id', 'required','message'=>'Заполните поле Артикул'),
+    );
+  }
   
   public function getAnswer(){
     return $this->answer;
@@ -27,6 +45,10 @@ class RequestForm extends CFormModel
     return $this->producer;
   }
   
+  public function setPartID($part_id) {
+    $this->part_id = $part_id;
+  }
+  
   public function setFilter($filter) {
     $this->filters = json_decode($filter);
   }
@@ -36,21 +58,25 @@ class RequestForm extends CFormModel
   }
   
   public function data() {
-    $url = 'http://online.atc58.ru?part_id='.$this->part_id;
+    /*$url = 'http://online.atc58.ru?part_id='.$this->part_id;
 		$answer = file_get_contents($url,false);      
-		$obj = json_decode($answer, true);        
+		$obj = json_decode($answer, true);        */
+    $data = array();
+    foreach ($this->providers   as  $prov) {
+        $data = array_merge($data,$prov->loadPartList($this->part_id));
+    }
     usort($obj, array('RequestForm','sortTable'));
     return $obj;
   }
 
   public function load_data($part_id,$filter=null, $sort=null) {
     $producer = array();
-    $articul = array();    
+    $articul = array();
     
-		foreach ($obj as $detail) {
+    foreach ($obj as $detail) {
       $this->setMinValue($producer, $detail[3], $detail[6]);
       $this->setMinValue($articul, $detail[4], $detail[6]);            
-		}
+    }
     
     asort($producer);
     asort($articul);    
@@ -70,45 +96,45 @@ class RequestForm extends CFormModel
       }
     }  
     $this->answer .="</ul></div>";
-	}
+  }
 	
-	public function sortTable($itemA,$itemB){
-		if(!$this->sort)
-			return 0;
-		$key = array_keys($this->sort);
-		if(!$key)
-				return 0;
-		$key = $key[0];
-		$type = $this->sort[$key];
-		if($type>0){
-			if($itemA[$key]>$itemB[$key]) {
-				return 1;
-			}elseif($itemA[$key]<$itemB[$key]) {
-				return -1;				
-			} else {
-				return 0;
-			}			
-		} else {
-			if($itemA[$key]>$itemB[$key]) {
-				return -1;
-			}elseif($itemA[$key]<$itemB[$key]) {
-				return 1;				
-			} else {
-				return 0;
-			}
-		}
-	}
+public function sortTable($itemA,$itemB){
+  if(!$this->sort)
+    return 0;
+  $key = array_keys($this->sort);
+  if(!$key)
+    return 0;
+  $key = $key[0];
+  $type = $this->sort[$key];
+  if($type>0){
+      if($itemA[$key]>$itemB[$key]) {
+          return 1;
+      }elseif($itemA[$key]<$itemB[$key]) {
+          return -1;				
+      } else {
+          return 0;
+      }			
+  } else {
+      if($itemA[$key]>$itemB[$key]) {
+          return -1;
+      }elseif($itemA[$key]<$itemB[$key]) {
+          return 1;				
+      } else {
+          return 0;
+      }
+  }
+}
 
-  protected function setMinValue(&$array,&$key,&$value){
+protected function setMinValue(&$array,&$key,&$value){
     $val = floatval($value);
     if(!isset($array[$key])) {
       $array[$key]=$val;
     } elseif($array[$key]>$val){
       $array[$key] = $val;      
     }
-  }
+}
           
-  public function inFilter($detail) {
+public function inFilter($detail) {
     if(!is_array($detail)||!(is_array($this->filters))){
       return false;
     }    

@@ -59,14 +59,14 @@ class SiteController extends Controller
 					"Content-Type: text/plain; charset=UTF-8";
 
 				mail(Yii::app()->params['adminEmail'],$subject,$model->body,$headers);
-				Yii::app()->user->setFlash('contact','Thank you for contacting us. We will respond to you as soon as possible.');
+                              	Yii::app()->user->setFlash('contact','Thank you for contacting us. We will respond to you as soon as possible.');
 				$this->refresh();
 			}
 		}
 		$this->render('contact',array('model'=>$model));
 	}
 
-	/**
+  	/**
 	 * Displays the login page
 	 */
 	public function actionLogin()
@@ -92,39 +92,38 @@ class SiteController extends Controller
 		$this->render('login',array('model'=>$model));
 	}
 
-	/**
-	 * Logs out the current user and redirect to homepage.
-	 */
-	public function actionLogout()
-	{
-		Yii::app()->user->logout();
-		$this->redirect(Yii::app()->homeUrl);
-	}
-	
-	public function actionRequest() {
-		$model=new RequestForm;		
+/**
+ * Logs out the current user and redirect to homepage.
+ */
+public function actionLogout()
+{
+	Yii::app()->user->logout();
+	$this->redirect(Yii::app()->homeUrl);
+}
 
-		if(isset($_POST['request-form'])) {			
-			$model->attributes=$_POST['request-form'];	
-		}
+public function actionRequest() {
+  $model=new RequestForm;		
 
-		if(Yii::app()->request->isAjaxRequest){
-			$part_id  = Yii::app()->request->getPost('part_id');
-      $filters  = Yii::app()->request->getPost('filters');
-      $sort     = Yii::app()->request->getPost('sort');
-			/*$model->load_data($part_id,$filters);
-			echo $model->getAnswer();*/
-      $model->setFilter($filters);
-      $model->setSort($sort);
-      $this->renderPartial('_searchTable', array(
-                            //'provider' => $model->load_data($part_id),
-                            'model'   => $model,
-                            'part_id' => $part_id,
+  if(isset($_POST['request-form'])) {			
+    $model->attributes=$_POST['request-form'];	
+  }
+
+  if(Yii::app()->request->isAjaxRequest){
+    $part_id  = Yii::app()->request->getPost('part_id');
+    $filters  = Yii::app()->request->getPost('filters');
+    $sort     = Yii::app()->request->getPost('sort');
+    $model->setFilter($filters);
+    $model->setSort($sort);
+    $model->setPartId($part_id);
+    $this->renderPartial('_searchTable', array(
+      //'provider' => $model->load_data($part_id),
+      'model'   => $model,
+      'part_id' => $part_id,
       ));
-      Yii::app()->end();
-		} else
-      $this->render('request',array('model'   =>$model,'filters'=>$model->getFilters()/* 'Введите номер запчасти'*/));    
-	}
+    Yii::app()->end();
+  } else
+    $this->render('request',array('model'   =>$model,'filters'=>$model->getFilters()/* 'Введите номер запчасти'*/));
+}
 
   public function actionClient_List() {
     $sql    = "SELECT * FROM tbl_user WHERE role<>11";
