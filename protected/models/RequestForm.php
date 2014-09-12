@@ -12,17 +12,17 @@ class RequestForm extends CFormModel
   
   public function __construct() {
       $this->providers = array();
-      $providers = Yii::app()->params['providers_data'];
-      foreach ($providers as $name=>$params) {
-          $class = "Provider".$name;
-          if(!class_exists($class,false))
-              continue;
+      $providers = Yii::app()->params['providers_data'];      
+      foreach ($providers as $name=>$params) {          
+          $class = "Provider".$name;          
+          if(!class_exists($class,true))
+              continue;          
           $data = $params;
           unset($data['login']) ;
           unset($data['pass']);
           $provider = new   $class($params['login'],$params['pass'],$data);
           if(!$provider)
-              continue;
+              continue;          
           $this->providers[$name]=$provider;
       }      
   }
@@ -62,11 +62,12 @@ class RequestForm extends CFormModel
 		$answer = file_get_contents($url,false);      
 		$obj = json_decode($answer, true);        */
     $data = array();
-    foreach ($this->providers   as  $prov) {
-        $data = array_merge($data,$prov->loadPartList($this->part_id));
+    foreach ($this->providers as  $prov) {
+        //$data = array_merge($data,$prov->loadPartProducer($this->part_id));
+        $data[] = $prov->loadPartProducer($this->part_id);
     }
-    usort($obj, array('RequestForm','sortTable'));
-    return $obj;
+    //usort($obj, array('RequestForm','sortTable'));
+    return $data;
   }
 
   public function load_data($part_id,$filter=null, $sort=null) {

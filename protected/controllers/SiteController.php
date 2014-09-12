@@ -2,7 +2,8 @@
 
 class SiteController extends Controller
 {
-	/**
+    protected $billing;
+    /**
 	 * Declares class-based actions.
 	 */
 	public function actions()
@@ -23,6 +24,8 @@ class SiteController extends Controller
 	{
 		// renders the view file 'protected/views/site/index.php'
 		// using the default layout 'protected/views/layouts/main.php'
+        $billing = new Billing();
+        $this->billing = $billing->getBalance()."asd";
 		$this->render('index');
 	}
 
@@ -123,6 +126,10 @@ public function actionRequest() {
     Yii::app()->end();
   } else
     $this->render('request',array('model'   =>$model,'filters'=>$model->getFilters()/* 'Введите номер запчасти'*/));
+}
+
+public function actionBilling() {
+    $this->render('billing',array('billing'=>YII::app()->user->getBilling()));    
 }
 
   public function actionClient_List() {

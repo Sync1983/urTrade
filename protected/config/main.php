@@ -54,16 +54,16 @@ return array(
 			'username' => 'atc58',
 			'password' => 'test_pass',
 			'charset' => 'utf8',
-		),
-                    'cache'=>array(
-                        'class'=>'ext.redis.CRedisCache',
-                        'servers'=>array(
-                                array(
-                                        'host'=>'127.0.0.1',
-                                        'port'=>6379,
-                                ),                                
-                        ),
-                ),
+            ),
+        'cache'=>array(
+            'class'=>'ext.redis.CRedisCache',
+            'servers'=>array(
+                array(
+                    'host'=>'127.0.0.1',
+                    'port'=>6379,
+                ),                                
+            ),
+        ),
 		'errorHandler'=>array(
 			// use 'site/error' action to display errors
 			'errorAction'=>'site/error',
@@ -95,10 +95,10 @@ return array(
                             'pass'=>'6de6b09l',
                             'contract_id'=>'86951',
                         ),
-                        'online'=>array(
+                        /*'online'=>array(
                             'login'=>'6957659777',
                             'pass'=>'kdV2N5iD5w',
-                        ),
+                        ),*/
                     ),
             ),
 );

@@ -1,4 +1,7 @@
-<?php /* @var $this Controller */ ?>
+<?php 
+    /* @var $this Controller */ 
+    /* @var $billing*/
+?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
 <head>
@@ -32,9 +35,10 @@
 			'items'=>array(
 				array('label'=>'Home', 'url'=>array('/site/index')),
 				array('label'=>'Цена и заказ', 'url'=>array('/site/request')),
-        array('label'=>'Управление клиентами', 'url'=>array('/site/client_list'), 'visible'=>Yii::app()->user->isAdmin()),				
-        array('label'=>'Корзина', 'url'=>array('/site/basket'), 'visible'=>((!Yii::app()->user->isAdmin()))&&(!Yii::app()->user->isGuest)),
-        array('label'=>'О нас', 'url'=>array('/site/page', 'view'=>'about')),
+                array('label'=>'Управление клиентами', 'url'=>array('/site/client_list'), 'visible'=>Yii::app()->user->isAdmin()),				
+                array('label'=>'Корзина', 'url'=>array('/site/basket'), 'visible'=>((!Yii::app()->user->isAdmin()))&&(!Yii::app()->user->isGuest)),
+                array('label'=>'Баланс ('.YII::app()->user->getBilling()->getBalance().' руб.)', 'url'=>array('/site/billing')),
+                array('label'=>'О нас', 'url'=>array('/site/page', 'view'=>'about')),
 				array('label'=>'Контакты', 'url'=>array('/site/contact')),
 				array('label'=>'Вход', 'url'=>array('/site/login'), 'visible'=>Yii::app()->user->isGuest),
 				array('label'=>'Выход ('.Yii::app()->user->name.')', 'url'=>array('/site/logout'), 'visible'=>!Yii::app()->user->isGuest)
@@ -52,9 +56,7 @@
 	<div class="clear"></div>
 
 	<div id="footer">
-		Copyright &copy; <?php echo date('Y'); ?> by My Company.<br/>
-		All Rights Reserved.<br/>
-		<?php echo Yii::powered(); ?>
+		Copyright &copy; <?php echo date('Y'); ?> by ATC.<br/>				
 	</div><!-- footer -->
 
 </div><!-- page -->

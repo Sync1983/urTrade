@@ -29,8 +29,8 @@
 
 <?php  
   $obj = $model->data();
-   
-  foreach ($obj as $detail) {
+  var_dump($obj); 
+  /*foreach ($obj as $detail) {
     if(!$model->inFilter($detail))
         continue;	
     $hint = '';
@@ -49,6 +49,6 @@
 			<td class=\"center\"><a href=\"#\" onClick=\"addFilter('Срок поставки',8,'$shiping')\"> $shiping</a></td>
 			<td class=\"center\"><div onClick=\"addToBasket('".json_encode($detail)."');\" class=\"basket\">&nbsp</div></td>
 			<td class=\"right\">$detail[9]</td></tr>";			 
-  }
+  }*/
 ?>
 </table>
