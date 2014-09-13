@@ -8,25 +8,7 @@ class RequestForm extends CFormModel
   protected $filters = array();
   protected $sort = array();
   protected $producer = array();
-  protected $providers = array();
   
-  public function __construct() {
-      $this->providers = array();
-      $providers = Yii::app()->params['providers_data'];      
-      foreach ($providers as $name=>$params) {          
-          $class = "Provider".$name;          
-          if(!class_exists($class,true))
-              continue;          
-          $data = $params;
-          unset($data['login']) ;
-          unset($data['pass']);
-          $provider = new   $class($params['login'],$params['pass'],$data);
-          if(!$provider)
-              continue;          
-          $this->providers[$name]=$provider;
-      }      
-  }
-
   public function rules() {
     return array(			
       array('part_id', 'required','message'=>'Заполните поле Артикул'),
@@ -61,11 +43,11 @@ class RequestForm extends CFormModel
     /*$url = 'http://online.atc58.ru?part_id='.$this->part_id;
 		$answer = file_get_contents($url,false);      
 		$obj = json_decode($answer, true);        */
-    $data = array();
+    /*$data = array();
     foreach ($this->providers as  $prov) {
         //$data = array_merge($data,$prov->loadPartProducer($this->part_id));
         $data[] = $prov->loadPartProducer($this->part_id);
-    }
+    }*/
     //usort($obj, array('RequestForm','sortTable'));
     return $data;
   }

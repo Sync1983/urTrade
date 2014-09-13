@@ -1,6 +1,6 @@
 <?php
 
-class ProviderController extends Controller {
+class Provider extends Controller {
     protected $_login = "";
     protected $_pass = "";
     protected $_cache;
@@ -22,7 +22,7 @@ class ProviderController extends Controller {
     }
     
     public function loadPartProducer($part_id) {
-        
+        throw new Exception("Use parent method");
     }    
 }
 

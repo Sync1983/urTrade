@@ -19,20 +19,23 @@ $this->breadcrumbs=array(
 
 	<div class="row">		
 		<?php echo CHtml::textField('part_id', $model->part_id,array('class'=>'search-input')); ?>
-		<?php echo CHtml::ajaxSubmitButton('Найти','' , array(
-			'type' => 'POST',
-			'update' => '#answer-table',
-			),array('class'=>'search-button','id'=>'submit-button','type' => 'submit') 
+		<?php echo CHtml::ajaxSubmitButton('Найти', $this->createUrl('provider/LoadProducers'), array(
+                'type'      =>  'POST',
+                'update'    =>  '#answer-table'),
+            array(
+                'class'=>'search-button',
+                'id'=>'submit-button',
+                'type' => 'submit') 
 			); ?>    
     <?php echo CHtml::error($model,'part_id'); ?>
 	</div>
 
 <div class="text">
-  <div class="request-filter">
+  <!--<div class="request-filter">
     <h5>Фильтр:</h5>
     <input id="filters" name="filters" type="hidden" value="">
     <input id="sort" name="sort" type="hidden" value="">
-  </div>
+  </div>--!>
   
   <div id="answer-table">
     <?php echo $model->getAnswer()?>

@@ -1,5 +1,5 @@
 <?php
-class ProviderIxora extends ProviderController {
+class ProviderIxora extends Provider {
     protected $_contract_id="";
     
     public function loadPartList($part_id) {
@@ -9,7 +9,7 @@ class ProviderIxora extends ProviderController {
     public function loadPartProducer($part_id) {
         $all = $this->_cache->hget(self::ProducerPrefix.  get_class($this), $part_id);
         if($all)
-            return json_decode ($all,true);
+            return json_decode ($all);
         
         $ch = curl_init();
         curl_setopt($ch, CURLOPT_URL, "http://ws.auto-iksora.ru:83/searchdetails/searchdetails.asmx/GetMakersByDetailNubmerXML");
