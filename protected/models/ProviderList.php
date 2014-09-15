@@ -19,28 +19,48 @@ class ProviderList extends CModel {
 		  unset($data['pass']);            
 		  $provider = new   $class($params['login'],$params['pass'],$data);
 		  if($provider!=NULL) {      
-			$this->provider_list[$name]=$provider;
+			$this->provider_list[$provider->getCLSID()]=$provider;
 		  }
 		}          
       }   
     }
-    
-    public function getProducers($part_id) {
+	
+	public function getPartList($part_id,$makers) {
+	  if(!is_array($makers)) {
+		$makers = array($makers);
+	  }  
 	  $answer = array();
 	  $list = array();
-	  foreach ($this->provider_list as $provider) {
-		$list[] = $provider->loadPartProducer($part_id);
+	  foreach ($makers as $name) {
+		$list[$name] = array();
 	  }
-	  foreach ($list as $item){
-		foreach ($item as $name => $obj) {
-		  if(!isset($answer[$obj->name])) {
-			$answer[$obj->name]	= array();
+	  
+	  foreach ($this->provider_list as $provider) {
+		$producers = $provider->loadPartProducer($part_id);
+		foreach($producers as $name=>$id) {
+		  if(!in_array($name, $makers)){
+			continue;
 		  }
-		  $answer[$obj->name][] = array($obj->producer=>$obj->id);		  
+		  $list[$name] = array_merge($list[$name],$provider->LoadPartList($part_id,$id));
 		}
 	  }
+	  return $list;	  
+	}
+
+	public function getProducers($part_id) {
+	  $answer = array();
+	  $list = array();
+	  foreach ($this->provider_list as $CLSID=>$provider) {
+		$list[$CLSID] = $provider->loadPartProducer($part_id);
+	  }
+	  foreach ($list as $item){
+		foreach (array_keys($item) as $name) {		  
+		  $answer[$name] = 1;
+		}
+	  }
+	  ksort($answer);
 	  return $answer;
-    }    
+    } 
     
 }
 

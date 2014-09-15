@@ -110,22 +110,11 @@ public function actionRequest() {
   if(isset($_POST['request-form'])) {			
     $model->attributes=$_POST['request-form'];	
   }
-
-  if(Yii::app()->request->isAjaxRequest){
-    $part_id  = Yii::app()->request->getPost('part_id');
-    $filters  = Yii::app()->request->getPost('filters');
-    $sort     = Yii::app()->request->getPost('sort');
-    $model->setFilter($filters);
-    $model->setSort($sort);
-    $model->setPartId($part_id);
-    $this->renderPartial('_searchTable', array(
-      //'provider' => $model->load_data($part_id),
-      'model'   => $model,
-      'part_id' => $part_id,
-      ));
-    Yii::app()->end();
-  } else
-    $this->render('request',array('model'   =>$model,'filters'=>$model->getFilters()/* 'Введите номер запчасти'*/));
+  
+  $this->render(  'request',
+				  array(
+					'model'	  =>  $model,
+					'filters' =>  $model->getFilters()/* 'Введите номер запчасти'*/));
 }
 
 public function actionBilling() {

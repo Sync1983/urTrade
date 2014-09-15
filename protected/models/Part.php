@@ -1,17 +1,54 @@
 <?php
 
 class Part extends CModel {
-    protected $_id;
-    protected $_provider;
+    public $id;
+    public $provider;
     
-    protected $_articul;
-    protected $_producer;
-    protected $_name;
-    protected $_price;
-    protected $_shiping;
+    public $articul;
+    public $producer;
+    public $name;
+    public $price;
+    public $shiping;
     
-    protected $_stock;    
-    protected $_info;
-    protected $_update_time;
+    public $stock;    
+    public $info;
+    public $update_time;
+	
+	public function attributeNames() {
+	  return array(
+			  "id",
+			  "provider",
+			  "articul",
+			  "producer",
+			  "name",
+			  "price",
+			  "shiping",
+			  "stock",  
+			  "info",
+			  "update_time"
+	  );
+	}
+	
+	public function setValues($id,
+							  $providerCLSID,
+							  $articul,
+							  $producer,
+							  $name,
+							  $price,
+							  $shiping,
+							  $stock,
+							  $info,
+							  $update_time) {
+	  $this->id				=	$id;
+	  $this->provider		=	$providerCLSID;
+	  $this->articul		=	$articul;
+	  $this->producer		=	$producer;
+	  $this->name			=	$name;
+	  $this->price			=	$price;
+	  $this->shiping		=	$shiping;
+	  $this->stock			=	$stock;
+	  $this->info			=	$info;
+	  $this->update_time	=	$update_time;	  
+	}
     
 }

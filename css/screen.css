@@ -35,6 +35,8 @@
 input.count {width: 50px;float:left;padding-left: 10px;text-align: center;}
 td.center, th.center {text-align: center;}
 td.right,th.right {text-align: right;}
+.preloader {top:50%;left:50%;margin-left: -80px;border-radius: 20px;width: 160px;height: 20px;background-size: cover;background:url('/images/preloader.gif');z-index: 1000;position: fixed;display: none;}
+.preloader.show {display: block;}
 
 .billing-table {
   width: 50%;
@@ -67,6 +69,10 @@ td.right,th.right {text-align: right;}
   background-color: #298dcd;
 }
 
+ul.producer-list li *{float: left; cursor: pointer;color: #298dcd;}
+ul.producer-list li input {top:7px;}
+ul.producer-list li label{top:5px;font-size: 16pt; width: 90%; position: relative;}
+
 ul.producer-list {
   width: 50%;
   left: 25%;
@@ -77,15 +83,13 @@ ul.producer-list {
 }
 
 ul.producer-list li:hover {
-  background-color: #298dcd;
+  background-color: #80CFFF;
 }
 
-ul.producer-list li {
-  vertical-align: middle;
-  display: inline-block;
+ul.producer-list li { 
+  vertical-align: middle;  
   height: 35px;  
-  position: relative;
-  border-bottom: 1px solid;
+  position: relative;  
 }
 
 ul.producer-list li input{
@@ -94,6 +98,16 @@ ul.producer-list li input{
   margin-left: 5px;
   margin-right: 15px;
   position: relative;
+}
+
+.provider-select-all input{cursor: pointer;float: left;}
+.provider-select-all label{top:3px;cursor: pointer;padding-left: 20px;position: relative;}
+.provider-select-all {width: 50%;left: 25%;padding-left: 10px;display: inline-block;cursor: pointer;position: relative;}
+
+#select-provider {
+  position: relative;
+  left: 50%;
+  margin-left: -60px;
 }
 
 div.basket {

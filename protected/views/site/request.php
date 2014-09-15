@@ -21,13 +21,17 @@ $this->breadcrumbs=array(
 		<?php echo CHtml::textField('part_id', $model->part_id,array('class'=>'search-input')); ?>
 		<?php echo CHtml::ajaxSubmitButton('Найти', $this->createUrl('provider/LoadProducers'), array(
                 'type'      =>  'POST',
-                'update'    =>  '#answer-table'),
+                'update'    =>  '#answer-table',
+				'beforeSend' => 'function(){
+				  $(".preloader").addClass("show");}',
+				'complete' => 'function(){
+				  $(".preloader").removeClass("show");}',),
             array(
                 'class'=>'search-button',
                 'id'=>'submit-button',
                 'type' => 'submit') 
 			); ?>    
-    <?php echo CHtml::error($model,'part_id'); ?>
+		<?php echo CHtml::error($model,'part_id'); ?>
 	</div>
 
 <div class="text">
@@ -35,10 +39,10 @@ $this->breadcrumbs=array(
     <h5>Фильтр:</h5>
     <input id="filters" name="filters" type="hidden" value="">
     <input id="sort" name="sort" type="hidden" value="">
-  </div>--!>
+  </div>-->
   
   <div id="answer-table">
-    <?php echo $model->getAnswer()?>
+    <!--?php echo $model->getAnswer()?-->
   </div>
   
 <?php echo CHtml::endForm(); ?>
@@ -106,7 +110,8 @@ $this->breadcrumbs=array(
     $('div.request-filter>input[name=sort]').attr('value',JSON.stringify(ftr_srt));
   }
 	
-	function addToBasket(item) {
+  function addToBasket(item) {
 		console.log(item);
 	}
+
 </script>
