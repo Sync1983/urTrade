@@ -110,11 +110,8 @@ public function actionRequest() {
   if(isset($_POST['request-form'])) {			
     $model->attributes=$_POST['request-form'];	
   }
-  
-  $this->render(  'request',
-				  array(
-					'model'	  =>  $model,
-					'filters' =>  $model->getFilters()/* 'Введите номер запчасти'*/));
+  Yii::app()->clientScript->registerPackage('datatable_q');
+  $this->render(  'request',array('model'	  =>  $model));
 }
 
 public function actionBilling() {

@@ -35,8 +35,11 @@ class Provider extends Controller {
 	  return $this->_cache->hgetall($name);
 	}
 
-	protected function saveCache($name,$part,$value,$time = 0){
-	  $this->_cache->hset($name, $part, json_encode($value),$time);
+	protected function saveCache($name,$part,$value,$time_sec = 0){
+	  $this->_cache->hset($name, $part, json_encode($value));
+	  if($time_sec>0) {
+		$this->_cache->expire($name,$time_sec);
+	  }
 	}
 }
 

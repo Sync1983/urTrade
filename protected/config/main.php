@@ -37,6 +37,16 @@ return array(
 			'class' => 'WebUser',			
 			'allowAutoLogin'=>true,
 		),
+		'clientScript'=>array(
+		  'packages' => array(
+			// Уникальное имя пакета
+			'datatable_q' => array(            
+			  'baseUrl' => '/js/',            
+			  'js'=>array(YII_DEBUG ? '/jquery.dataTables.js' : '/jquery.dataTables.min.js'),            
+			  'depends'=>array('jquery'),
+			),
+		  )		  
+        ),
 		// uncomment the following to enable URLs in path-format
 		/*
 		'urlManager'=>array(

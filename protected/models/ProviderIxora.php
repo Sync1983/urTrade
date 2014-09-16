@@ -8,7 +8,7 @@ class ProviderIxora extends Provider {
 	}
 	
 	public function loadPartList($part_id,$maker_id = null){	
-	  $all = $this->loadCache(self::PartPrefix.$this->getCLSID()."_".$part_id);		  
+	  $all = $this->loadCache(self::PartPrefix.$this->getCLSID()."_".$part_id."_".$maker_id);		  
 	  if(is_array($all)&&(count($all)>0)) {
 		$answer = array();
 		foreach ($all as $name=>$item){
@@ -37,6 +37,7 @@ class ProviderIxora extends Provider {
 		$result = array();
 		foreach($xml->row as $row){
 		  $part = new Part();
+		  $time = strtotime($row->pricedate);
 		  $part->setValues(	strval($row->orderrefernce), 
 							$this->getCLSID(), 
 							strval($row->detailnumber),
@@ -44,10 +45,11 @@ class ProviderIxora extends Provider {
 							strval($row->detailname),
 							strval($row->price),
 							strval($row->days),
-							strval($row->stock),
+							strval($row->regionname),
 							"", 
-							strval($row->pricedate) );
-		  $this->saveCache(self::PartPrefix.$this->getCLSID()."_".$part_id,strval($row->orderrefernce),  json_encode($part),3600);
+							strval($time),
+							(intval($row->regionname)!=1));
+		  $this->saveCache(self::PartPrefix.$this->getCLSID()."_".$part_id."_".$maker_id,strval($row->orderrefernce), $part,3600);
 		  $result[] = $part;
 		}
 		return $result;	  

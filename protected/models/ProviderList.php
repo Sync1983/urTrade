@@ -25,25 +25,20 @@ class ProviderList extends CModel {
       }   
     }
 	
-	public function getPartList($part_id,$makers) {
-	  if(!is_array($makers)) {
-		$makers = array($makers);
-	  }  
-	  $answer = array();
+	public function getPartList($part_id,$maker) {
+	  if(is_array($maker)){
+		return null;
+	  }	  
+	  
 	  $list = array();
-	  foreach ($makers as $name) {
-		$list[$name] = array();
-	  }
 	  
 	  foreach ($this->provider_list as $provider) {
 		$producers = $provider->loadPartProducer($part_id);
-		foreach($producers as $name=>$id) {
-		  if(!in_array($name, $makers)){
-			continue;
-		  }
-		  $list[$name] = array_merge($list[$name],$provider->LoadPartList($part_id,$id));
+		if(isset($producers[$maker])) {		  
+		  $list = array_merge($list, $provider->LoadPartList($part_id,$producers[$maker]));
 		}
 	  }
+	  usort($list, array(get_class($this),'sortByProducer'));
 	  return $list;	  
 	}
 
@@ -61,6 +56,15 @@ class ProviderList extends CModel {
 	  ksort($answer);
 	  return $answer;
     } 
+	
+	protected function sortByProducer($A,$B) {
+	  if($A->producer>$B->producer) {
+		return 1;
+	  } elseif($A->producer<$B->producer) {
+		return -1;
+	  }
+		return 0;	  
+	}
     
 }
 

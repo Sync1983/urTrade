@@ -25,15 +25,14 @@ class ProviderController extends Controller {
         }
         if(Yii::app()->request->isAjaxRequest){ 
             $part_id  = Yii::app()->request->getPost('part_id');  
-            $producers = $this->providers->getProducers($part_id);
-			Yii::app()->clientScript->scriptMap['jquery.js'] = false;
+            $producers = $this->providers->getProducers($part_id);			
             $this->renderPartial(   'providers/main',
 									 array(
                                         'producers'=>$producers,
-                                        'model'=>$model),false,true
+                                        'model'=>$model)
             ); 
         }   
-       Yii::app()->end();
+		Yii::app()->end();
     }
 	
 	public function actionLoadParts() {
@@ -44,14 +43,13 @@ class ProviderController extends Controller {
         }
         if(Yii::app()->request->isAjaxRequest){ 
             $part_id  = Yii::app()->request->getPost('part_id'); 
-			$producers=	Yii::app()->request->getPost('names'); 
-			Yii::app()->clientScript->scriptMap['jquery.js'] = false;
-            $parts	= $this->providers->getPartList($part_id,$producers);
-			var_dump($parts);
-            $this->renderPartial(   'providers/main',
+			$maker=	Yii::app()->request->getPost('maker');			
+            $parts	= $this->providers->getPartList($part_id,$maker);			
+            $this->renderPartial(   'providers/table',
                                     array(
-                                        'producers'=>$producers,
-                                        'model'=>$model)
+										'part_id' => $part_id,										
+                                        'part_list'=>$parts,
+										'model'=>$model)
             );
         }   
        Yii::app()->end();
