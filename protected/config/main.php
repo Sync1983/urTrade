@@ -49,10 +49,10 @@ return array(
 		),
 		*/		
 		'db'=>array(
-			'connectionString' => 'mysql:host=localhost;dbname=urtrade',
+			'connectionString' => 'mysql:host=localhost;dbname=urTrade',
 			'emulatePrepare' => true,
-			'username' => 'root',
-			'password' => 'test',
+			'username' => 'urtrade',
+			'password' => 'q2w3e4r5t6',
 			'charset' => 'utf8',
 		),		
 		'errorHandler'=>array(
