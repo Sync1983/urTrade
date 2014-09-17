@@ -8,7 +8,7 @@
 return array(
 	'basePath'=>dirname(__FILE__).DIRECTORY_SEPARATOR.'..',
 	'name'=>'АвтоТехСнаб - Ваш поставщик запчастей',
-  'language'=>'ru',
+          'language'=>'ru',
 
 	// preloading 'log' component
 	'preload'=>array('log'),
@@ -37,6 +37,16 @@ return array(
 			'class' => 'WebUser',			
 			'allowAutoLogin'=>true,
 		),
+		'clientScript'=>array(
+		  'packages' => array(
+			// Уникальное имя пакета
+			'datatable_q' => array(            
+			  'baseUrl' => '/js/',            
+			  'js'=>array(YII_DEBUG ? '/jquery.dataTables.js' : '/jquery.dataTables.min.js'),            
+			  'depends'=>array('jquery'),
+			),
+		  )		  
+        ),
 		// uncomment the following to enable URLs in path-format
 		/*
 		'urlManager'=>array(
@@ -54,7 +64,16 @@ return array(
 			'username' => 'urtrade',
 			'password' => 'q2w3e4r5t6',
 			'charset' => 'utf8',
-		),		
+            ),
+        'cache'=>array(
+            'class'=>'ext.redis.CRedisCache',
+            'servers'=>array(
+                array(
+                    'host'=>'127.0.0.1',
+                    'port'=>6379,
+                ),                                
+            ),
+        ),
 		'errorHandler'=>array(
 			// use 'site/error' action to display errors
 			'errorAction'=>'site/error',
@@ -80,5 +99,16 @@ return array(
 	'params'=>array(
 		// this is used in contact page
 		'adminEmail'=>'sales@atc58.ru',
-	),
+                    'providers_data'=>array(
+                        'ixora'=>array(
+                            'login'=>'AVTOTEHS',
+                            'pass'=>'6de6b09l',
+                            'contract_id'=>'86951',
+                        ),
+                        /*'online'=>array(
+                            'login'=>'6957659777',
+                            'pass'=>'kdV2N5iD5w',
+                        ),*/
+                    ),
+            ),
 );

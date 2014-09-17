@@ -15,7 +15,7 @@ class User extends CActiveRecord
       $this->save();
     }    
   }
-  
+
   public function getPercent() {
     return $this->price_percent;    
   }

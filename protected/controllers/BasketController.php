@@ -3,8 +3,8 @@
 class BasketController extends Controller {
   
   public function actionAdd() {
-    $model=new Basket;		
-
+    //$model=new Basket;		
+	
     //$model->
 		/*if(isset($_POST['request-form'])) {			
 			$model->attributes=$_POST['request-form'];	
@@ -15,9 +15,9 @@ class BasketController extends Controller {
       $filters = Yii::app()->request->getPost('filters');
       $answer = $filters;              
 			//$answer = $model->load_data($part_id);
-			echo $answer;//CHtml::encode($answer);
-      Yii::app()->end();
-		} */   
+			echo $answer;//CHtml::encode($answer);*/
+	  echo 'Заказано';
+      Yii::app()->end();	
   }
   
   public function relations() {

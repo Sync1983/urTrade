@@ -2,8 +2,6 @@
 /* @var $this SiteController */
 /* @var $model ContactForm */
 /* @var $form CActiveForm */
-/* @var $answer */
-/* @var $input*/
 
 $this->pageTitle=Yii::app()->name . ' - Цена и заказ';
 $this->breadcrumbs=array(
@@ -19,91 +17,92 @@ $this->breadcrumbs=array(
 
 	<div class="row">		
 		<?php echo CHtml::textField('part_id', $model->part_id,array('class'=>'search-input')); ?>
-		<?php echo CHtml::ajaxSubmitButton('Найти','' , array(
-			'type' => 'POST',
-			'update' => '#answer-table',
-			),array('class'=>'search-button','id'=>'submit-button','type' => 'submit') 
+		<?php echo CHtml::ajaxSubmitButton('Найти', $this->createUrl('provider/LoadProducers'), array(
+                'type'      =>  'POST',
+                'update'    =>  '.producer-list',
+				'beforeSend' => 'function(){
+				  $("#answer-table").html("Выберите производителя");
+				  $(".preloader").addClass("show");}',
+				'complete' => 'function(){
+				  $(".preloader").removeClass("show");}',),
+            array(
+                'class'=>'search-button',
+                'id'=>'submit-button',
+                'type' => 'submit') 
 			); ?>    
-    <?php echo CHtml::error($model,'part_id'); ?>
+		<?php echo CHtml::error($model,'part_id'); ?>
 	</div>
-
-<div class="text">
-  <div class="request-filter">
-    <h5>Фильтр:</h5>
-    <input id="filters" name="filters" type="hidden" value="">
-    <input id="sort" name="sort" type="hidden" value="">
-  </div>
-  
-  <div id="answer-table">
-    <?php echo $model->getAnswer()?>
-  </div>
   
 <?php echo CHtml::endForm(); ?>
 </div><!-- form -->  
+
+<div id="answer-table">
+  
 </div>
+
+<div class="producer-list">
+  <ul>
+  </ul>
+</div>
+
+
 <script type="text/javascript">
-  var ftr_obj = JSON.parse('<?php echo $model->getFilters()?>');
-  var ftr_srt = new Object();
-  
-  makeView(ftr_obj);
-  
-  function makeView(obj){
-    $('div.request-filter').children("p").remove();
-    for(var key in obj){    
-      var elem = '<p class="request-filter item" id="'+key+'">'+ftr_obj[key].name+": "+ftr_obj[key].value+
-               '<img onClick="removeFilter(this);" src="/images/cross.png" style="cursor:pointer;" />'+
-               '</p>';      
-      $("div.request-filter").append(elem);
-    }    
-    $('div.request-filter>input[name=filters]').attr('value',JSON.stringify(obj));
+  function insertAnswer(answer){	
+	$("#answer-table").html(answer);
+	$("#part-items").DataTable({
+	  "lengthMenu": [[-1, 25, 50, 100], [ "Все", 25, 50, 100]],
+	  "orderMulti": true,
+	  paging: false
+	});
   }
   
-  function removeFilter(filter) {
-    var key = $(filter).parent().attr('id');
-    delete ftr_obj[key];
-    makeView(ftr_obj);
+  function load(name){
+	jQuery.ajax({                
+                url: "/index.php?r=provider/LoadParts",
+                type: "POST",
+                data: {
+				  part_id: <?php echo $model->part_id; ?>,
+				  maker: name
+				},
+                error: function(xhr,tStatus,e){},
+                success: function(data){
+				  $(".preloader").removeClass("show");
+				  insertAnswer(data);
+				},
+				beforeSend:	function(){ 
+				  $(".preloader").addClass("show"); 
+				}
+    });	
   }
   
-  function addFilter(name,column,value,clear) {
-    var change = false;
-    for(var key in ftr_obj) {
-      var item = ftr_obj[key];
-      if(item.column===column){
-        item.value = value;
-        change = true;
-        break;
-      }
-    }
-    if(!change) {
-      if(clear) {
-        ftr_obj = new Array();
-      }
-      ftr_obj.push({name:name,value:value,column:column});
-    }
-    makeView(ftr_obj);
+  function ProducerSelect(event,parent) {	
+	var target	= event.target;	
+	var name = $(target).attr("id");
+	$(parent).children("li").removeClass("active");
+	$(target).addClass("active");
+	load(name);
   }
   
-  function changeSort(col,item) {
-    if(ftr_srt[col]){
-      ftr_srt[col] = 1-ftr_srt[col];
-			var text = $(item).text();
-			text = text.replace(/[<,>]/g,"");
-      if(ftr_srt[col]===1){				
-				$(item).text(text+">");
-      } else {
-				$(item).text(text+"<");
-      }
-    } else {
-      ftr_srt = new Object();
-      ftr_srt[col] = 1;
-			var text = $(item).text();
-			text = text.replace(/[<.>]/g,"");
-			$(item).text(text+">");
-    }
-    $('div.request-filter>input[name=sort]').attr('value',JSON.stringify(ftr_srt));
-  }
-	
-	function addToBasket(item) {
-		console.log(item);
+  function AddToBasket(provider,uid,parent){
+	function answer(data){	  	
+	  $(parent).parent().html(data);
 	}
+	
+	jQuery.ajax({                
+                url: "/index.php?r=basket/Add",
+                type: "POST",
+                data: {
+				  provider: provider,
+				  uid: uid
+				},
+                error: function(xhr,tStatus,e){},
+                success: function(data){
+				  $(".preloader").removeClass("show");
+				  answer(data);
+				},
+				beforeSend:	function(){ 
+				  $(".preloader").addClass("show"); 
+				}
+    });	
+  }
 </script>
