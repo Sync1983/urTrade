@@ -4,6 +4,7 @@ class Part extends CModel {
     public $id;
     public $provider;
     
+    public $count;
     public $articul;
     public $producer;
     public $name;
@@ -14,6 +15,7 @@ class Part extends CModel {
     public $info;
     public $update_time;
 	public $is_original;
+	public $lot_party;
 	
 	public function attributeNames() {
 	  return array(
@@ -27,7 +29,9 @@ class Part extends CModel {
 			  "stock",  
 			  "info",
 			  "update_time",
-			  "is_original"
+			  "is_original",
+			  "count",
+			  "lot_party"
 	  );
 	}
 	
@@ -41,7 +45,9 @@ class Part extends CModel {
 							  $stock,
 							  $info,
 							  $update_time,
-							  $is_original) {
+							  $is_original,
+							  $count,
+							  $lot_party) {
 	  $this->id				=	$id;
 	  $this->provider		=	$providerCLSID;
 	  $this->articul		=	$articul;
@@ -53,6 +59,8 @@ class Part extends CModel {
 	  $this->info			=	$info;
 	  $this->update_time	=	$update_time;	  
 	  $this->is_original	=	$is_original;	  
+	  $this->count			=	$count;	  
+	  $this->lot_party		=	$lot_party;	  
 	}
     
 }

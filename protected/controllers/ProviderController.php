@@ -24,7 +24,8 @@ class ProviderController extends Controller {
             
         }
         if(Yii::app()->request->isAjaxRequest){ 
-            $part_id  = Yii::app()->request->getPost('part_id');  
+            $part_id  = Yii::app()->request->getPost('part_id'); 
+			$model->part_id = $part_id;			
             $producers = $this->providers->getProducers($part_id);			
             $this->renderPartial(   'providers/main',
 									 array(
@@ -36,18 +37,19 @@ class ProviderController extends Controller {
     }
 	
 	public function actionLoadParts() {
-        $model=new RequestForm;
+        $model=new RequestParts();
         if(isset($_POST['request-parts'])) {			
             $model->attributes=$_POST['request-parts'];
             
         }
         if(Yii::app()->request->isAjaxRequest){ 
-            $part_id  = Yii::app()->request->getPost('part_id'); 
-			$maker=	Yii::app()->request->getPost('maker');			
-            $parts	= $this->providers->getPartList($part_id,$maker);			
+            $model->part_id	  = Yii::app()->request->getPost('part_id'); 
+			$model->maker	  =	Yii::app()->request->getPost('maker');			
+			$model->cross	  =	intval(Yii::app()->request->getPost('cross')=="true");
+			$model->price_add = intval(Yii::app()->request->getPost('price_add'));
+            $parts	= $this->providers->getPartList($model);
             $this->renderPartial(   'providers/table',
                                     array(
-										'part_id' => $part_id,										
                                         'part_list'=>$parts,
 										'model'=>$model)
             );

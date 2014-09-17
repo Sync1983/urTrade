@@ -16,7 +16,7 @@ class BasketController extends Controller {
       $answer = $filters;              
 			//$answer = $model->load_data($part_id);
 			echo $answer;//CHtml::encode($answer);*/
-	  echo 'Заказано';
+	  echo 'Добавлено';
       Yii::app()->end();	
   }
   
