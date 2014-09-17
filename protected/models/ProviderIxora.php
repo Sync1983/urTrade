@@ -33,7 +33,11 @@ class ProviderIxora extends Provider {
 
         $site_answer = curl_exec($ch);
         curl_close($ch);
-        $xml = new SimpleXMLElement($site_answer);
+		try{
+		  $xml = new SimpleXMLElement($site_answer);
+		} catch (ErrorException $error) {
+		  return $error->getMessage().":".$site_answer;
+		}
 		$result = array();
 		foreach($xml->row as $row){
 		  $part = new Part();
@@ -48,7 +52,10 @@ class ProviderIxora extends Provider {
 							strval($row->regionname),
 							"", 
 							strval($time),
-							(intval($row->regionname)!=1));
+							(intval($row->groupid)==0),
+							strval($row->quantity),
+							strval($row->lotquantity)
+			);
 		  $this->saveCache(self::PartPrefix.$this->getCLSID()."_".$part_id."_".$maker_id,strval($row->orderrefernce), $part,3600);
 		  $result[] = $part;
 		}
@@ -75,10 +82,15 @@ class ProviderIxora extends Provider {
                 'Password'      => $this->_pass,
         );
         curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query($post));
-
         $site_answer = curl_exec($ch);
         curl_close($ch);
-        $xml = new SimpleXMLElement($site_answer);
+		libxml_use_internal_errors(true);
+        try{
+		  $xml = new SimpleXMLElement($site_answer);
+		} catch (Exception $error) {
+		  echo $error->getMessage().":".$site_answer;
+		  return array();
+		}
         $answer = array();
         foreach($xml->row as $row){            
             $answer[strval($row->name)] = intval($row->id);

@@ -15,8 +15,8 @@ $this->breadcrumbs=array(
 
 <?php echo CHtml::form('','POST',array('id'=>'request-form'));?>	
 
-	<div class="row">		
-		<?php echo CHtml::textField('part_id', $model->part_id,array('class'=>'search-input')); ?>
+	<div class="query-row" style="float: left">		
+		<?php echo CHtml::textField('part_id', $model->part_id,array('class'=>'search-input')); ?>		
 		<?php echo CHtml::ajaxSubmitButton('Найти', $this->createUrl('provider/LoadProducers'), array(
                 'type'      =>  'POST',
                 'update'    =>  '.producer-list',
@@ -30,6 +30,10 @@ $this->breadcrumbs=array(
                 'id'=>'submit-button',
                 'type' => 'submit') 
 			); ?>    
+		<?php echo CHtml::activeCheckBox($model,'cross',array('value'=>$model->cross));
+			  echo CHtml::activeLabel($model,'cross',array('label'=>'Аналоги')); ?>
+		<?php echo CHtml::activeLabel($model,'price_add',array('label'=>'Уровень цен:'));
+			  echo CHtml::dropDownList('price_add', $model->price_add,array('0' => 'Male', '1' => 'Female')); ?>		
 		<?php echo CHtml::error($model,'part_id'); ?>
 	</div>
   
@@ -50,19 +54,24 @@ $this->breadcrumbs=array(
   function insertAnswer(answer){	
 	$("#answer-table").html(answer);
 	$("#part-items").DataTable({
-	  "lengthMenu": [[-1, 25, 50, 100], [ "Все", 25, 50, 100]],
-	  "orderMulti": true,
-	  paging: false
+	  paging: false,
+	  language: {
+        search: "Найти в таблице:"
+    }
 	});
   }
   
-  function load(name){
+  function load(name,part_id){
+	var cross = $("#RequestForm_cross").attr("checked");
+	var price = $("#price_add").val();
 	jQuery.ajax({                
                 url: "/index.php?r=provider/LoadParts",
                 type: "POST",
                 data: {
-				  part_id: <?php echo $model->part_id; ?>,
-				  maker: name
+				  part_id: part_id,
+				  maker: name,
+				  cross: cross==="checked",
+				  price_add: price
 				},
                 error: function(xhr,tStatus,e){},
                 success: function(data){
@@ -75,12 +84,12 @@ $this->breadcrumbs=array(
     });	
   }
   
-  function ProducerSelect(event,parent) {	
+  function ProducerSelect(event,parent,part_id) {	
 	var target	= event.target;	
 	var name = $(target).attr("id");
 	$(parent).children("li").removeClass("active");
 	$(target).addClass("active");
-	load(name);
+	load(name,part_id);
   }
   
   function AddToBasket(provider,uid,parent){

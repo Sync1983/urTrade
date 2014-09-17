@@ -25,7 +25,10 @@ class ProviderList extends CModel {
       }   
     }
 	
-	public function getPartList($part_id,$maker) {
+	public function getPartList(RequestParts $model) {	  
+	  $maker	= $model->maker;
+	  $part_id	= $model->part_id;
+	  
 	  if(is_array($maker)){
 		return null;
 	  }	  
@@ -38,7 +41,7 @@ class ProviderList extends CModel {
 		  $list = array_merge($list, $provider->LoadPartList($part_id,$producers[$maker]));
 		}
 	  }
-	  usort($list, array(get_class($this),'sortByProducer'));
+	  //usort($list, array(get_class($this),'sortByProducer'));
 	  return $list;	  
 	}
 
