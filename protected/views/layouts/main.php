@@ -38,6 +38,7 @@
                 array('label'=>'Управление клиентами', 'url'=>array('/site/client_list'), 'visible'=>Yii::app()->user->isAdmin()),				
                 array('label'=>'Корзина', 'url'=>array('/site/basket'), 'visible'=>((!Yii::app()->user->isAdmin()))&&(!Yii::app()->user->isGuest)),
                 array('label'=>'Баланс ('.YII::app()->user->getBilling()->getBalance().' руб.)', 'url'=>array('/site/billing')),
+				array('label'=>'Параметры', 'url'=>array('/site/settings')),	
                 array('label'=>'О нас', 'url'=>array('/site/page', 'view'=>'about')),
 				array('label'=>'Контакты', 'url'=>array('/site/contact')),
 				array('label'=>'Вход', 'url'=>array('/site/login'), 'visible'=>Yii::app()->user->isGuest),

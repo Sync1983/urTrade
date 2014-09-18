@@ -105,10 +105,10 @@ return array(
                             'pass'=>'6de6b09l',
                             'contract_id'=>'86951',
                         ),
-                        /*'online'=>array(
+                        'Online'=>array(
                             'login'=>'6957659777',
                             'pass'=>'kdV2N5iD5w',
-                        ),*/
+                        ),
                     ),
             ),
 );

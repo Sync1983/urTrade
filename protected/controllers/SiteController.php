@@ -68,22 +68,16 @@ class SiteController extends Controller
 		}
 		$this->render('contact',array('model'=>$model));
 	}
-
-  	/**
-	 * Displays the login page
-	 */
+  	
 	public function actionLogin()
 	{
 		$model=new LoginForm;
 
-		// if it is ajax validation request
-		if(isset($_POST['ajax']) && $_POST['ajax']==='login-form')
-		{
+		if(isset($_POST['ajax']) && $_POST['ajax']==='login-form') {
 			echo CActiveForm::validate($model);
 			Yii::app()->end();
 		}
 
-		// collect user input data
 		if(isset($_POST['LoginForm']))
 		{
 			$model->attributes=$_POST['LoginForm'];
@@ -94,29 +88,58 @@ class SiteController extends Controller
 		// display the login form
 		$this->render('login',array('model'=>$model));
 	}
+	
+	public function actionSettings() {
+	  $model = new SettingsForm();
+	  $info	 = UserInfo::load();
+	  $prices = UserPrice::getAll();
+	  
+	  if(!Yii::app()->request->isAjaxRequest) {
+		if(isset($_POST['SettingsForm'])) {
+		  $model->setAttributes($_POST['SettingsForm'],false);		
+		  if($model->validate()){
+			$model->save();
+		  }		
+		}else {
+		  $model->setAttributes($info->attributes,false);
+		}
+	  }else{		
+		$ids = $_POST['ids'];
+		$names = $_POST['names'];
+		$values = $_POST['values'];
+		UserPrice::addList($ids, $names, $values);
+		$prices = UserPrice::getAll();
+		$this->renderPartial('settings_prices_list', array('prices'=>  $prices,'model'=>$model));
+		Yii::app()->end();
+		return;
+	  }
+	  $prices_text = $this->renderPartial('settings_prices_list', array('prices'=>  $prices,'model'=>$model),true);
+	  
+	  $this->render('settings',array(
+			  'model' =>  $model,
+			  'prices'=>  $prices_text));
+	}
 
-/**
- * Logs out the current user and redirect to homepage.
- */
-public function actionLogout()
-{
+
+  public function actionLogout() {
 	Yii::app()->user->logout();
 	$this->redirect(Yii::app()->homeUrl);
-}
-
-public function actionRequest() {
-  $model=new RequestForm;		
-
-  if(isset($_POST['request-form'])) {			
-    $model->attributes=$_POST['request-form'];	
   }
-  Yii::app()->clientScript->registerPackage('datatable_q');
-  $this->render(  'request',array('model'	  =>  $model));
-}
 
-public function actionBilling() {
+  public function actionRequest() {
+	$model=new RequestForm;		
+	$prices = UserPrice::getAll();
+
+	if(isset($_POST['RequestForm'])) {			
+	  $model->attributes=$_POST['RequestForm'];	
+	}
+	Yii::app()->clientScript->registerPackage('datatable_q');
+	$this->render(  'request',array('model'	  =>  $model,'prices_list'=>$prices));
+  }
+
+  public function actionBilling() {
     $this->render('billing',array('billing'=>YII::app()->user->getBilling()));    
-}
+  }
 
   public function actionClient_List() {
     $sql    = "SELECT * FROM tbl_user WHERE role<>11";
@@ -124,8 +147,7 @@ public function actionBilling() {
               select('*')->
               from('tbl_user')->
               where('role<>:role',array(':role'=>11))->
-              queryAll();   
-    //print_r($data);
+              queryAll();  
     $this->render('client_list',array('items'=>$data));
-	}
+  }
 }
