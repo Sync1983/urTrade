@@ -59,11 +59,14 @@ table.dataTable tbody tr {
   font-size: 10px;
   vertical-align: middle;
 }
-table.dataTable tbody tr.zero-days{
+table.dataTable tbody tr.zero-days, table.dataTable tbody tr.one-days > td > *{
   color:blue;  
 }
-table.dataTable tbody tr.one-days{  
-  color:brown;
+table.dataTable tbody tr.one-days, table.dataTable tbody tr.one-days > td > *{  
+  color:blueviolet;  
+}
+table.dataTable tbody tr > td > a{
+  text-decoration: none;
 }
 table.dataTable tbody tr.original {  
   font-size: 11px;  

@@ -47,10 +47,18 @@ class ProviderController extends Controller {
 			$model->maker	  =	Yii::app()->request->getPost('maker');			
 			$model->cross	  =	intval(Yii::app()->request->getPost('cross')=="true");
 			$model->price_add = intval(Yii::app()->request->getPost('price_add'));
+			$price = 0;
+			if($model->price_add>0) {
+			  $row = UserPrice::model()->findByPk($model->price_add);
+			  if($row){
+				$price = $row->value;
+			  }
+			}
             $parts	= $this->providers->getPartList($model);
             $this->renderPartial(   'providers/table',
-                                    array(
+									 array(
                                         'part_list'=>$parts,
+										'price'	=> $price,
 										'model'=>$model)
             );
         }   

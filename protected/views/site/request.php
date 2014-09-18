@@ -13,16 +13,19 @@ $this->breadcrumbs=array(
 
 <div class="form">
 
-<?php echo CHtml::form('','POST',array('id'=>'request-form'));?>	
+<?php echo CHtml::form('','POST',array('id'=>'request-form'));
+	  $prices = array(0=>'Без наценки');
+	  foreach ($prices_list as $row) {
+		$prices[$row['id']] = $row['name']." ( ".$row['value']."% )";
+	  }
+?>	
 
 	<div class="query-row" style="float: left">		
 		<?php echo CHtml::textField('part_id', $model->part_id,array('class'=>'search-input')); ?>		
 		<?php echo CHtml::ajaxSubmitButton('Найти', $this->createUrl('provider/LoadProducers'), array(
                 'type'      =>  'POST',
                 'update'    =>  '.producer-list',
-				'beforeSend' => 'function(){
-				  $("#answer-table").html("Выберите производителя");
-				  $(".preloader").addClass("show");}',
+				'beforeSend' => 'beforeSend',
 				'complete' => 'function(){
 				  $(".preloader").removeClass("show");}',),
             array(
@@ -33,7 +36,7 @@ $this->breadcrumbs=array(
 		<?php echo CHtml::activeCheckBox($model,'cross',array('value'=>$model->cross));
 			  echo CHtml::activeLabel($model,'cross',array('label'=>'Аналоги')); ?>
 		<?php echo CHtml::activeLabel($model,'price_add',array('label'=>'Уровень цен:'));
-			  echo CHtml::dropDownList('price_add', $model->price_add,array('0' => 'Male', '1' => 'Female')); ?>		
+			  echo CHtml::dropDownList('price_add', $model->price_add,$prices); ?>		
 		<?php echo CHtml::error($model,'part_id'); ?>
 	</div>
   
@@ -51,9 +54,28 @@ $this->breadcrumbs=array(
 
 
 <script type="text/javascript">
+  var table;
+  
+  function beforeSend(){	
+	$("#answer-table").html("<h4>Выберите производителя</h4>");
+	$(".preloader").addClass("show");
+  }
+  
+  function addToFilter(item){	
+	if(!table){
+	  return;
+	}
+	table.search( $(item).text()).draw();	
+  }
+  
+  function addToSearch(item){		
+	$(".search-input").val(item);
+	$(".search-button").click();
+  }
+  
   function insertAnswer(answer){	
 	$("#answer-table").html(answer);
-	$("#part-items").DataTable({
+	table = $("#part-items").DataTable({
 	  paging: false,
 	  language: {
         search: "Найти в таблице:"
