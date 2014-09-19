@@ -6,6 +6,18 @@ class ProviderOnline extends Provider {
 	  $this->_CLSID	= 325;
 	}
 	
+	public function loadPart($uid,$part_id,$maker_id) {
+	  /* @var $part Part */
+	  $part =  parent::loadHashPart(self::PartPrefix.$this->getCLSID()."_".$part_id."_".$maker_id,$uid);
+	  if($part){
+		$part = json_decode($part,true);
+		$part['id'] = str_replace($part['stock'], "", $part['id']);
+	  }		
+	  $part_out = new Part();
+	  $part_out->setAttributes($part,false);
+	  return $part_out;
+	}
+
 	public function loadPartList($part_id,$maker_id = null){	
 	  $all = $this->loadCache(self::PartPrefix.$this->getCLSID()."_".$part_id."_".$maker_id);		  
 	  if(is_array($all)&&(count($all)>0)) {
@@ -39,10 +51,11 @@ class ProviderOnline extends Provider {
 		$part = new Part();
 		$row->dataprice = str_replace(".", "-", $row->dataprice);
 		$time = strtotime($row->dataprice);		
-		$part->setValues(	strval($row->uid), 
+		$part->setValues(	strval($row->uid).strval($row->stock), 
 							$this->getCLSID(), 
 							strval($row->code),
 							strval($row->producer),
+							strval($maker_id),
 							strval($row->caption),
 							strval($row->price),
 							strval($row->deliverydays),

@@ -25,6 +25,15 @@ class ProviderList extends CModel {
       }   
     }
 	
+	public function getPart($provider,$uid,$part_id,$maker_id){
+	  if(!isset($this->provider_list[$provider])) {
+		return FALSE;
+	  }
+	  /* @var $selected_provider Provider */
+	  $selected_provider = $this->provider_list[$provider];
+	  return $selected_provider->loadPart($uid,$part_id,$maker_id);	  
+	}
+
 	public function getPartList(RequestParts $model) {	  
 	  $maker	= $model->maker;
 	  $part_id	= $model->part_id;

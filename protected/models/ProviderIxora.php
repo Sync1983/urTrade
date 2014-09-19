@@ -7,6 +7,15 @@ class ProviderIxora extends Provider {
 	  $this->_CLSID	= 542;
 	}
 	
+	public function loadPart($uid,$part_id,$maker_id) {
+	  /* @var $part Part */
+	  $part =  parent::loadHashPart(self::PartPrefix.$this->getCLSID()."_".$part_id."_".$maker_id,$uid);	 
+	  $part = json_decode($part,true);
+	  $part_out = new Part();
+	  $part_out->setAttributes($part,false);
+	  return $part_out;
+	}
+	
 	public function loadPartList($part_id,$maker_id = null){	
 	  $all = $this->loadCache(self::PartPrefix.$this->getCLSID()."_".$part_id."_".$maker_id);		  
 	  if(is_array($all)&&(count($all)>0)) {
@@ -46,6 +55,7 @@ class ProviderIxora extends Provider {
 							$this->getCLSID(), 
 							strval($row->detailnumber),
 							strval($row->maker_name),
+							strval($maker_id),
 							strval($row->detailname),
 							strval($row->price),
 							strval($row->days),

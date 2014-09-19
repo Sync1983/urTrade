@@ -16,8 +16,8 @@ class ProviderController extends Controller {
     public function __construct() {
         $this->providers = new ProviderList();
     }    
-    
-    public function actionLoadProducers() {
+
+	public function actionLoadProducers() {
         $model=new RequestForm;
         if(isset($_POST['request-form'])) {			
             $model->attributes=$_POST['request-form'];
