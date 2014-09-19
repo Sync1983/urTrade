@@ -49,5 +49,13 @@ class Provider extends Controller {
 		$this->_cache->expire($name,$time_sec);
 	  }
 	}
+  
+  protected function clearPartId($part_id) {
+    /*$part_id = str_replace(" ", "", $part_id);
+    $part_id = str_replace(".", "", $part_id);
+    $part_id = str_replace("-", "", $part_id);*/
+    return preg_replace("/[^a-zA-Z0-9\s]/", "", $part_id);
+    //return $part_id;
+  }
 }
 
