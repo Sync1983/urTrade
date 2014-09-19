@@ -98,7 +98,7 @@ class ProviderIxora extends Provider {
         try{
 		  $xml = new SimpleXMLElement($site_answer);
 		} catch (Exception $error) {
-		  echo $error->getMessage().":".$site_answer;
+		  YII::log($error->getMessage().":".$site_answer,"error","system.web");
 		  return array();
 		}
         $answer = array();
