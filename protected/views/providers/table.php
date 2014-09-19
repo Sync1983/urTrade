@@ -35,8 +35,8 @@
 		if(!$data->is_original&&!$model->cross) {
 		  continue;
 		}
-		$show_praice = Yii::app()->user->convertPrice($data->price);
-		$show_praice += round($show_praice*$price/100,2); 
+		$show_price = Yii::app()->user->convertPrice($data->price);
+		$show_price += round($show_price*$price/100,2); 
 		$show_shiping = Yii::app()->user->convertShiping($data->shiping);
 ?>
   <tr <?php echo $row_class;?>>	  
@@ -48,7 +48,7 @@
 		  </div>
 		  <div class = "row_time">
 			<div class="hint">
-			  <?php echo "Обновлено ".date("m-d-y в H:i:s",$data->update_time);?>
+			  <?php echo "Обновлено ".date("d-m-y в H:i:s",$data->update_time);?>
 			</div>	
 		  </div>
 		  <?php if($data->info!=""):?>
@@ -70,10 +70,10 @@
 		<?php endif ?>
 	  </td>
 	  <td data-order="<?php echo $order;?>"><a href="#" onclick="addToFilter(this);"><?php echo $data->name	;?></a></td>
-	  <td><?php echo $show_praice	;?></td>
+	  <td><?php echo $show_price	;?></td>
 	  <td><?php echo $show_shiping	;?></td>
 	  <td><?php echo $data->count	;?></td>	  
-	  <td><a href="#" onclick="AddToBasket(<?php echo "'".$data->provider."','".$data->id."',this"?>)">Добавить</td>	  
+	  <td><a href="#" onclick="AddToBasket(<?php echo "'".$model->part_id."','".$data->maker_id."','".$data->provider."','".$data->id."',this"?>)">Добавить</td>	  
   </tr>	  
 <?php }	?>
   </tbody>

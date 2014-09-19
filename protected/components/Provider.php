@@ -23,6 +23,10 @@ class Provider extends Controller {
 	  return $this->_CLSID;
 	}
 
+	public function loadPart($uid,$part_id,$maker_id) {
+        throw new Exception("Use parent method");
+    }
+	
 	public function loadPartList($part_id,$producer=null) {
         throw new Exception("Use parent method");
     }
@@ -33,6 +37,10 @@ class Provider extends Controller {
 	
 	protected function loadCache($name){
 	  return $this->_cache->hgetall($name);
+	}
+	
+	protected function loadHashPart($name,$item){
+	  return $this->_cache->hget($name,$item);
 	}
 
 	protected function saveCache($name,$part,$value,$time_sec = 0){

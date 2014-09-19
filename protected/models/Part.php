@@ -7,6 +7,7 @@ class Part extends CModel {
     public $count;
     public $articul;
     public $producer;
+	public $maker_id;
     public $name;
     public $price;
     public $shiping;
@@ -23,6 +24,7 @@ class Part extends CModel {
 			  "provider",
 			  "articul",
 			  "producer",
+			  "maker_id",
 			  "name",
 			  "price",
 			  "shiping",
@@ -39,6 +41,7 @@ class Part extends CModel {
 							  $providerCLSID,
 							  $articul,
 							  $producer,
+							  $maker_id,
 							  $name,
 							  $price,
 							  $shiping,
@@ -52,6 +55,7 @@ class Part extends CModel {
 	  $this->provider		=	$providerCLSID;
 	  $this->articul		=	$articul;
 	  $this->producer		=	$producer;
+	  $this->maker_id		=	$maker_id;
 	  $this->name			=	$name;
 	  $this->price			=	$price;
 	  $this->shiping		=	$shiping;
@@ -60,7 +64,23 @@ class Part extends CModel {
 	  $this->update_time	=	$update_time;	  
 	  $this->is_original	=	$is_original;	  
 	  $this->count			=	$count;	  
-	  $this->lot_party		=	$lot_party;	  
+	  $this->lot_party		=	(!$lot_party)?1:$lot_party;	  
+	}
+	
+	public function getDataForBasket(){
+	  return array(
+				"uid"		=> Yii::app()->user->getId(),		
+				"part_uid"	=> $this->id,		
+				"provider"	=> $this->provider,	
+				"articul"	=> $this->articul,
+				"producer"	=> $this->producer,
+				"name"		=> $this->name,	
+				"price"		=> $this->price,	
+				"shiping"	=> $this->shiping,
+				"stock"		=> $this->stock,					
+				"is_original"=> $this->is_original,				
+				"lot_party"	=> $this->lot_party,			  
+	  );
 	}
     
 }

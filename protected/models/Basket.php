@@ -1,19 +1,77 @@
 <?php
 
 class Basket extends CActiveRecord {
-  /**
-     * Returns the static model of the specified AR class.
-     * @return CActiveRecord the static model class
-     */
-    public static function model($className=__CLASS__) {
-        return parent::model($className);
-    }
- 
-    /**
-     * @return string the associated database table name
-     */
-    public function tableName() {
-        return 'tbl_basket';
-    }
+  public $id;
+  public $uid;
+  public $date;
+  public $part_uid;
+  public $provider;
+  public $articul;
+  public $producer;
+  public $name;
+  public $price;
+  public $shiping;
+  public $stock;
+  public $is_original;
+  public $lot_party;
+  public $count;  
+  public $commnet;
+  public $sum;
+
+  /* @var $part Part */
+  public static function addPart($part){
+	if(!$part) {
+	  return FALSE;
+	}
+	$result = Basket::model()->findByAttributes(array("part_uid"=>$part->id,"stock"=>$part->stock));
+	if(!$result){
+	  $item = new Basket();
+	  $item->setAttributes($part->getDataForBasket(),false);
+	  $item->count = $part->lot_party;
+	  if(!$item->save()){
+		return false;
+	  }
+	} else {
+	  /* @var $result Basket */
+	  $result->count += $part->lot_party;
+	  if(!$result->save()){
+		return false;
+	  }
+	}
+	return true;	
+  }
+  
+  public static function getBasket() {
+	$result = Basket::model()->findAllByAttributes(array("uid"=>Yii::app()->user->getId()));
+	return $result;
+  }
+  
+  public static function getBasketPrice() {
+	$result = Basket::model()->find(array(
+            'select'=>'SUM(`count`*`price`) as sum',
+            'condition'=>'uid=:uid',
+            'params'=>array(':uid'=>Yii::app()->user->getId()),
+        ));        
+        return round($result->sum,2); 
+  }
+  
+  public static function deleteById($id){
+	$row = Basket::model()->findByPk($id);
+	if((!$row)||($row->uid!==Yii::app()->user->getId())){
+	  return false;
+	}
+	if(!$row->delete()){
+	  return false;
+	}
+	return true;
+  }
+
+  public static function model($className=__CLASS__) {
+	return parent::model($className);
+  }
+
+  public function tableName() {
+	return 'tbl_basket';
+  }
 }
 

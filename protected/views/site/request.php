@@ -58,6 +58,7 @@ $this->breadcrumbs=array(
   
   function beforeSend(){	
 	$("#answer-table").html("<h4>Выберите производителя</h4>");
+	$(".producer-list").html("");
 	$(".preloader").addClass("show");
   }
   
@@ -79,7 +80,7 @@ $this->breadcrumbs=array(
 	  paging: false,
 	  language: {
         search: "Найти в таблице:"
-    }
+	  }
 	});
   }
   
@@ -114,7 +115,7 @@ $this->breadcrumbs=array(
 	load(name,part_id);
   }
   
-  function AddToBasket(provider,uid,parent){
+  function AddToBasket(part_id,maker_id,provider,uid,parent){
 	function answer(data){	  	
 	  $(parent).parent().html(data);
 	}
@@ -124,7 +125,9 @@ $this->breadcrumbs=array(
                 type: "POST",
                 data: {
 				  provider: provider,
-				  uid: uid
+				  part_id :	part_id,
+				  maker_id:	maker_id,
+				  uid	  : uid
 				},
                 error: function(xhr,tStatus,e){},
                 success: function(data){
