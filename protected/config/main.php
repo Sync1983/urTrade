@@ -109,6 +109,10 @@ return array(
                             'login'=>'6957659777',
                             'pass'=>'kdV2N5iD5w',
                         ),
+						'Forum'=>array(
+							'login'=>'/prices/forum',
+							'pass'=>'',
+						)
                     ),
             ),
 );

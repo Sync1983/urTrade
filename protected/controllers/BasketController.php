@@ -26,38 +26,42 @@ class BasketController extends Controller {
   }
   
   public function actionChangeItem() {    
-    if(Yii::app()->request->isAjaxRequest){	  	  
-      $id		= Yii::app()->request->getPost('id');
-	  $id		= intval($id);
-      $count	= Yii::app()->request->getPost('count');
-	  $count	= intval($count);
-      $comment	= Yii::app()->request->getPost('comment');	  
-	  $comment  = CHtml::encode($comment);
-	  /* @var $row Basket */
-      $row = Basket::model()->findByPk($id);
-	  if(!$row||($row->uid!==Yii::app()->user->getId())){
-		echo "Ошибка доступа к записи";
-		Yii::app()->end();
-		return;
-	  }	  
-	  if($count % $row->lot_party > 0) {
-		echo "Добавляемое количество не кратно упаковке";
-		Yii::app()->end();
-		return;
-	  }		  
-	  $row->commnet = $comment;
-	  $row->count = $count;
-	  $row->save();
+    if(Yii::app()->request->isAjaxRequest){	  
+	  $items = Yii::app()->request->getPost('items');
+	  foreach ($items as $item) {		
+		$id		= intval($item["id"]);      
+		$count	= intval($item["count"]);      
+		$comment= CHtml::encode($item["comment"]);
+		/* @var $row Basket */
+		$row = Basket::model()->findByPk($id);
+		if(!$row||($row->uid!==Yii::app()->user->getId())){
+		  echo "Ошибка доступа к записи";
+		  Yii::app()->end();
+		  return;
+		}	  
+		if($count % $row->lot_party > 0) {
+		  echo "Добавляемое количество не кратно упаковке";
+		  Yii::app()->end();
+		  return;
+		}		  
+		$row->commnet = $comment;
+		$row->count = $count;
+		$row->save();
+	  }
 	}
     Yii::app()->end();
   }
   
   public function actionDeleteItem() {    
     if(Yii::app()->request->isAjaxRequest){	  	  
-      $id		= Yii::app()->request->getPost('id');
-	  $id		= intval($id);            
-	  if(!Basket::deleteById($id)) {
-		echo "Ошибка доступа к записи";
+      $items		= Yii::app()->request->getPost('items');
+	  foreach ($items as $id){
+		$id		= intval($id);
+		if(!Basket::deleteById($id)) {
+		  echo "Ошибка доступа к записи";
+		  Yii::app()->end();
+		  return;
+		}
 	  }
 	}
     Yii::app()->end();
