@@ -4,8 +4,7 @@ class WebUser extends CWebUser {
     const adminRole = 11;
     // Store model to not repeat query.
     private $_model;
-	private $id;
-    private $_billing;
+	private $id;    
 
   public function isAdmin(){
     $user = $this->loadUser(Yii::app()->user->getId());
@@ -13,13 +12,6 @@ class WebUser extends CWebUser {
       return false;
     }
     return intval($user->role) == 11;
-  }
-  
-  public function getBilling() {
-      if(!$this->_billing) {
-          $this->_billing = new Billing();
-      }
-      return $this->_billing;
   }
 
   public function convertPrice($price) {

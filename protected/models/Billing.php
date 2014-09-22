@@ -4,23 +4,39 @@ class Billing extends CActiveRecord {
     public $sum;
     /**
      * Returns the static model of the specified AR class.
-     * @return CActiveRecord the static model class
+     * @return Billing
      */
     public static function model($className=__CLASS__) {
         return parent::model($className);
     }
-    
-    public function getBalance(){        
-        $result = $this->find(array(
+	
+    /* @var $basket_item Basket */
+	public function orderPart($basket_item,$order_articul,$order_list_id){
+	  $sum = Billing::model()->getBalance();
+	  $price = Yii::app()->user->convertPrice($basket_item->price)*$basket_item->count;
+	  if(($sum>$price)&&($price>0)){
+		$row = new Billing();
+		$row->value = -$price;
+		$row->user_id = Yii::app()->user->getId();
+		$row->time = new CDbExpression('CURRENT_TIMESTAMP');  
+		$row->comment = "Оплата заказа ".sprintf("%07d", $order_list_id)." деталь ".$order_articul;
+		$row->save();
+		return TRUE;
+	  }
+	  return false;
+	}
+
+	public static function getBalance(){        
+        $result = Billing::model()->find(array(
             'select'=>'SUM(`value`) as sum',
             'condition'=>'user_id=:user_id',
             'params'=>array(':user_id'=>Yii::app()->user->getId()),
         ));        
-        return $result->sum;        
+        return round($result->sum,2);        
     }
     
-    public function getList() {
-        $result = $this->findAll(array(
+    public static function getList() {
+        $result = Billing::model()->findAll(array(
             'select'=>'time,value,type,comment',
             'condition'=>'user_id=:user_id',
             'params'=>array(':user_id'=>Yii::app()->user->getId()),
@@ -33,9 +49,6 @@ class Billing extends CActiveRecord {
         return $answer;                
     }
     
-    /**
-     * @return string the associated database table name
-     */
     public function tableName() {
         return 'tbl_billing';
     }

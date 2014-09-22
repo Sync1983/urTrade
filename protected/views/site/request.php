@@ -29,7 +29,7 @@ $this->breadcrumbs=array(
 				'complete' => 'function(){
 				  $(".preloader").removeClass("show");}',),
             array(
-                'class'=>'search-button',
+                'class'=>'main-button search-button',
                 'id'=>'submit-button',
                 'type' => 'submit') 
 			); ?>    
@@ -78,6 +78,7 @@ $this->breadcrumbs=array(
 	$("#answer-table").html(answer);
 	table = $("#part-items").DataTable({
 	  paging: false,
+	  "order": [[ 0, 'asc' ], [ 3, 'asc' ]],
 	  language: {
         search: "Найти в таблице:"
 	  }

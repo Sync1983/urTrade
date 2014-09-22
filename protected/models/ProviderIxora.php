@@ -66,7 +66,7 @@ class ProviderIxora extends Provider {
 							strval($row->quantity),
 							strval($row->lotquantity)
 			);
-		  $this->saveCache(self::PartPrefix.$this->getCLSID()."_".$part_id."_".$maker_id,strval($row->orderrefernce), $part,3600);
+		  $this->saveCache(self::PartPrefix.$this->getCLSID()."_".$part_id."_".$maker_id,strval($row->orderrefernce), $part,12*3600);
 		  $result[] = $part;
 		}
 		return $result;	  
@@ -104,7 +104,7 @@ class ProviderIxora extends Provider {
         $answer = array();
         foreach($xml->row as $row){            
             $answer[strval($row->name)] = intval($row->id);
-			$this->saveCache(self::ProducerPrefix.$this->getCLSID()."_".$part_id,strval($row->name),intval($row->id));
+			$this->saveCache(self::ProducerPrefix.$this->getCLSID()."_".$part_id,strval($row->name),intval($row->id),12*3600);
 		}		
         return $answer;
     }
