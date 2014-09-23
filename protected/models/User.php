@@ -2,6 +2,12 @@
  
 class User extends CActiveRecord
 {
+  
+  public static function getUserList(){
+	$users = User::model()->findAll('role=1');
+	return $users;
+  }
+
   public function __construct($scenario='insert') {
     parent::__construct($scenario);
     $this->price_percent = floatval($this->price_percent);
@@ -24,19 +30,12 @@ class User extends CActiveRecord
     return $this->shiping_time;    
   }
   
-		/**
-     * Returns the static model of the specified AR class.
-     * @return CActiveRecord the static model class
-     */
-    public static function model($className=__CLASS__) {
-        return parent::model($className);
-    }
+  public static function model($className=__CLASS__) {
+	return parent::model($className);
+  }
  
-    /**
-     * @return string the associated database table name
-     */
-    public function tableName() {
-        return 'tbl_user';
-    }
+  public function tableName() {
+	return 'tbl_user';
+  }
 		
 }

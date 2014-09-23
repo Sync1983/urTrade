@@ -25,6 +25,8 @@ body
 #content
 {
     padding: 20px;
+    min-height: 400px;
+    height: 90%;
 }
 
 #sidebar
