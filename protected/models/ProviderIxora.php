@@ -46,7 +46,7 @@ class ProviderIxora extends Provider {
 	libxml_use_internal_errors(true);
     try{
       $xml = new SimpleXMLElement($site_answer);
-    } catch (ErrorException $error) {
+    } catch (Exception $error) {
       YII::log($error->getMessage().":".$site_answer,"error","system.web");
 	  return array();
     }
