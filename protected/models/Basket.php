@@ -41,16 +41,26 @@ class Basket extends CActiveRecord {
 	return true;	
   }
   
-  public static function getBasket() {
-	$result = Basket::model()->findAllByAttributes(array("uid"=>Yii::app()->user->getId()));
+  public static function getBasket($id=null) {
+	if(!$id){
+	  $id = Yii::app()->user->getId();
+	} else {
+	  $id = intval($id);
+	}
+	$result = Basket::model()->findAllByAttributes(array("uid"=>$id));
 	return $result;
   }
   
-  public static function getBasketPrice() {
+  public static function getBasketPrice($id=null) {
+	if(!$id){
+	  $id = Yii::app()->user->getId();
+	} else {
+	  $id = intval($id);
+	}
 	$result = Basket::model()->find(array(
             'select'=>'SUM(`count`*`price`) as sum',
             'condition'=>'uid=:uid',
-            'params'=>array(':uid'=>Yii::app()->user->getId()),
+            'params'=>array(':uid'=>$id),
         ));        
         return round($result->sum,2); 
   }

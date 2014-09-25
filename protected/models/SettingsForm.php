@@ -2,6 +2,7 @@
 
 class SettingsForm extends CFormModel
 {  
+	public $id;
 	public $caption;
 	public $name;
 	public $sname;
@@ -20,7 +21,8 @@ class SettingsForm extends CFormModel
 					'kpp',
 					'addres',
 					'phone',
-					'type');
+					'type',
+					'id');
 	}
 
 
@@ -56,5 +58,13 @@ class SettingsForm extends CFormModel
 	  $record->setAttributes($this->getAttributes(),false);
 	  $record->uid = YII::app()->user->getId();
 	  $record->save();	  
+	}
+	
+	public function saveForId($id) {
+	  $id = intval($id);
+	  $record = UserInfo::load($id);
+	  $record->setAttributes($this->getAttributes(),false);
+	  $record->uid = $id;
+	  $record->update();	
 	}
 }

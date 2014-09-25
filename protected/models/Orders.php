@@ -20,16 +20,26 @@ class Orders extends CActiveRecord {
   public $commnet;
   public $sum;
   
-  public static function getOrders() {
-	$result = Orders::model()->findAllByAttributes(array("uid"=>Yii::app()->user->getId()));
+  public static function getOrders($id=null) {
+	if(!$id){
+	  $id = Yii::app()->user->getId();
+	} else {
+	  $id = intval($id);
+	}
+	$result = Orders::model()->findAllByAttributes(array("uid"=>$id));
 	return $result;
   }
   
-  public static function getOrdersPrice() {
+  public static function getOrdersPrice($id=null) {
+	if(!$id){
+	  $id = Yii::app()->user->getId();
+	} else {
+	  $id = intval($id);
+	}
 	$result = Orders::model()->find(array(
             'select'=>'SUM(`count`*`price`) as sum',
             'condition'=>'uid=:uid and state=:state',
-            'params'=>array(':uid'=>Yii::app()->user->getId(),':state'=>0),
+            'params'=>array(':uid'=>$id,':state'=>0),
         ));        
         return round($result->sum,2); 
   }

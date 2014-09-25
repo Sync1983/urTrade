@@ -26,20 +26,44 @@ class Billing extends CActiveRecord {
 	  return false;
 	}
 
-	public static function getBalance(){        
+	public static function getBalance($id=null){
+		if(!$id){
+		  $id = Yii::app()->user->getId();
+		} else {
+		  $id = intval($id);
+		}
         $result = Billing::model()->find(array(
             'select'=>'SUM(`value`) as sum',
             'condition'=>'user_id=:user_id',
-            'params'=>array(':user_id'=>Yii::app()->user->getId()),
+            'params'=>array(':user_id'=>$id),
+        ));        
+        return round($result->sum,2);        
+    }
+	
+	public static function getCreditBalance($id=null){
+		if(!$id){
+		  $id = Yii::app()->user->getId();
+		} else {
+		  $id = intval($id);
+		}
+        $result = Billing::model()->find(array(
+            'select'=>'SUM(`value`) as sum',
+            'condition'=>'user_id=:user_id and type=:type',
+            'params'=>array(':user_id'=>$id,':type'=>1),
         ));        
         return round($result->sum,2);        
     }
     
-    public static function getList() {
+    public static function getList($id=null) {
+		if(!$id){
+		  $id = Yii::app()->user->getId();
+		} else {
+		  $id = intval($id);
+		}
         $result = Billing::model()->findAll(array(
             'select'=>'time,value,type,comment',
             'condition'=>'user_id=:user_id',
-            'params'=>array(':user_id'=>Yii::app()->user->getId()),
+            'params'=>array(':user_id'=>$id),
             'order'=>'time'
         ));        
         $answer = array();

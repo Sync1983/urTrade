@@ -6,8 +6,12 @@ class UserInfo extends CActiveRecord {
         return parent::model($className);
     }
 	
-	public static function load() {
-	  $record = UserInfo::model()->findByPk(YII::app()->user->getId());
+	public static function load($id=null) {
+	  if(!$id){
+		$id = YII::app()->user->getId();
+	  }
+	  $id = intval($id);
+	  $record = UserInfo::model()->findByPk($id);
 	  if(!$record) {
 		$record = new UserInfo();
 	  }

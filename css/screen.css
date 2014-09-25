@@ -117,9 +117,9 @@ ul.treeview::-webkit-scrollbar-thumb{border-radius: 4px;background-color: #000;h
 div#active-context{ 
   padding-left: 15px;
   height: 624px;    
-  background-color: #4F4F4F;
+  background-color: #000;
   border: 2px solid #000;
-  box-shadow: 0 0 40px rgba(0, 0, 0, 1) inset;
+  box-shadow: 0 0 40px rgba(79, 79, 79, 0.7) inset;
   overflow-y: scroll;
   position: relative;
 }

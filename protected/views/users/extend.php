@@ -3,15 +3,15 @@
 <div class="form">
 
 <?php $form=$this->beginWidget('CActiveForm', array(
-	'id'=>'settings-form',
-	'enableClientValidation'=>true,
+	'id'=>'settings-form',	
+	'enableClientValidation'=>true,	
 	'clientOptions'=>array(
 		'validateOnSubmit'=>true,
 	),
 )); ?>
 
 	<?php echo $form->errorSummary($model); ?>
-
+	<?php echo $form->hiddenField($model,'id',array('value'=>$id)); ?>
 	<div class="row">
 		<?php echo $form->labelEx($model,'type'); ?>
 		<?php echo $form->dropDownList($model,'type',array('0' => 'Юр. лицо', '1' => 'Физ. лицо')); ?>
@@ -60,16 +60,12 @@
 	</div>
 
 	<div class="row buttons">
-		<?php echo CHtml::submitButton('Submit',array('value'=>'Сохранить')); ?>
+	  <?php echo HtmlHelper::AjaxButton('Изменить', "ajaxSend('#settings-form','".$this->createUrl("/users/extendSave")."')");?>		
 	</div>
 
 <?php $this->endWidget(); ?>
 </div><!-- form -->
 <div id="prices-list">
-  <?php   echo $prices; ?>
+  <?php   /*echo $prices;*/ ?>
 </div>
-
-<script type="text/javascript">
-
-</script>
 	
