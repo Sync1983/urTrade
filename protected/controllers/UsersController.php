@@ -3,6 +3,10 @@
 class UsersController extends Controller {
   
   public function actionExtend(){
+	if(!Yii::app()->user->isAdmin()){
+	  $this->render("/site/error",array("code"=>500,"message"=>"Ошибка прав доступа!"));	  
+	  return;
+	}
 	$model = new SettingsForm();
 	if(Yii::app()->request->isAjaxRequest){
 	  $id = Yii::app()->request->getPost('id');	  	
@@ -17,6 +21,10 @@ class UsersController extends Controller {
   }
   
   public function actionExtendSave(){
+	if(!Yii::app()->user->isAdmin()){
+	  $this->render("/site/error",array("code"=>500,"message"=>"Ошибка прав доступа!"));	  
+	  return;
+	}
 	$model = new SettingsForm();
 	if(Yii::app()->request->isAjaxRequest){		  
 	  $id = Yii::app()->request->getPost('id');	
@@ -32,6 +40,10 @@ class UsersController extends Controller {
   }
   
   public function actionMain(){
+	if(!Yii::app()->user->isAdmin()){
+	  $this->render("/site/error",array("code"=>500,"message"=>"Ошибка прав доступа!"));	  
+	  return;
+	}
 	if(Yii::app()->request->isAjaxRequest){
 	  $id = intval(Yii::app()->request->getPost('id'));
 	  $info	 = UserInfo::load($id);
@@ -57,6 +69,10 @@ class UsersController extends Controller {
   }
   
   public function actionMainSave(){
+	if(!Yii::app()->user->isAdmin()){
+	  $this->render("/site/error",array("code"=>500,"message"=>"Ошибка прав доступа!"));	  
+	  return;
+	}
 	if(Yii::app()->request->isAjaxRequest){
 	  $id = intval(Yii::app()->request->getPost('id'));	  
 	  $price_percent  = intval(Yii::app()->request->getPost('price_percent'));	  
@@ -74,6 +90,10 @@ class UsersController extends Controller {
   }
   
   public function actionMainSavePassword(){
+	if(!Yii::app()->user->isAdmin()){
+	  $this->render("/site/error",array("code"=>500,"message"=>"Ошибка прав доступа!"));	  
+	  return;
+	}
 	if(Yii::app()->request->isAjaxRequest){
 	  $id = intval(Yii::app()->request->getPost('id'));	  
 	  $password = Yii::app()->request->getPost('password');	  
@@ -89,6 +109,10 @@ class UsersController extends Controller {
   }
   
   public function actionBasket() {
+	if(!Yii::app()->user->isAdmin()){
+	  $this->render("/site/error",array("code"=>500,"message"=>"Ошибка прав доступа!"));	  
+	  return;
+	}
 	if(Yii::app()->request->isAjaxRequest){
 	  $id = intval(Yii::app()->request->getPost('id'));
 	  $basket = Basket::getBasket($id);	
@@ -101,6 +125,10 @@ class UsersController extends Controller {
   }
   
   public function actionOrder() {
+	if(!Yii::app()->user->isAdmin()){
+	  $this->render("/site/error",array("code"=>500,"message"=>"Ошибка прав доступа!"));	  
+	  return;
+	}
 	if(Yii::app()->request->isAjaxRequest){
 	  $id = intval(Yii::app()->request->getPost('id'));
 	  $lists = OrdersList::model()->findAllByAttributes(array('uid'=>$id));
@@ -128,6 +156,10 @@ class UsersController extends Controller {
   }
   
   public function actionBilling() {
+	if(!Yii::app()->user->isAdmin()){
+	  $this->render("/site/error",array("code"=>500,"message"=>"Ошибка прав доступа!"));	  
+	  return;
+	}
 	if(Yii::app()->request->isAjaxRequest){
 	  $id = intval(Yii::app()->request->getPost('id'));
 	  $billing = Billing::getList($id);
@@ -140,6 +172,10 @@ class UsersController extends Controller {
   }
 
   public function actionShowItem(){
+	if(!Yii::app()->user->isAdmin()){
+	  $this->render("/site/error",array("code"=>500,"message"=>"Ошибка прав доступа!"));	  
+	  return;
+	}
 	if(Yii::app()->request->isAjaxRequest){	  	  
       $id = Yii::app()->request->getPost('id');
 	  $action = Yii::app()->request->getPost('action');
@@ -154,7 +190,11 @@ class UsersController extends Controller {
 	$this->renderPartial( '/users/tabs',array());
   }
 
-  public function actionIndex() {	 	
+  public function actionIndex() {	
+	if(!Yii::app()->user->isAdmin()){
+	  $this->render("/site/error",array("code"=>500,"message"=>"Ошибка прав доступа!"));	  
+	  return;
+	}
 	$users = User::getUserList();	
 	$uids = array();
 	foreach ($users as $row) {

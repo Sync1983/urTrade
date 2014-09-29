@@ -48,7 +48,7 @@ class SiteController extends Controller
 		if(isset($_POST['ContactForm']))
 		{
 			$model->attributes=$_POST['ContactForm'];
-			if($model->validate())
+			/*if($model->validate())
 			{
 				$name='=?UTF-8?B?'.base64_encode($model->name).'?=';
 				$subject='=?UTF-8?B?'.base64_encode($model->subject).'?=';
@@ -60,7 +60,7 @@ class SiteController extends Controller
 				mail(Yii::app()->params['adminEmail'],$subject,$model->body,$headers);
                               	Yii::app()->user->setFlash('contact','Thank you for contacting us. We will respond to you as soon as possible.');
 				$this->refresh();
-			}
+			}*/
 		}
 		$this->render('contact',array('model'=>$model));
 	}
