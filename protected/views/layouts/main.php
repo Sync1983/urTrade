@@ -27,13 +27,13 @@
 <div class="container" id="page">
 
 	<div id="header">
-		<div id="logo"><?php echo CHtml::encode(Yii::app()->name); ?></div>
+	  <div id="logo"><span class="right"><?php echo CHtml::encode(Yii::app()->name); ?><br><h6>+7 (8412) 763-533 &nbsp;   <a href="mailto:sales@atc58.ru">sales@atc58.ru</a></h6><h6>+7 (8412) 518-302</h6></span></div>
 	</div><!-- header -->
 
 	<div id="mainmenu">
 		<?php $this->widget('zii.widgets.CMenu',array(
 			'items'=>array(
-				array('label'=>'Home', 'url'=>array('/site/index')),
+				array('label'=>'Главная', 'url'=>array('/site/index')),
 				array('label'=>'Цена и заказ', 'url'=>array('/site/request')),
                 array('label'=>'Управление клиентами', 'url'=>array('/users/index'), 'visible'=>Yii::app()->user->isAdmin()),				
                 array('label'=>'Корзина ('.Basket::getBasketPrice().' руб.)', 'url'=>array('/basket/basket'), 'visible'=>((!Yii::app()->user->isAdmin()))&&(!Yii::app()->user->isGuest), 'visible'=>!Yii::app()->user->isGuest&&!Yii::app()->user->isAdmin()),
