@@ -39,8 +39,7 @@
                 array('label'=>'Корзина ('.Basket::getBasketPrice().' руб.)', 'url'=>array('/basket/basket'), 'visible'=>((!Yii::app()->user->isAdmin()))&&(!Yii::app()->user->isGuest), 'visible'=>!Yii::app()->user->isGuest&&!Yii::app()->user->isAdmin()),
 				array('label'=>'Заказы('.Orders::getOrdersPrice().' руб.)', 'url'=>array('/orders/orders'), 'visible'=>((!Yii::app()->user->isAdmin()))&&(!Yii::app()->user->isGuest), 'visible'=>!Yii::app()->user->isGuest&&!Yii::app()->user->isAdmin()),
                 array('label'=>'Баланс ('.Billing::model()->getBalance().' руб.)', 'url'=>array('/site/billing'), 'visible'=>!Yii::app()->user->isGuest&&!Yii::app()->user->isAdmin()),
-				array('label'=>'Параметры', 'url'=>array('/site/settings'), 'visible'=>!Yii::app()->user->isGuest),	
-                array('label'=>'О нас', 'url'=>array('/site/page', 'view'=>'about')),
+				array('label'=>'Параметры', 'url'=>array('/site/settings'), 'visible'=>!Yii::app()->user->isGuest),
 				array('label'=>'Контакты', 'url'=>array('/site/contact')),
 				array('label'=>'Вход', 'url'=>array('/site/login'), 'visible'=>Yii::app()->user->isGuest),
 				array('label'=>'Выход ('.Yii::app()->user->name.')', 'url'=>array('/site/logout'), 'visible'=>!Yii::app()->user->isGuest)

@@ -4,8 +4,8 @@ $this->breadcrumbs=array(
 	'Управление клиентами',
 );
 ?>
- <ul id="tabs">
-    <li page="#page1">Управление</li>
+ <ul class="tabs">
+    <li page="#page1" class="active">Управление</li>
     <li page="#page2">Заказы</li>    
  </ul>
 <div id="content"> 
@@ -55,7 +55,7 @@ $this->breadcrumbs=array(
   });
   
   function initTabs(){
-	$("ul#tabs").children("li").each(
+	$("ul.tabs").children("li").each(
 	  function(index,item){
 		var tab_id = $(item).attr("page");		
 		if(!tab_id){
@@ -76,11 +76,13 @@ $this->breadcrumbs=array(
 	for(var index in tabs){
 	  item = tabs[index];
 	  if(item.name!==id){
-		$("div#content>div"+item.name).css('display','none');
+		$("div#content>div"+item.name).css('display','none');		
 	  } else {
 		$("div#content>div"+item.name).css('display','block');		
 	  }
 	}
+	$("ul.tabs").children("li").removeClass('active');
+	$(target).addClass('active');
   }
   
   function onSelectTreeItem(event){
