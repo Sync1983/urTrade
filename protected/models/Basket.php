@@ -62,7 +62,7 @@ class Basket extends CActiveRecord {
             'condition'=>'uid=:uid',
             'params'=>array(':uid'=>$id),
         ));        
-        return round($result->sum,2); 
+	return Yii::app()->user->convertPrice($result->sum,2); 
   }
   
   public static function deleteById($id){

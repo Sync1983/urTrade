@@ -30,7 +30,7 @@ class Orders extends CActiveRecord {
 	return $result;
   }
   
-  public static function getOrdersPrice($id=null) {
+  public static function getOrdersPrice($id=null) {	
 	if(!$id){
 	  $id = Yii::app()->user->getId();
 	} else {
@@ -41,7 +41,7 @@ class Orders extends CActiveRecord {
             'condition'=>'uid=:uid and state=:state',
             'params'=>array(':uid'=>$id,':state'=>0),
         ));        
-        return round($result->sum,2); 
+   return Yii::app()->user->convertPrice($result->sum,2); 
   }
   
   public static function deleteById($id){
