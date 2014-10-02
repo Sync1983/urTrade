@@ -22,10 +22,6 @@ class SiteController extends Controller
 	 */
 	public function actionIndex()
 	{
-		// renders the view file 'protected/views/site/index.php'
-		// using the default layout 'protected/views/layouts/main.php'
-        $billing = new Billing();
-        $this->billing = $billing->getBalance()."asd";
 		$this->render('index');
 	}
 
@@ -52,7 +48,7 @@ class SiteController extends Controller
 		if(isset($_POST['ContactForm']))
 		{
 			$model->attributes=$_POST['ContactForm'];
-			if($model->validate())
+			/*if($model->validate())
 			{
 				$name='=?UTF-8?B?'.base64_encode($model->name).'?=';
 				$subject='=?UTF-8?B?'.base64_encode($model->subject).'?=';
@@ -64,7 +60,7 @@ class SiteController extends Controller
 				mail(Yii::app()->params['adminEmail'],$subject,$model->body,$headers);
                               	Yii::app()->user->setFlash('contact','Thank you for contacting us. We will respond to you as soon as possible.');
 				$this->refresh();
-			}
+			}*/
 		}
 		$this->render('contact',array('model'=>$model));
 	}
@@ -138,16 +134,8 @@ class SiteController extends Controller
   }
 
   public function actionBilling() {
-    $this->render('billing',array('billing'=>YII::app()->user->getBilling()));    
+	Yii::app()->clientScript->registerPackage('datatable_q');
+    $this->render('billing',array('list'=>  Billing::model()->getList()));    
   }
-
-  public function actionClient_List() {
-    $sql    = "SELECT * FROM tbl_user WHERE role<>11";
-    $data   = YII::app()->db->createCommand()->
-              select('*')->
-              from('tbl_user')->
-              where('role<>:role',array(':role'=>11))->
-              queryAll();  
-    $this->render('client_list',array('items'=>$data));
-  }
+  
 }

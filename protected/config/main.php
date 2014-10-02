@@ -61,8 +61,8 @@ return array(
 		'db'=>array(
 			'connectionString' => 'mysql:host=localhost;dbname=urTrade',
 			'emulatePrepare' => true,
-			'username' => 'atc58',
-			'password' => 'test_pass',
+			'username' => 'urtrade',
+			'password' => 'q2w3e4r5t6',
 			'charset' => 'utf8',
             ),
         'cache'=>array(
@@ -100,7 +100,7 @@ return array(
 		// this is used in contact page
 		'adminEmail'=>'sales@atc58.ru',
                     'providers_data'=>array(
-                        /*'Ixora'=>array(
+                        'Ixora'=>array(
                             'login'=>'AVTOTEHS',
                             'pass'=>'6de6b09l',
                             'contract_id'=>'86951',
@@ -108,8 +108,8 @@ return array(
                         'Online'=>array(
                             'login'=>'6957659777',
                             'pass'=>'kdV2N5iD5w',
-                        ),*/
-                        'Forum'=>array(
+                        ),
+			'Forum'=>array(
                             'login'=>'/prices/forum',
                             'pass' =>''
                         )
