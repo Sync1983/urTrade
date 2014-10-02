@@ -100,7 +100,7 @@ return array(
 		// this is used in contact page
 		'adminEmail'=>'sales@atc58.ru',
                     'providers_data'=>array(
-                        'Ixora'=>array(
+                        /*'Ixora'=>array(
                             'login'=>'AVTOTEHS',
                             'pass'=>'6de6b09l',
                             'contract_id'=>'86951',
@@ -108,7 +108,11 @@ return array(
                         'Online'=>array(
                             'login'=>'6957659777',
                             'pass'=>'kdV2N5iD5w',
-                        ),
+                        ),*/
+                        'Forum'=>array(
+                            'login'=>'/prices/forum',
+                            'pass' =>''
+                        )
                     ),
             ),
 );
