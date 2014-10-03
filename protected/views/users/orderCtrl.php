@@ -22,14 +22,13 @@ $states = array(
   <thead>		
 	<th class="dt-head-center" style="width: 1%;">Состояние</th>		
 	<th class="dt-head-center" style="width: 1%;">Дата заказа</th>	
-	<th class="dt-head-center" style="width: 1%;">Поставщик</th>	
-	<th class="dt-head-center" style="width: 1%;">Деталь</th>		
-	<th class="dt-head-center" style="width: 1%;">Цена, руб</th>	
-	<th class="dt-head-center" style="width: 1%;">Доставка, дн</th>		
-	<th class="dt-head-center" style="width: 1%;">Оригинал</th>	
-	<th class="dt-head-center" style="width: 1%;">В упаковке, шт</th>	
-	<th class="dt-head-center" style="width: 1%;">Заказ, шт.</th>	
-	<th class="dt-head-center" style="width: 1%;">Комментарий</th>	
+	<th class="dt-head-center" style="width: 15%;">Поставщик</th>	
+	<th class="dt-head-center" style="width: 25%;">Деталь</th>		
+	<th class="dt-head-center" style="width: 7%;">Цена, руб</th>	
+	<th class="dt-head-center" style="width: 1%;">Доставка</th>		
+	<th class="dt-head-center" style="width: 1%;">Ориг</th>		
+	<th class="dt-head-center" style="width: 1%;">Кол-во</th>	
+	<th class="dt-head-center" style="width: 10%;">Комментарий</th>	
   </thead>
   <tbody>
   <?php foreach ($orders as $list_id=>$rows): ?>
@@ -52,16 +51,15 @@ $states = array(
 										  )
 			  );?>
 		  <br>
-		  <?php echo HtmlHelper::AjaxButton("Записать", "saveItem($row->id,'state_$row->id')")?>
+		  <?php echo HtmlHelper::AjaxButton("Записать", "saveItem($row->id,'state_$row->id')",'saveItemButton')?>
 		</td>				
 		<td class="dt-body-center underline"><?php echo $show_date;?></td>		
 		<td class="dt-body-center underline"><?php echo $row->provider."<br>".$row->stock?></td>		
 		<td class="dt-body-center underline"><?php echo $row->articul."<br>".$row->producer."<br>".$row->name;?></td>				
 		<td class="dt-body-center underline"><?php echo $row->price?></td>		
 		<td class="dt-body-center underline"><?php echo $row->shiping?></td>		
-		<td class="dt-body-center underline"><?php echo ($row->is_original==1)?"Да":"Нет";?></td>		
-		<td class="dt-body-center underline"><?php echo $row->lot_party?></td>		
-		<td class="dt-body-center underline"><?php echo $row->count?></td>		
+		<td class="dt-body-center underline"><?php echo ($row->is_original==1)?"Да":"Нет";?></td>				
+		<td class="dt-body-center underline"><?php echo "<h6>".$row->count."</h6><br>(уп.".$row->lot_party."шт)"?></td>		
 		<td class="dt-body-center underline"><?php echo $row->comment?></td>		
 	  </tr>
 	<?php endforeach;?>	
