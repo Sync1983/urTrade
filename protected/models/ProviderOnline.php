@@ -6,6 +6,10 @@ class ProviderOnline extends Provider {
 	  $this->_CLSID	= 325;
 	}
 	
+	public function getName() {
+	  return 'Online';
+	}
+
 	public function loadPart($uid,$part_id,$maker_id) {
 	  /* @var $part Part */
 	  $part =  parent::loadHashPart(self::PartPrefix.$this->getCLSID()."_".$part_id."_".$maker_id,$uid);

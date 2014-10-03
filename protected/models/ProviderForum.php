@@ -1,6 +1,11 @@
 <?php
 class ProviderForum extends Provider {
   const price_date_name = "ForumPriceDate";
+  
+  	
+	public function getName() {
+	  return 'Forum';
+	}
 	
 	public function __construct($login, $password, $data = null) {
 	  parent::__construct($login, $password, $data);

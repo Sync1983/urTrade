@@ -17,7 +17,7 @@ class Orders extends CActiveRecord {
   public $is_original;
   public $lot_party;
   public $count;  
-  public $commnet;
+  public $comment;
   public $sum;
   
   public static function getOrders($id=null) {
@@ -42,6 +42,15 @@ class Orders extends CActiveRecord {
             'params'=>array(':uid'=>$id,':state'=>0),
         ));        
    return Yii::app()->user->convertPrice($result->sum,2); 
+  }
+  
+  public function getFullOrders($state = null) {
+	if($state){
+	  $result = Orders::model()->findAllByAttributes(array("state"=>$state,'order'=>'state ASC'));
+	} else {
+	  $result = Orders::model()->findAll(array('order'=>'state ASC'));
+	}
+	return $result;
   }
   
   public static function deleteById($id){
