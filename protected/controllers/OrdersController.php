@@ -8,7 +8,8 @@ class OrdersController extends Controller {
 	  $uid = Yii::app()->user->GetId();
 	  $order_id = new OrdersList();
 	  $order_id->uid = $uid;
-	  $order_id->save();	  
+	  $order_id->save();	
+	  $orders = array();
 	  foreach ($ids as $id){
 		$id = intval($id);
 		/* @var $item Basket */
@@ -33,8 +34,11 @@ class OrdersController extends Controller {
 		$order->date = new CDbExpression('CURRENT_TIMESTAMP');
 		$order->save();
 		$item->delete();
+		$orders[] = $order;
 	  }
 	}
+	$mailer = new Mailer();
+	$mailer->SendAddNewOrders($orders);
 	echo "ok";
     Yii::app()->end();
   }

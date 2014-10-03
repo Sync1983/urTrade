@@ -247,6 +247,7 @@ class UsersController extends Controller {
 	  $this->render("/site/error",array("code"=>500,"message"=>"Ошибка прав доступа!"));	  
 	  return;
 	}
+	$mailer = new Mailer();
 	if(Yii::app()->request->isAjaxRequest){
 	  $id = intval(Yii::app()->request->getPost('id'));
 	  $state = intval(Yii::app()->request->getPost('state'));
@@ -255,6 +256,7 @@ class UsersController extends Controller {
 	  /* @var $row Orders */
 	  $row->state = $state;
 	  if($row->save()){
+		$mailer->SendStateNotification($row, $state);
 		$row->provider = $provider_list->getProviderByCLSID($row->provider)->getName();
 		$this->renderPartial( '/users/orderCtrlItem',
 		  					array('row'=>$row));
