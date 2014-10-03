@@ -213,6 +213,55 @@ class UsersController extends Controller {
 								  'info'=>$info)
 	  );   
   }
+  
+  public function actionOrdersCtrl() {
+	if(!Yii::app()->user->isAdmin()){
+	  $this->render("/site/error",array("code"=>500,"message"=>"Ошибка прав доступа!"));	  
+	  return;
+	}
+	$orders = Orders::model()->getFullOrders();		
+	$provider_list = new ProviderList();
+	$order_list = array();
+	$uids  = array();
+	foreach ($orders as $key => $row) {	  
+	  /* @var $row Orders */
+	  $list_id = $row["list_id"];
+	  if(!isset($order_list[$list_id])){
+		$order_list[$list_id] = array();
+	  }
+	  $row->provider = $provider_list->getProviderByCLSID($row->provider)->getName();
+	  $order_list[$list_id][] = $row;	  
+	  $uids[$row->uid] = 1;
+	}
+	foreach (array_keys($uids) as $uid){
+	  /** @var $user_info UserOnfo **/
+	  $user_info = UserInfo::load($uid);
+	  $uids[$uid] = $user_info->caption;
+	}
+	Yii::app()->clientScript->registerPackage('datatable_q');	
+	$this->render('/users/orderCtrl',array('orders'=>$order_list,'uids'=>$uids)); 	
+  }
+  
+  public function actionChangeOrderState() {
+	if(!Yii::app()->user->isAdmin()){
+	  $this->render("/site/error",array("code"=>500,"message"=>"Ошибка прав доступа!"));	  
+	  return;
+	}
+	if(Yii::app()->request->isAjaxRequest){
+	  $id = intval(Yii::app()->request->getPost('id'));
+	  $state = intval(Yii::app()->request->getPost('state'));
+	  $row = Orders::model()->findByPk($id);
+	  /* @var $row Orders */
+	  $row->state = $state;
+	  if($row->save()){
+		$this->renderPartial( '/users/orderCtrlItem',
+		  					array('row'=>$row));
+	  } else {
+		echo "<td colspan=\"10\">Ошибка записи</td>";
+	  }
+	}	
+	Yii::app()->end();
+  }
     
 }
 

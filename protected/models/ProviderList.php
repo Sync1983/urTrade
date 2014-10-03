@@ -7,8 +7,13 @@ class ProviderList extends CModel {
     public function attributeNames() {
         return array('id');
     }
+	
+	/** @return Provider **/
+	public function getProviderByCLSID($clsid){
+	  return isset($this->provider_list[$clsid])?$this->provider_list[$clsid]:false;
+	}
 
-    public function __construct() {
+	public function __construct() {
       $this->provider_list  = array();
 	  $providers = Yii::app()->params['providers_data'];      
       foreach ($providers as $name=>$params) {          

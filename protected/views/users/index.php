@@ -3,11 +3,7 @@ $this->pageTitle=Yii::app()->name . ' - Управление клиентами'
 $this->breadcrumbs=array(
 	'Управление клиентами',
 );
-?>
- <ul class="tabs">
-    <li page="#page1" class="active">Управление</li>
-    <li page="#page2">Заказы</li>    
- </ul>
+?> 
 <div id="content"> 
   <div id="page1">
 	<h6>Список пользователей</h6>
@@ -30,10 +26,7 @@ $this->breadcrumbs=array(
 	<div id="active-context">
 	  &nbsp;
 	</div>
-  </div>
-  <div id="page2">
-	<h6>Управление заказами</h6>
-  </div>
+  </div>  
 </div><!-- context -->
 
 
@@ -51,10 +44,10 @@ $this->breadcrumbs=array(
 		}
 	  );
 	});
-	initTabs();
+	//initTabs();
   });
   
-  function initTabs(){
+  /*function initTabs(){
 	$("ul.tabs").children("li").each(
 	  function(index,item){
 		var tab_id = $(item).attr("page");		
@@ -83,13 +76,16 @@ $this->breadcrumbs=array(
 	}
 	$("ul.tabs").children("li").removeClass('active');
 	$(target).addClass('active');
-  }
+  }*/
   
   function onSelectTreeItem(event){
 	var target = event.target;
 	var parent = $(target).parent().parent();
+	var isActive = $(target).parent().hasClass("active");
 	$(parent).children("li.tree-node").removeClass("active");
-	$(target).parent().addClass("active");	
+	if(!isActive){
+	  $(target).parent().addClass("active");	
+	}
   };
   
   function onSelectItem(event){

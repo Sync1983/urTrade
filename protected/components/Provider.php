@@ -22,6 +22,10 @@ class Provider extends Controller {
 	public function getCLSID() {
 	  return $this->_CLSID;
 	}
+	
+	public function getName() {
+	  return 'root';
+	}
 
 	public function loadPart($uid,$part_id,$maker_id) {
         throw new Exception("Use parent method");
