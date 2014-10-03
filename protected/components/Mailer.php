@@ -9,6 +9,10 @@ class Mailer{
 	ini_set('SMTP', 'mail.atc58.ru');
   }
 
+  protected function self_mail($addr,$message,$header){
+    
+  }
+
   /* @var $order Orders */
   function SendStateNotification($order,$new_state,$to=null){
 	$states = array(
@@ -36,7 +40,9 @@ class Mailer{
 	if(!$to){
 	  $to = $this->toAddres;
 	}
-	mail($to, $subject, $message,$headers);
+	if(!self_mail($to, $subject, $message,$headers)){
+		YII::trace("mail error","mailer error");
+	}
   }
   
   function SendAddNewOrders($orders){
@@ -85,7 +91,7 @@ class Mailer{
 	$headers .= "From: АвтоТехСнаб Внутреннее<sales@atc58.ru>\r\n"; 	
 	$headers .= "Subject: $subject\r\n"; 	
 	
-	mail($this->toAddres, $subject, $message,$headers);
+	self_mail($this->toAddres, $subject, $message,$headers);
   }
   
 }
