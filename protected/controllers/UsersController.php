@@ -250,10 +250,12 @@ class UsersController extends Controller {
 	if(Yii::app()->request->isAjaxRequest){
 	  $id = intval(Yii::app()->request->getPost('id'));
 	  $state = intval(Yii::app()->request->getPost('state'));
+	  $provider_list = new ProviderList();
 	  $row = Orders::model()->findByPk($id);
 	  /* @var $row Orders */
 	  $row->state = $state;
 	  if($row->save()){
+		$row->provider = $provider_list->getProviderByCLSID($row->provider)->getName();
 		$this->renderPartial( '/users/orderCtrlItem',
 		  					array('row'=>$row));
 	  } else {
