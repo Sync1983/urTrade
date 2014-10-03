@@ -9,8 +9,11 @@ class Mailer{
 	ini_set('SMTP', 'mail.atc58.ru');
   }
 
-  protected function self_mail($addr,$message,$header){
-    
+  protected function self_mail($addr,$subject,$message,$header){
+	/*smp
+    $mail =& Mail::factory('smtp', array('host' => 'localhost', 'port' => 25)); 
+	$mail->send($addr, $header, $message); */
+	mail($addr, $subject, $message,$header);
   }
 
   /* @var $order Orders */
@@ -40,7 +43,7 @@ class Mailer{
 	if(!$to){
 	  $to = $this->toAddres;
 	}
-	if(!self_mail($to, $subject, $message,$headers)){
+	if(!$this->self_mail($to, $subject, $message,$headers)){
 		YII::trace("mail error","mailer error");
 	}
   }
@@ -91,7 +94,7 @@ class Mailer{
 	$headers .= "From: АвтоТехСнаб Внутреннее<sales@atc58.ru>\r\n"; 	
 	$headers .= "Subject: $subject\r\n"; 	
 	
-	self_mail($this->toAddres, $subject, $message,$headers);
+	$this->self_mail($this->toAddres, $subject, $message,$headers);
   }
   
 }
