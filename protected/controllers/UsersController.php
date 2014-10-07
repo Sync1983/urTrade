@@ -2,6 +2,15 @@
 
 class UsersController extends Controller {
   
+  public static $states = array(
+			0 => 'Ожидает заказа',
+			1 => 'Заказан',
+			2 => 'На складе',
+			3 => 'Выдан',
+			4 => 'Отказ'		
+	  );
+
+
   public function actionExtend(){
 	if(!Yii::app()->user->isAdmin()){
 	  $this->render("/site/error",array("code"=>500,"message"=>"Ошибка прав доступа!"));	  
@@ -139,17 +148,11 @@ class UsersController extends Controller {
 		$row = Orders::model()->findAllByAttributes(array('uid'=>$id,'list_id'=>$list_id));
 		$orders[$list_id] = $row;
 	  }
-	  $states = array(
-			0 => 'Ожидает заказа',
-			1 => 'Заказан',
-			2 => 'На складе',
-			3 => 'Выдан',
-			4 => 'Отказ'		
-	  );
+	  
 	  Yii::app()->clientScript->registerPackage('datatable_q');	  
 	  $this->renderPartial( '/users/orders',
 							array('orders'=>$orders,
-								  'states'=>$states,
+								  'states'=>self::$states,
 								  'id'=>$id));
 	}	
 	Yii::app()->end();
@@ -223,23 +226,18 @@ class UsersController extends Controller {
 	$provider_list = new ProviderList();
 	$order_list = array();
 	$uids  = array();
-	foreach ($orders as $key => $row) {	  
+	foreach ($orders as $row) {	  
 	  /* @var $row Orders */
-	  $list_id = $row["list_id"];
-	  if(!isset($order_list[$list_id])){
-		$order_list[$list_id] = array();
-	  }
+	  /* @var $user User */
+	  $user = User::model()->findByPk($row->uid);
+	  $date = strtotime($row->date);
+	  $row->date = $date + 86400 * $user->getShiping();
+	  $row->user_price = $user->convertPrice($row->price);
 	  $row->provider = $provider_list->getProviderByCLSID($row->provider)->getName();
-	  $order_list[$list_id][] = $row;	  
-	  $uids[$row->uid] = 1;
-	}
-	foreach (array_keys($uids) as $uid){
-	  /** @var $user_info UserOnfo **/
-	  $user_info = UserInfo::load($uid);
-	  $uids[$uid] = $user_info->caption;
-	}
+	  
+	}	
 	Yii::app()->clientScript->registerPackage('datatable_q');	
-	$this->render('/users/orderCtrl',array('orders'=>$order_list,'uids'=>$uids)); 	
+	$this->render('/users/orderCtrl',array('orders'=>$orders,'states'=>  self::$states)); 	
   }
   
   public function actionChangeOrderState() {
@@ -264,6 +262,19 @@ class UsersController extends Controller {
 		echo "<td colspan=\"10\">Ошибка записи</td>";
 	  }
 	}	
+	Yii::app()->end();
+  }
+  
+  public function actionGetOrderData(){
+	if(!Yii::app()->user->isAdmin()){
+	  $this->render("/site/error",array("code"=>500,"message"=>"Ошибка прав доступа!"));	  
+	  return;
+	}
+	if(Yii::app()->request->isAjaxRequest){
+	  $id = intval(Yii::app()->request->getPost('id'));
+	  $row = Orders::model()->findByPk($id);
+	  echo json_encode($row);
+	}
 	Yii::app()->end();
   }
     

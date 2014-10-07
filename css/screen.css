@@ -137,22 +137,12 @@ table.dataTable tbody td.changed:before{content: url('/images/alert.png');vertic
 table.dataTable tbody select.small{width: 60%;font-size: 10px;padding: 0;margin: 0;}
 
 
-ul.treeview{  
-  color: #80CFFF;
-  left: 0;
-  width: 20%;
-  height: 600px;
-  overflow-y: scroll;     
-  float:left;
-  background-color: #4F4F4F;
-  border: 2px solid #000;
-  box-shadow: 0 0 20px rgba(0, 0, 0, 1) inset;
-  position: relative;
-}
+ul.treeview {color: #80CFFF;left: 0;width: 20%;height: 600px;overflow-y: scroll;float:left;background-color: #4F4F4F;border: 2px solid #000;box-shadow: 0 0 20px rgba(0, 0, 0, 1) inset;position: relative;}
 ul.treeview {list-style: none;padding: 12px 12px 12px 12px;}
 ul.treeview li:hover{background-color: #0066A4;color:white;}
 ul.treeview li:hover a{color:white;}
 ul.treeview li.active{background-color: darkgray;font-weight: bolder;color: darkred;}
+ul.treeview li.tree-node ul {list-style: none;background-color: #4F4F4F;color: #80CFFF;padding-left: 20px;font-size: 10px;display: none;}
 ul.treeview li.tree-node:before {content: url('/images/expand.gif');margin-left: 2px;top:2px;position: relative;}
 ul.treeview li.tree-node a.tree-line-head{color: #80CFFF;text-decoration: none;padding-left: 10px;font-weight: bold;font-size: 12px;line-height: 20px;}
 ul.treeview li.tree-node.active:before {content: url('/images/treeExpanded.gif');top:2px;position: relative;}
@@ -160,31 +150,53 @@ ul.treeview li.tree-node.active a.tree-line-head{color: darkred;}
 ul.treeview li.tree-node.active ul{padding: 5px 0 0 8px;display: block;}
 ul.treeview li.tree-node.active ul li{background-image: url('/images/tv-item-last.gif');background-repeat: no-repeat;background-position: -6px 0px;height: 20px;padding: 3px 0 0 25px;overflow-y: hidden;cursor: pointer;position: relative;}
 
-ul.treeview li.tree-node ul {
-  list-style: none;
-  background-color: #4F4F4F;
-  color: #80CFFF;
-  padding-left: 20px;
-  font-size: 10px;
-  display: none;
-}
-
 ul.treeview::-webkit-scrollbar {width: 10px;background-color:#4F4F4F;}
 ul.treeview::-webkit-scrollbar-button:vertical:increment {height:20px;background-color: #000;}
 ul.treeview::-webkit-scrollbar-button:vertical:decrement {height:20px;background-color: #000;}
 ul.treeview::-webkit-scrollbar-thumb{border-radius: 4px;background-color: #000;height: 20px;}
 
-div#active-context{ 
-  padding-left: 15px;
-  height: 624px;    
-  background-color: #000;
-  border: 2px solid #000;
-  box-shadow: 0 0 40px rgba(79, 79, 79, 0.7) inset;
-  overflow-y: scroll;
-  position: relative;
+div#active-context{padding-left: 15px;height: 624px;background-color: #000;border: 2px solid #000;box-shadow: 0 0 40px rgba(79, 79, 79, 0.7) inset;overflow-y: scroll;position: relative;}
+div#active-context label{color: #6FACCF;}
+
+div#control-window{
+  position: fixed;
+  left: 40%;
+  width: 300px;
+  margin-left: -150px;
+  top:30%;
+  min-height: 400px;
+  background-color: #AAA;
+  border:2px solid #000;
+  border-radius: 4px;
 }
-div#active-context label{
-  color: #6FACCF;
+
+div#control-window h5 {
+  padding: 2px 2px 2px 2px;
+  background-color: #06c;
+  text-align: center;
+  line-height: 20px;
+  border-bottom: 1px solid #09f;
+}
+div#control-window h5>a {
+  color:#333;
+  float: right;
+  padding-right: 10px;
+  font-size: 10px;
+  text-decoration: none;
+}
+div#control-window>div.footer{
+  background-color: #06c;
+  border-top: 1px solid #09f;  
+  position: relative;
+  border-radius: 0 0 4px 4px;
+  width: 100%;
+}
+div#control-window #row{
+  padding: 2px;
+}
+
+div#control-window label{
+  font-weight: bold;
 }
 
 /* reset.css */

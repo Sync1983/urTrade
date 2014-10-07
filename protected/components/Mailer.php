@@ -12,7 +12,7 @@ class Mailer{
 	$this->config['smtp_port']     = '25'; // Порт работы. Не меняйте, если не уверены.
 	$this->config['smtp_host']     = 'mail.atc58.ru';  //сервер для отправки почты(для наших клиентов менять не требуется)
 	$this->config['smtp_password'] = 'q2w3e4r5t6';  //Измените пароль
-	$this->config['smtp_debug']    = true;  //Если Вы хотите видеть сообщения ошибок, укажите true вместо false
+	$this->config['smtp_debug']    = false;  //Если Вы хотите видеть сообщения ошибок, укажите true вместо false
 	$this->config['smtp_charset']  = 'utf-8';   //кодировка сообщений. (или UTF-8, итд)
 	$this->config['smtp_from']     = 'АвтоТехСнаб'; //Ваше имя - или имя Вашего сайта. Будет показывать при прочтении в поле "От кого"
   }
@@ -112,7 +112,7 @@ class Mailer{
   }
 
   protected function self_mail($addr,$subject,$message,$header){
-	$this->smtpmail($addr, $subject, $message,$header);
+	//$this->smtpmail($addr, $subject, $message,$header);
   }
 
   /* @var $order Orders */

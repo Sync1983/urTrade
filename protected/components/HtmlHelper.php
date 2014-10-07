@@ -17,9 +17,9 @@ class HtmlHelper {
 		$text .="\"";
 	  } else {
 		$text .= " $key=\"$value\"";
-	  }
-	  $text .= "/>";
+	  }	  
 	}  
+	$text .= "/>";
 	return $text;	
   }
   

@@ -19,12 +19,12 @@ class OrdersController extends Controller {
 		  Yii::app()->end();
 		  return;
 		}
-		$billing = Billing::model()->orderPart($item,$item->articul,$order_id->id);
+		/*$billing = Billing::model()->orderPart($item,$item->articul,$order_id->id);
 		if(!$billing){
 		  echo "Недостаточно денег на Вашем счету";
 		  Yii::app()->end();
 		  return;
-		}
+		}*/
 		/* @var $order Orders */
 		$order = new Orders();		
 		$order->setAttributes($item->getAttributes(),false);
