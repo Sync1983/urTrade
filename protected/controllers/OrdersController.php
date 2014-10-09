@@ -19,19 +19,14 @@ class OrdersController extends Controller {
 		  Yii::app()->end();
 		  return;
 		}
-		/*$billing = Billing::model()->orderPart($item,$item->articul,$order_id->id);
-		if(!$billing){
-		  echo "Недостаточно денег на Вашем счету";
-		  Yii::app()->end();
-		  return;
-		}*/
 		/* @var $order Orders */
 		$order = new Orders();		
 		$order->setAttributes($item->getAttributes(),false);
 		$order->id = null;
 		$order->list_id = $order_id->id;
 		$order->uid = $uid;	
-		$order->date = new CDbExpression('CURRENT_TIMESTAMP');
+		$order->date = Yii::app()->dateFormatter->format('yyyy-MM-dd HH:mm',  time()+86400*Yii::app()->user->convertShiping(0));	
+			//new CDbExpression('CURRENT_TIMESTAMP');
 		$order->save();
 		$item->delete();
 		$orders[] = $order;

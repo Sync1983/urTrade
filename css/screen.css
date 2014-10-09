@@ -163,19 +163,22 @@ div#control-window{
   left: 40%;
   width: 300px;
   margin-left: -150px;
-  top:30%;
-  min-height: 400px;
+  top:30%;  
   background-color: #AAA;
+  padding: 0 0 0 10px;
   border:2px solid #000;
   border-radius: 4px;
+  display: none;
 }
 
 div#control-window h5 {
-  padding: 2px 2px 2px 2px;
+  margin-left: -10px;  
+  padding-bottom: 2px;
   background-color: #06c;
   text-align: center;
   line-height: 20px;
   border-bottom: 1px solid #09f;
+  cursor: move;
 }
 div#control-window h5>a {
   color:#333;
@@ -183,13 +186,17 @@ div#control-window h5>a {
   padding-right: 10px;
   font-size: 10px;
   text-decoration: none;
+  cursor: pointer;  
 }
-div#control-window>div.footer{
+
+div#control-window div.footer{
+  margin-left: -10px;  
   background-color: #06c;
   border-top: 1px solid #09f;  
-  position: relative;
   border-radius: 0 0 4px 4px;
-  width: 100%;
+  margin-top: 5px;
+  padding-bottom: 5px;
+  position: relative;
 }
 div#control-window #row{
   padding: 2px;

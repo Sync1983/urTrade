@@ -32,7 +32,7 @@ $classes = array(
 	/* @var $row Orders */	
 	$show_price = Yii::app()->user->convertPrice($row->price);	
 	$date = strtotime($row->date);	
-	$show_date = date("d-m-y", $date+86400*Yii::app()->user->convertShiping(0));
+	$show_date = date("d-m-y", $date);
   ?>      
   <tr class = "<?php echo $classes[$row->state];?>">
 	<td class="dt-body-center underline"><?php echo sprintf("%07d", $row->id); ?></td>

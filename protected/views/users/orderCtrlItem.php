@@ -1,36 +1,23 @@
 <?php
   $date = strtotime($row->date);	
   $show_date = date("d-m-y <br> H:i:s", $date);
-  $classes = array(
-		0 => "wait",
-		1 => "in-work",
-		2 => "in-place",
-		3 => "recived",
-		4 => "depr");
-  $states = array(
-			0 => 'Ожидает заказа',
-			1 => 'Заказан',
-			2 => 'На складе',
-			3 => 'Выдан',
-			4 => 'Отказ'		
-	);
 ?>
 		<td class="dt-body-center underline">
-		  <?php echo CHtml::dropDownList( "state_".$row->id, 
-										  $row->state, 
-										  $states,
-										  array(
-											'onchange' => 'selectorChange(this)',
-											'class'	=> 'small'
-										  )
-			  );?>
-		  <br>
-		  <?php echo HtmlHelper::AjaxButton("Записать", "saveItem($row->id,'state_$row->id')",'saveItemButton')?>
+		  <a href="#" onclick="showControl(this,<?php echo $row->id?>)">
+		  <img src="/images/settings.png" width="16px" height="16px"/>
+		  </a>
+		  <img src="/images/<?php echo $row->is_pay?"coins":"error" ?>.png" width="16px" height="16px"/>
+		</td>
+		<td class="dt-body-center underline">
+		  <?php echo sprintf("%07d", $row->list_id);?>
 		</td>				
-		<td class="dt-body-center underline"><?php echo $show_date;?></td>		
+		<td data-order="<?php echo $row->state;?>"  class="dt-body-center underline">
+		  <?php echo $states[$row->state];?>		  
+		</td>				
+		<td data-order = "<?php echo $row->date;?>" class="dt-body-center underline"><?php echo $show_date;?></td>		
 		<td class="dt-body-center underline"><?php echo $row->provider."<br>".$row->stock?></td>		
 		<td class="dt-body-center underline"><?php echo $row->articul."<br>".$row->producer."<br>".$row->name;?></td>				
-		<td class="dt-body-center underline"><?php echo $row->price?></td>		
+		<td class="dt-body-center underline"><?php echo $row->price."<br>Польз:".$row->user_price;?></td>		
 		<td class="dt-body-center underline"><?php echo $row->shiping?></td>		
 		<td class="dt-body-center underline"><?php echo ($row->is_original==1)?"Да":"Нет";?></td>				
 		<td class="dt-body-center underline"><?php echo "<h6>".$row->count."</h6><br>(уп.".$row->lot_party."шт)"?></td>		

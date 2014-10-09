@@ -19,6 +19,7 @@ class Orders extends CActiveRecord {
   public $count;  
   public $comment;
   public $sum;
+  public $is_pay;
   public $user_price;
   
   public static function getOrders($id=null) {

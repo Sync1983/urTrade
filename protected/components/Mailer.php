@@ -112,7 +112,7 @@ class Mailer{
   }
 
   protected function self_mail($addr,$subject,$message,$header){
-	//$this->smtpmail($addr, $subject, $message,$header);
+	$this->smtpmail($addr, $subject, $message,$header);
   }
 
   /* @var $order Orders */

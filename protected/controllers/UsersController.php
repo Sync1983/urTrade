@@ -222,6 +222,7 @@ class UsersController extends Controller {
 	  $this->render("/site/error",array("code"=>500,"message"=>"Ошибка прав доступа!"));	  
 	  return;
 	}
+	$form = new ChangeForm();
 	$orders = Orders::model()->getFullOrders();		
 	$provider_list = new ProviderList();
 	$order_list = array();
@@ -231,33 +232,58 @@ class UsersController extends Controller {
 	  /* @var $user User */
 	  $user = User::model()->findByPk($row->uid);
 	  $date = strtotime($row->date);
-	  $row->date = $date + 86400 * $user->getShiping();
+	  $row->date = $date;
 	  $row->user_price = $user->convertPrice($row->price);
 	  $row->provider = $provider_list->getProviderByCLSID($row->provider)->getName();
 	  
 	}	
 	Yii::app()->clientScript->registerPackage('datatable_q');	
-	$this->render('/users/orderCtrl',array('orders'=>$orders,'states'=>  self::$states)); 	
+	$this->render('/users/orderCtrl',array('orders'=>$orders,'states'=>  self::$states,'model'=>$form)); 	
   }
   
-  public function actionChangeOrderState() {
+	public function actionChangeOrderState() {
 	if(!Yii::app()->user->isAdmin()){
 	  $this->render("/site/error",array("code"=>500,"message"=>"Ошибка прав доступа!"));	  
 	  return;
 	}
 	$mailer = new Mailer();
-	if(Yii::app()->request->isAjaxRequest){
-	  $id = intval(Yii::app()->request->getPost('id'));
-	  $state = intval(Yii::app()->request->getPost('state'));
-	  $provider_list = new ProviderList();
-	  $row = Orders::model()->findByPk($id);
+	if(Yii::app()->request->isAjaxRequest){	  
+	  $form = new ChangeForm();
+	  /*$id = intval(Yii::app()->request->getPost('id'));
+	  $state = intval(Yii::app()->request->getPost('state'));*/
+	  if(isset($_POST['ChangeForm'])) {
+		$form->attributes=$_POST['ChangeForm'];
+	  }else{
+		$this->render("/site/error",array("code"=>500,"message"=>"Ошибка доступа!"));	  
+		return;
+	  }
+		
 	  /* @var $row Orders */
-	  $row->state = $state;
+	  $provider_list = new ProviderList();
+	  $id = intval($form->id);	  
+	  $row = Orders::model()->findByPk($id);	  
+	  if(!$row){
+		$this->render("/site/error",array("code"=>500,"message"=>"Ошибка доступа!"));	  
+		return;
+	  }	  
+	  $row->price = floatval($form->price);
+	  $row->state = intval($form->state);	
+	  /* @var $user User */
+	  $user = User::model()->findByPk($row->uid);
+	  $row->user_price = $user->convertPrice($row->price);	  
+	  $date = $form->date;	  
+	  $date = strtotime($date);	  
+	  $row->date = Yii::app()->dateFormatter->format('yyyy-MM-dd HH:mm',$date);	  
+	  if($form->change_billing==1){
+		$billing = Billing::model()->orderPart($id);
+		$row->is_pay = intval($billing);		
+	  }	  
+	  
 	  if($row->save()){
-		$mailer->SendStateNotification($row, $state);
+		$mailer->SendStateNotification($row, $form->state);
 		$row->provider = $provider_list->getProviderByCLSID($row->provider)->getName();
 		$this->renderPartial( '/users/orderCtrlItem',
-		  					array('row'=>$row));
+		  					array('row'=>$row,'states'=>self::$states));
 	  } else {
 		echo "<td colspan=\"10\">Ошибка записи</td>";
 	  }
@@ -272,8 +298,18 @@ class UsersController extends Controller {
 	}
 	if(Yii::app()->request->isAjaxRequest){
 	  $id = intval(Yii::app()->request->getPost('id'));
+	  /* @var $row Orders */
+	  /* @var $user User*/
 	  $row = Orders::model()->findByPk($id);
-	  echo json_encode($row);
+	  $user = User::model()->findByPk($row->uid);	  
+	  $form = new ChangeForm();
+	  $form->setAttributes($row->getAttributes(),false);
+	  $form->user_price = $user->convertPrice($row->price);
+	  $form->date = date("Y-m-d", strtotime($row->date));
+	  $form->count = $row->count;
+	  $form->count_step = $row->lot_party;	  
+	  $this->renderPartial( '/users/orderCtrlChangeWindow',
+		  					array('model'=>$form,'states'=>self::$states));
 	}
 	Yii::app()->end();
   }
