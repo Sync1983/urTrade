@@ -18,10 +18,12 @@ class UsersController extends Controller {
 	}
 	$model = new SettingsForm();
 	if(Yii::app()->request->isAjaxRequest){
-	  $id = Yii::app()->request->getPost('id');	  	
+	  $id = intval(Yii::app()->request->getPost('id'));
 	  $info	 = UserInfo::load($id);
+	  $user = User::model()->findByPk($id);
 	  $model->id = $id;
 	  $model->setAttributes($info->attributes,false);
+	  $model->email = $user->email;
 	  $this->renderPartial( '/users/extend',
 							  array('model'=>$model,
 									'id'=>$id),false,true);		
@@ -36,8 +38,8 @@ class UsersController extends Controller {
 	}
 	$model = new SettingsForm();
 	if(Yii::app()->request->isAjaxRequest){		  
-	  $id = Yii::app()->request->getPost('id');	
-	  $model->setAttributes($_POST['SettingsForm'],false);
+	  $id = intval(Yii::app()->request->getPost('id'));	
+	  $model->setAttributes($_POST['SettingsForm'],false);	  
 	  if(($model->validate())&(YII::app()->user->isAdmin())&($id==$model->id)){
 			$model->saveForId($model->id);
 	  }
@@ -173,6 +175,26 @@ class UsersController extends Controller {
 	}	
 	Yii::app()->end();
   }
+  
+  public function actionMainSaveBilling(){
+	if(!Yii::app()->user->isAdmin()){
+	  $this->render("/site/error",array("code"=>500,"message"=>"Ошибка прав доступа!"));	  
+	  return;
+	}
+	if(Yii::app()->request->isAjaxRequest){
+	  $id = intval(Yii::app()->request->getPost('id'));
+	  $value	= floatval(Yii::app()->request->getPost('billing_value'));
+	  $comment	= strval(Yii::app()->request->getPost('billing_comment'));
+	  /* @var $billing Billing */
+	  $billing = new Billing();
+	  $billing->comment = $comment;
+	  $billing->value = $value;
+	  $billing->user_id = $id;
+	  $billing->time = new CDbExpression('CURRENT_TIMESTAMP');
+	  $billing->save();
+	}	
+	Yii::app()->end();	
+  }
 
   public function actionShowItem(){
 	if(!Yii::app()->user->isAdmin()){
@@ -272,15 +294,14 @@ class UsersController extends Controller {
 	  $date = $form->date;	  
 	  $date = strtotime($date);	  
 	  $row->date = Yii::app()->dateFormatter->format('yyyy-MM-dd HH:mm',$date);	 
-	  $row->comment = $form->comment;
-	  var_dump($row->comment);
+	  $row->comment = $form->comment;	  
 	  if($form->change_billing==1){
 		$billing = Billing::model()->orderPart($id);
 		$row->is_pay = intval($billing);		
 	  }	  
 	  
 	  if($row->save()){
-		$mailer->SendStateNotification($row, $form->state);
+		$mailer->SendStateNotification($row, $form->state,$user->email);
 		$row->provider = $provider_list->getProviderByCLSID($row->provider)->getName();
 		$this->renderPartial( '/users/orderCtrlItem',
 		  					array('row'=>$row,'states'=>self::$states));

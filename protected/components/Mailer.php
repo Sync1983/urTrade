@@ -139,7 +139,7 @@ class Mailer{
 	$headers  = "Content-type: text/html; charset=\"utf-8\" \r\n"; 
 	$headers .= "From: АвтоТехСнаб<sales@atc58.ru>\r\n"; 	
 	$headers .= "Subject: $subject\r\n"; 	
-	if(!$to){
+	if(!$to||($to=="")){
 	  $to = $this->toAddres;
 	}
 	if(!$this->self_mail($to, $subject, $message,$headers)){

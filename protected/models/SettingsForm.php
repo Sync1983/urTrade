@@ -12,6 +12,7 @@ class SettingsForm extends CFormModel
 	public $phone;
 	public $type;
 	public $prices;
+	public $email;
 	
 	public function attributeNames(){
 	  return array(	'caption', 
@@ -21,6 +22,7 @@ class SettingsForm extends CFormModel
 					'kpp',
 					'addres',
 					'phone',
+					'email',
 					'type',
 					'id');
 	}
@@ -30,6 +32,7 @@ class SettingsForm extends CFormModel
 	{
 		return array(
 			array('caption, name, addres, phone', 'required'),			
+			array('email', 'email'),			
 			array('inn, kpp', 'numerical',
 			  'allowEmpty'=>false,
 			  'integerOnly'=>true,
@@ -50,6 +53,7 @@ class SettingsForm extends CFormModel
 			'addres'  =>	'Адрес доставки:',
 			'phone'	  =>	'Контактный телефон:',
 			'submit'  =>	'Контактный телефон:',				
+			'email'	  =>	'Почта(e-mail):',
 		);
 	}
 	
@@ -65,6 +69,11 @@ class SettingsForm extends CFormModel
 	  $record = UserInfo::load($id);
 	  $record->setAttributes($this->getAttributes(),false);
 	  $record->uid = $id;
-	  $record->update();	
+	  $record->update();
+	  $user = User::model()->findByPk($id);
+	  if($user){
+		$user->email = $this->email;
+		$user->update();
+	  }
 	}
 }

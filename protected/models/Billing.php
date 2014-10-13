@@ -1,7 +1,16 @@
 <?php
 
 class Billing extends CActiveRecord {
+  
+	public $id;
+	public $user_id;
+	public $order_id;
+	public $value;
+	public $time;
+	public $type;
+	public $comment;
     public $sum;
+	
     /**
      * Returns the static model of the specified AR class.
      * @return Billing
@@ -74,17 +83,8 @@ class Billing extends CActiveRecord {
 		} else {
 		  $id = intval($id);
 		}
-        $result = Billing::model()->findAll(array(
-            'select'=>'time,value,type,comment',
-            'condition'=>'user_id=:user_id',
-            'params'=>array(':user_id'=>$id),
-            'order'=>'time'
-        ));        
-        $answer = array();
-        foreach ($result as $row) {
-            $answer[] = array($row->time,$row->value,$row->comment);
-        }
-        return $answer;                
+        $result = Billing::model()->findAllByAttributes(array('user_id'=>$id),array('order'=>'time'));        
+        return $result;                
     }
     
     public function tableName() {

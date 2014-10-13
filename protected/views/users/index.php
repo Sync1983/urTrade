@@ -43,40 +43,8 @@ $this->breadcrumbs=array(
 		  $(child).children("ul").children("li").on("click",null,onSelectItem);
 		}
 	  );
-	});
-	//initTabs();
+	});	
   });
-  
-  /*function initTabs(){
-	$("ul.tabs").children("li").each(
-	  function(index,item){
-		var tab_id = $(item).attr("page");		
-		if(!tab_id){
-		  return;
-		}		
-		$("div#content>div"+tab_id).css('display',"none");		
-		tabs[index]={item:item,name:tab_id};
-		tabs[tab_id]={item:item,name:tab_id};
-		$(item).on("click",tabClick);
-	  }
-	);
-	$("div#content>div"+tabs[0].name).css('display','block');
-  }
-  
-  function tabClick(event){
-	var target = event.target;	
-	var id = $(target).attr('page');	
-	for(var index in tabs){
-	  item = tabs[index];
-	  if(item.name!==id){
-		$("div#content>div"+item.name).css('display','none');		
-	  } else {
-		$("div#content>div"+item.name).css('display','block');		
-	  }
-	}
-	$("ul.tabs").children("li").removeClass('active');
-	$(target).addClass('active');
-  }*/
   
   function onSelectTreeItem(event){
 	var target = event.target;
