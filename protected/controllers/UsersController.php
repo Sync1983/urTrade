@@ -141,15 +141,8 @@ class UsersController extends Controller {
 	  return;
 	}
 	if(Yii::app()->request->isAjaxRequest){
-	  $id = intval(Yii::app()->request->getPost('id'));
-	  $lists = OrdersList::model()->findAllByAttributes(array('uid'=>$id));
-	  $orders = array();
-	  /* @var $list_item OredersList */
-	  foreach ($lists as $list_item){
-		$list_id = $list_item->id;
-		$row = Orders::model()->findAllByAttributes(array('uid'=>$id,'list_id'=>$list_id));
-		$orders[$list_id] = $row;
-	  }
+	  $id = intval(Yii::app()->request->getPost('id'));	  
+	  $orders = Orders::model()->findAllByAttributes(array('uid'=>$id));
 	  
 	  Yii::app()->clientScript->registerPackage('datatable_q');	  
 	  $this->renderPartial( '/users/orders',
