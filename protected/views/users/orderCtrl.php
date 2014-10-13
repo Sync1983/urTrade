@@ -36,7 +36,7 @@ $classes = array(
   <tbody>
   <?php foreach ($orders as $row):
 	  /** @var $row Orders **/	  
-	  $show_date = date("d-m-y <br> H:i:s", $row->date);	  
+	  $show_date = date("d-m-y", $row->date);	  
 	 ?>
 	  <tr class = "<?php echo $classes[$row->state];?>" id="<?php echo $row->id;?>">
 		<td class="dt-body-center underline">
@@ -46,7 +46,8 @@ $classes = array(
 		  <img src="/images/<?php echo $row->is_pay?"coins":"error" ?>.png" width="16px" height="16px"/>
 		</td>
 		<td class="dt-body-center underline">
-		  <?php echo sprintf("%07d", $row->list_id);?>
+		  <?php echo sprintf("%07d", $row->list_id);?><br>
+		  <?php echo $row->user;?>
 		</td>				
 		<td data-order="<?php echo $row->state;?>"  class="dt-body-center underline">
 		  <?php echo $states[$row->state];?>		  

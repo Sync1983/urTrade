@@ -11,6 +11,7 @@ class ChangeForm extends CFormModel
   public $change_billing;
   public $count;
   public $count_step;
+  public $comment;
   
   public function rules() {
     return array(
@@ -20,6 +21,7 @@ class ChangeForm extends CFormModel
 			array('change_billing','numerical', 'integerOnly' => true),
 			array('count','numerical', 'integerOnly' => true),
 			array('price','numerical', 'integerOnly' => true),			
+			array('comment','length', 'max'=>400),			
 			array('date','date'),
     );
   }
@@ -34,7 +36,8 @@ class ChangeForm extends CFormModel
 			'price'	  =>	'Стоимость(шт.):',
 			'user_price'=>	'Стоимость для клиента(шт.):',
 			'change_billing'=>'Провести оплату:',
-			'count'	  =>	'Количество (шт.):'
+			'count'	  =>	'Количество (шт.):',
+			'comment' =>	'Комментарий:'
 		);
 	}
 	

@@ -27,6 +27,7 @@ class Billing extends CActiveRecord {
 	  
 	  if(($sum>$price)&&($price>0)){
 		$row = new Billing();
+		$row->order_id=$order_id;
 		$row->value = -$price;
 		$row->user_id = $user->id;
 		$row->time = new CDbExpression('CURRENT_TIMESTAMP');  

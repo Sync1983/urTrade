@@ -21,6 +21,7 @@ class Orders extends CActiveRecord {
   public $sum;
   public $is_pay;
   public $user_price;
+  public $user;
   
   public static function getOrders($id=null) {
 	if(!$id){

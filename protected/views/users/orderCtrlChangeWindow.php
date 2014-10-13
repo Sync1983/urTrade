@@ -47,6 +47,12 @@
 	<div class="row">
 	  <?php echo $change_form->numberField($model,'user_price',array('disabled'=>true));?>
 	</div>		
+	<div id="row">	  
+	  <?php echo $change_form->labelEx($model,'comment');?>
+	</div>
+	<div class="row">
+	  <?php echo $change_form->textField($model,'comment');?>
+	</div>		
 	<?php if(!$model->is_pay):?>	
 	<div id="row">	  
 	  <?php 

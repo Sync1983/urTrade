@@ -39,15 +39,7 @@ class OrdersController extends Controller {
   }
   
   public function actionOrders() {
-	$uid = Yii::app()->user->getId();
-	$lists = OrdersList::model()->findAllByAttributes(array('uid'=>$uid));
-	$orders = array();
-	/* @var $list_item OredersList */
-	foreach ($lists as $list_item){
-	  $list_id = $list_item->id;
-	  $row = Orders::model()->findAllByAttributes(array('uid'=>$uid,'list_id'=>$list_id));
-	  $orders[$list_id] = $row;
-	}
+	$uid = Yii::app()->user->getId();	
 	$states = array(
 			0 => 'Ожидает заказа',
 			1 => 'Заказан',
@@ -56,7 +48,7 @@ class OrdersController extends Controller {
 			4 => 'Отказ'		
 	);
 	Yii::app()->clientScript->registerPackage('datatable_q');
-	$this->render('/orders/orders',array('orders'=>$orders,'states'=>$states));
+	$this->render('/orders/orders',array('orders'=>  Orders::model()->getOrders($uid),'states'=>$states));
   }
   
   public function relations() {

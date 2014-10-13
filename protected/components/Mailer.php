@@ -112,7 +112,7 @@ class Mailer{
   }
 
   protected function self_mail($addr,$subject,$message,$header){
-	$this->smtpmail($addr, $subject, $message,$header);
+	//$this->smtpmail($addr, $subject, $message,$header);
   }
 
   /* @var $order Orders */
@@ -183,7 +183,7 @@ class Mailer{
 		."<td align=\"center\" valign=\"middle\" style=\"border: 1px solid #000;\">$order->shiping</td>		"
 		."<td align=\"center\" valign=\"middle\" style=\"border: 1px solid #000;\">".(($order->is_original==1)?"Да":"Нет")."</td>				"
 		."<td align=\"center\" valign=\"middle\" style=\"border: 1px solid #000;\">$order->count<br>(уп.".$order->lot_party."шт)</td>		"
-		."<td align=\"center\" valign=\"middle\" style=\"border: 1px solid #000;\">&nbsp $order->comment</td>"
+		."<td align=\"center\" valign=\"middle\" style=\"border: 1px solid #000;\">$order->comment</td>"
 		. "</tr>";	  
 	}		  
 	$message.="</tbody> </table> ".

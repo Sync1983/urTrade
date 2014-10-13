@@ -224,18 +224,18 @@ class UsersController extends Controller {
 	}
 	$form = new ChangeForm();
 	$orders = Orders::model()->getFullOrders();		
-	$provider_list = new ProviderList();
-	$order_list = array();
-	$uids  = array();
+	$provider_list = new ProviderList();	
 	foreach ($orders as $row) {	  
 	  /* @var $row Orders */
 	  /* @var $user User */
+	  /* @var $user_info UserInfo */
 	  $user = User::model()->findByPk($row->uid);
+	  $user_info = UserInfo::model()->findByPk($row->uid);
 	  $date = strtotime($row->date);
 	  $row->date = $date;
 	  $row->user_price = $user->convertPrice($row->price);
 	  $row->provider = $provider_list->getProviderByCLSID($row->provider)->getName();
-	  
+	  $row->user = $user_info->caption;
 	}	
 	Yii::app()->clientScript->registerPackage('datatable_q');	
 	$this->render('/users/orderCtrl',array('orders'=>$orders,'states'=>  self::$states,'model'=>$form)); 	
@@ -248,9 +248,7 @@ class UsersController extends Controller {
 	}
 	$mailer = new Mailer();
 	if(Yii::app()->request->isAjaxRequest){	  
-	  $form = new ChangeForm();
-	  /*$id = intval(Yii::app()->request->getPost('id'));
-	  $state = intval(Yii::app()->request->getPost('state'));*/
+	  $form = new ChangeForm();	  
 	  if(isset($_POST['ChangeForm'])) {
 		$form->attributes=$_POST['ChangeForm'];
 	  }else{
@@ -273,7 +271,9 @@ class UsersController extends Controller {
 	  $row->user_price = $user->convertPrice($row->price);	  
 	  $date = $form->date;	  
 	  $date = strtotime($date);	  
-	  $row->date = Yii::app()->dateFormatter->format('yyyy-MM-dd HH:mm',$date);	  
+	  $row->date = Yii::app()->dateFormatter->format('yyyy-MM-dd HH:mm',$date);	 
+	  $row->comment = $form->comment;
+	  var_dump($row->comment);
 	  if($form->change_billing==1){
 		$billing = Billing::model()->orderPart($id);
 		$row->is_pay = intval($billing);		
@@ -308,6 +308,7 @@ class UsersController extends Controller {
 	  $form->date = date("Y-m-d", strtotime($row->date));
 	  $form->count = $row->count;
 	  $form->count_step = $row->lot_party;	  
+	  $form->comment = $row->comment;
 	  $this->renderPartial( '/users/orderCtrlChangeWindow',
 		  					array('model'=>$form,'states'=>self::$states));
 	}
