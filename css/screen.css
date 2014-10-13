@@ -33,7 +33,7 @@ td.full-border {border:  1px solid #6FACCF;background-color: #80CFFF;}
 tr:hover > td.underline{background-color: #C9E0ED;}
 tr.wait{background-color: white !important;}
 tr.in-work{background-color: antiquewhite !important;}
-tr.in-place {background-color: burlywood !important;}
+tr.in-place {background-color: palegreen !important;}
 tr.recived{background-color: mediumseagreen !important;}
 tr.depr{background-color: lightslategray !important;}
 
