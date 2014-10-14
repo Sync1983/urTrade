@@ -64,6 +64,10 @@ class SiteController extends Controller
 		}
 		$this->render('contact',array('model'=>$model));
 	}
+	
+	public function actionCooperation() {
+	  $this->render('cooperation');
+	}
   	
 	public function actionLogin()
 	{

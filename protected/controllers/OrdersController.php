@@ -51,6 +51,26 @@ class OrdersController extends Controller {
 	$this->render('/orders/orders',array('orders'=>  Orders::model()->getOrders($uid),'states'=>$states));
   }
   
+  public function actionDeleteItem() {
+	if(Yii::app()->request->isAjaxRequest){	  
+	  $id	= intval(Yii::app()->request->getPost('id'));
+	  $uid = Yii::app()->user->getId();	
+	  /* @var $order Orders */
+	  $order = Orders::model()->findByPk($id);
+	  if(($order->uid!=$uid)||($order->state!=0)){
+		echo "Access Error!";
+		Yii::app()->end();
+		return;
+	  }elseif($order->delete()){
+		echo "ok";
+		Yii::app()->end();
+		return;
+	  }
+	}	
+	echo "Error";
+    Yii::app()->end();
+  }
+  
   public function relations() {
     return array(
             'uid'=>array(self::BELONGS_TO, 'User', 'id'),
