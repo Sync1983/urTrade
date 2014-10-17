@@ -66,5 +66,37 @@ class ProviderController extends Controller {
         }   
        Yii::app()->end();
     }
+	
+	public function actionUploadPrice(){
+	  if(!Yii::app()->request->isAjaxRequest){
+		echo "Use only as AJAX request";
+		Yii::app()->end();
+		return;		
+	  }
+	  if(!isset($_FILES["file"])||!isset($_POST['id'])){
+		echo "Undefined \"file\"";
+		Yii::app()->end();
+		return;				
+	  }
+      $file = $_FILES["file"];
+	  $id = intval(Yii::app()->request->getPost("id"));
+	  $provider_list = new ProviderList();
+	  $provider = $provider_list->getProviderByCLSID($id);
+	  /* @var $provider Provider */
+	  $file_name = $provider->getFileName();
+	  var_dump($provider);
+	  /*$uploadfile = $uploaddir . basename($_FILES['file']['name']);
+
+echo '<pre>';
+if (move_uploaded_file($_FILES['userfile']['tmp_name'], $uploadfile)) {
+    echo "Файл корректен и был успешно загружен.\n";
+} else {
+    echo "Возможная атака с помощью файловой загрузки!\n";
+}*/
+var_dump($_POST);
+	  
+	  
+      Yii::app()->end();
+	}
 }
 

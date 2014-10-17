@@ -40,9 +40,10 @@
                 array('label'=>'Корзина ('.Basket::getBasketPrice().' руб.)', 'url'=>array('/basket/basket'), 'visible'=>((!Yii::app()->user->isAdmin()))&&(!Yii::app()->user->isGuest), 'visible'=>!Yii::app()->user->isGuest&&!Yii::app()->user->isAdmin()),
 				array('label'=>'Заказы('.Orders::getOrdersPrice().' руб.)', 'url'=>array('/orders/orders'), 'visible'=>((!Yii::app()->user->isAdmin()))&&(!Yii::app()->user->isGuest), 'visible'=>!Yii::app()->user->isGuest&&!Yii::app()->user->isAdmin()),
                 array('label'=>'Баланс ('.Billing::model()->getBalance().' руб.)', 'url'=>array('/site/billing'), 'visible'=>!Yii::app()->user->isGuest&&!Yii::app()->user->isAdmin()),
-				array('label'=>'Параметры', 'url'=>array('/site/settings'), 'visible'=>!Yii::app()->user->isGuest),
-				array('label'=>'Сотрудничество', 'url'=>array('/site/cooperation')),
-				array('label'=>'Контакты', 'url'=>array('/site/contact')),
+				array('label'=>'Прайсы','url'=>array('/site/prices'), 'visible'=>Yii::app()->user->isAdmin()),
+				array('label'=>'Параметры', 'url'=>array('/site/settings'), 'visible'=>!(Yii::app()->user->isGuest||Yii::app()->user->isAdmin())),
+				array('label'=>'Сотрудничество', 'url'=>array('/site/cooperation'),'visible'=>!Yii::app()->user->isAdmin()),
+				array('label'=>'Контакты', 'url'=>array('/site/contact'),'visible'=>!Yii::app()->user->isAdmin()),
 				array('label'=>'Вход', 'url'=>array('/site/login'), 'visible'=>Yii::app()->user->isGuest),
 				array('label'=>'Выход ('.Yii::app()->user->name.')', 'url'=>array('/site/logout'), 'visible'=>!Yii::app()->user->isGuest)
 			),
