@@ -2,6 +2,7 @@
 class ProviderForum extends Provider {
   protected $_is_file = true;
   const price_date_name = "ForumPriceDate";
+  const price_file_name = "ForumPriceName";
   
   	
   public function getName() {
@@ -12,6 +13,7 @@ class ProviderForum extends Provider {
     parent::__construct($login, $password, $data);
     $this->_CLSID	= 145;
     $time = $this->_cache->get(self::price_date_name);
+	$this->_file_name = $this->_cache->get(self::price_file_name);
     if(!$time){
       $time = 0;
     }
@@ -34,7 +36,7 @@ class ProviderForum extends Provider {
       $file_time = filemtime($login."/".$file);
       if($file_time>$time) {
         $time = $file_time;
-        $file_name = $login."/".$file;
+        $file_name = $login."/".$file;		
       }
     }
     if($file_name) {
@@ -115,6 +117,7 @@ class ProviderForum extends Provider {
     }
     fclose($f);
     $this->_cache->set(self::price_date_name,$time);
+	$this->_cache->set(self::price_file_name,$file);
 	$this->_file_name = $file;
 	$this->_file_time = $time;
   }

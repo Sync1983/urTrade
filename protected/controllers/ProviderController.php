@@ -83,19 +83,47 @@ class ProviderController extends Controller {
 	  $provider_list = new ProviderList();
 	  $provider = $provider_list->getProviderByCLSID($id);
 	  /* @var $provider Provider */
-	  $file_name = $provider->getFileName();
-	  var_dump($provider);
-	  /*$uploadfile = $uploaddir . basename($_FILES['file']['name']);
-
-echo '<pre>';
-if (move_uploaded_file($_FILES['userfile']['tmp_name'], $uploadfile)) {
-    echo "Файл корректен и был успешно загружен.\n";
-} else {
-    echo "Возможная атака с помощью файловой загрузки!\n";
-}*/
-var_dump($_POST);
+	  $file_name	  = $provider->getFileName();
+	  $new_name		  = $_FILES['file']['name'];
+	  $tmp_name		  = $_FILES['file']['tmp_name'];
+	  $file_info	  = pathinfo($new_name);
+	  $file_info_old  = pathinfo($file_name);
+	  $dir_name		  = isset($file_info_old['dirname'])?$file_info_old['dirname']:false;
+	  $ext			  = isset($file_info['extension'])?$file_info['extension']:"";
+	  $new_file		  = $dir_name."/".$new_name;
 	  
+	  if(($ext!=='csv')&&($ext!=='zip')){
+		echo "Применяются только файлы *.csv и *.zip<br>";
+		echo "Файл $new_name не может быть обработан<br>";
+		Yii::app()->end();
+		return;
+	  }
+	  if(!$dir_name){
+		echo "Немогу найти путь для записи файла<br>";
+		echo "Файл $new_name не может быть обработан<br>";
+		Yii::app()->end();
+		return;
+	  }	  
+	  if (!move_uploaded_file($tmp_name,$new_file)) {
+		echo "Ошибка записи файла<br>";
+		echo "Файл $new_name не может быть обработан<br>";
+		Yii::app()->end();
+		return;
+	  }
 	  
+	  echo "Файл записан<br>";
+	  if($ext =='zip'){
+		$cmd = "unzip $new_file";
+		if(!$err=exec($cmd)) {
+		  echo "Ошибка разархивации файла<br>";
+		  echo "Файл $new_name не обработан<br>";
+		  echo "Код ошибки $err<br>";
+		  Yii::app()->end();
+		  return;
+		} else {
+		  echo "Файл извлечен<br>";
+		}
+	  }	  
       Yii::app()->end();
 	}
 }

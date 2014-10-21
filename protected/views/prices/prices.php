@@ -18,7 +18,9 @@ $this->breadcrumbs=array(
 	<input type="hidden" id="id" name="id" value="<?php echo $id;?>"/>
 	<input type="file" id="file" name="file" style="width: 50%"/>
   </form>
-</div>  
+</div> 
+<div class="error" id="answer<?php echo $id;?>">  
+</div>
 <div class="row"> 
   <?php echo HtmlHelper::AjaxButton("Загрузить прайс ".$provider->getName(), "loadFile($id);");?>
 </div>
@@ -44,7 +46,7 @@ $this->breadcrumbs=array(
 		},
         success: function(data){
 		  $(".preloader").removeClass("show");				  
-		  $("div#active-context").html(data);				  
+		  $("div#answer"+id).html(data);				  
 		},
 		beforeSend:	function(){ 
 		  $(".preloader").addClass("show"); 
