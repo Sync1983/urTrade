@@ -30,6 +30,16 @@ class User extends CActiveRecord
     return $this->shiping_time;    
   }
   
+  public function convertPrice($price) {    
+    $percent = $this->getPercent();
+    $price = floatval($price)+floatval($price) * $percent/100;    
+    return round($price,2);
+  }
+  
+  public function convertShiping($shiping) {    
+    return $shiping+$this->getShiping();    
+  }
+  
   public static function model($className=__CLASS__) {
 	return parent::model($className);
   }

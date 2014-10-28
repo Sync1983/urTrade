@@ -64,6 +64,10 @@ class SiteController extends Controller
 		}
 		$this->render('contact',array('model'=>$model));
 	}
+	
+	public function actionCooperation() {
+	  $this->render('cooperation');
+	}
   	
 	public function actionLogin()
 	{
@@ -136,6 +140,17 @@ class SiteController extends Controller
   public function actionBilling() {
 	Yii::app()->clientScript->registerPackage('datatable_q');
     $this->render('billing',array('list'=>  Billing::model()->getList()));    
+  }
+  
+  public function actionPrices(){
+	if(!Yii::app()->user->isAdmin()){
+	  $this->render("/site/error",array("code"=>500,"message"=>"Ошибка прав доступа!"));	  
+	  return;
+	}
+	$providers = new ProviderList();
+	$file_provider = $providers->getFileProvider();
+	Yii::app()->clientScript->registerPackage('datatable_q');
+	$this->render('/prices/prices',array('list'=>$file_provider));    
   }
   
 }

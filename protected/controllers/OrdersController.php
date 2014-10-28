@@ -8,7 +8,8 @@ class OrdersController extends Controller {
 	  $uid = Yii::app()->user->GetId();
 	  $order_id = new OrdersList();
 	  $order_id->uid = $uid;
-	  $order_id->save();	  
+	  $order_id->save();	
+	  $orders = array();
 	  foreach ($ids as $id){
 		$id = intval($id);
 		/* @var $item Basket */
@@ -18,37 +19,27 @@ class OrdersController extends Controller {
 		  Yii::app()->end();
 		  return;
 		}
-		$billing = Billing::model()->orderPart($item,$item->articul,$order_id->id);
-		if(!$billing){
-		  echo "Недостаточно денег на Вашем счету";
-		  Yii::app()->end();
-		  return;
-		}
 		/* @var $order Orders */
 		$order = new Orders();		
 		$order->setAttributes($item->getAttributes(),false);
 		$order->id = null;
 		$order->list_id = $order_id->id;
 		$order->uid = $uid;	
-		$order->date = new CDbExpression('CURRENT_TIMESTAMP');
+		$order->date = Yii::app()->dateFormatter->format('yyyy-MM-dd HH:mm',  time()+86400*Yii::app()->user->convertShiping(0));	
+			//new CDbExpression('CURRENT_TIMESTAMP');
 		$order->save();
 		$item->delete();
+		$orders[] = $order;
 	  }
 	}
+	$mailer = new Mailer();
+	$mailer->SendAddNewOrders($orders);
 	echo "ok";
     Yii::app()->end();
   }
   
   public function actionOrders() {
-	$uid = Yii::app()->user->getId();
-	$lists = OrdersList::model()->findAllByAttributes(array('uid'=>$uid));
-	$orders = array();
-	/* @var $list_item OredersList */
-	foreach ($lists as $list_item){
-	  $list_id = $list_item->id;
-	  $row = Orders::model()->findAllByAttributes(array('uid'=>$uid,'list_id'=>$list_id));
-	  $orders[$list_id] = $row;
-	}
+	$uid = Yii::app()->user->getId();	
 	$states = array(
 			0 => 'Ожидает заказа',
 			1 => 'Заказан',
@@ -57,7 +48,27 @@ class OrdersController extends Controller {
 			4 => 'Отказ'		
 	);
 	Yii::app()->clientScript->registerPackage('datatable_q');
-	$this->render('/orders/orders',array('orders'=>$orders,'states'=>$states));
+	$this->render('/orders/orders',array('orders'=>  Orders::model()->getOrders($uid),'states'=>$states));
+  }
+  
+  public function actionDeleteItem() {
+	if(Yii::app()->request->isAjaxRequest){	  
+	  $id	= intval(Yii::app()->request->getPost('id'));
+	  $uid = Yii::app()->user->getId();	
+	  /* @var $order Orders */
+	  $order = Orders::model()->findByPk($id);
+	  if(($order->uid!=$uid)||($order->state!=0)){
+		echo "Access Error!";
+		Yii::app()->end();
+		return;
+	  }elseif($order->delete()){
+		echo "ok";
+		Yii::app()->end();
+		return;
+	  }
+	}	
+	echo "Error";
+    Yii::app()->end();
   }
   
   public function relations() {

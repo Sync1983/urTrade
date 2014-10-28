@@ -2,20 +2,20 @@
   <thead>
     <tr>
       <th class="center" style="width:15%">Дата платежа</th>
+      <th class="center" style="width:15%">Номер заказа</th>
       <th class="center" style="width:30%">Сумма</th>
       <th class="center">Комментарий</th>
     </tr>    
   </thead>
   <tbody>
     <?php foreach ($list as $row):
-		  $class = "";
-		  if($row[1]<0){
-			$class = "zero-days";
-		  }?>	
-	<tr class="<?php	echo $class;?>">            
-	  <td class="center"><?php echo $row[0];?></td>
-	  <td class="center"><?php echo $row[1];?> руб.</td>
-	  <td class="center"><?php echo $row[2];?></td>
+		  /* @var $row Billing */		  
+	?>	
+	<tr class="<?php	echo ($row->value<0)?"zero-days":"";?>">            
+	  <td class="center"><?php echo $row->time;?></td>
+	  <td class="center"><?php echo sprintf("%07d", $row->order_id);?></td>
+	  <td class="center"><?php echo $row->value;?> руб.</td>
+	  <td class="center"><?php echo $row->comment;?></td>
     </tr>    
     <?php endforeach;?>
   </tbody>

@@ -57,6 +57,18 @@
 	<div class="row buttons">
 	  <?php echo HtmlHelper::AjaxButton('Изменить', "ajaxSend('#password-form','".$this->createUrl("/users/mainSavePassword")."',true)");?>		
 	</div>
+  
+  <form id="billing-form">
+	<div class="row">
+	  <?php echo CHtml::label("Баланс",'billing_value'); ?>
+	  <?php echo CHtml::numberField('billing_value',""); ?>
+	  <?php echo CHtml::label("Комментарий",'billing_comment'); ?>
+	  <?php echo CHtml::textField('billing_comment',""); ?>
+	</div>	
+  </form>
+	<div class="row buttons">
+	  <?php echo HtmlHelper::AjaxButton('Изменить', "ajaxSend('#billing-form','".$this->createUrl("/users/mainSaveBilling")."',true)");?>		
+	</div>
 </div><!-- form -->
 <div id="prices-list">
   <?php   /*echo $prices;*/ ?>

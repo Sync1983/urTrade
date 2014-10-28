@@ -1,11 +1,19 @@
 <?php
 class ProviderForum extends Provider {
+  protected $_is_file = true;
   const price_date_name = "ForumPriceDate";
+  const price_file_name = "ForumPriceName";
+  
+  	
+  public function getName() {
+    return 'Forum';
+  }
 	
-	public function __construct($login, $password, $data = null) {
-	  parent::__construct($login, $password, $data);
-	  $this->_CLSID	= 145;
+  public function __construct($login, $password, $data = null) {
+    parent::__construct($login, $password, $data);
+    $this->_CLSID	= 145;
     $time = $this->_cache->get(self::price_date_name);
+	$this->_file_name = $this->_cache->get(self::price_file_name);
     if(!$time){
       $time = 0;
     }
@@ -28,15 +36,15 @@ class ProviderForum extends Provider {
       $file_time = filemtime($login."/".$file);
       if($file_time>$time) {
         $time = $file_time;
-        $file_name = $login."/".$file;
+        $file_name = $login."/".$file;		
       }
     }
     if($file_name) {
       $this->loadFile($file_name,$time);
     }
-	}
+  }
 	
-	public function loadPart($uid,$part_id,$maker_id) {
+  public function loadPart($uid,$part_id,$maker_id) {
 	  /* @var $part Part */
 	  $part =  parent::loadHashPart(self::PartPrefix.$this->getCLSID()."_".$part_id."_".$maker_id,$uid);	 
 	  $part = json_decode($part,true);
@@ -45,7 +53,7 @@ class ProviderForum extends Provider {
 	  return $part_out;
 	}
 	
-	public function loadPartList($part_id,$maker_id = null){	
+  public function loadPartList($part_id,$maker_id = null){	
     $maker_id = str_replace("\"", "", $maker_id);    
 	  $all = $this->loadCache(self::PartPrefix.$this->getCLSID()."_".$part_id."_".$maker_id);		  
 	  $answer = array();		
@@ -55,7 +63,7 @@ class ProviderForum extends Provider {
     return $answer;	  
 	}
 
-	public function loadPartProducer($part_id) {        
+  public function loadPartProducer($part_id) {        
 		$all = $this->loadCache(self::ProducerPrefix.$this->getCLSID()."_".$part_id);	
 		return $all;
   }
@@ -109,6 +117,9 @@ class ProviderForum extends Provider {
     }
     fclose($f);
     $this->_cache->set(self::price_date_name,$time);
+	$this->_cache->set(self::price_file_name,$file);
+	$this->_file_name = $file;
+	$this->_file_time = $time;
   }
   
 }

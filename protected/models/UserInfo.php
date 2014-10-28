@@ -1,6 +1,15 @@
 <?php
 
 class UserInfo extends CActiveRecord {
+  public $uid;
+  public $caption;
+  public $name;
+  public $sname;
+  public $inn;
+  public $kpp;
+  public $addres;
+  public $phone;
+  public $type;
   
     public static function model($className=__CLASS__) {
         return parent::model($className);

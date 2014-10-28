@@ -58,6 +58,12 @@
 		<?php echo $form->textField($model,'phone',array('size'=>60,'maxlength'=>45)); ?>
 		<?php echo $form->error($model,'phone'); ?>
 	</div>
+  
+	<div class="row">
+		<?php echo $form->labelEx($model,'email'); ?>
+		<?php echo $form->emailField($model,'email',array('size'=>60)); ?>
+		<?php echo $form->error($model,'email'); ?>
+	</div>
 
 	<div class="row buttons">
 	  <?php echo HtmlHelper::AjaxButton('Изменить', "ajaxSend('#settings-form','".$this->createUrl("/users/extendSave")."')");?>		

@@ -1,26 +1,49 @@
 <?php
 
 class Billing extends CActiveRecord {
+  
+	public $id;
+	public $user_id;
+	public $order_id;
+	public $value;
+	public $time;
+	public $type;
+	public $comment;
     public $sum;
+	
     /**
      * Returns the static model of the specified AR class.
      * @return Billing
      */
     public static function model($className=__CLASS__) {
         return parent::model($className);
-    }
-	
-    /* @var $basket_item Basket */
-	public function orderPart($basket_item,$order_articul,$order_list_id){
-	  $sum = Billing::model()->getBalance();
-	  $price = Yii::app()->user->convertPrice($basket_item->price)*$basket_item->count;
+    }	
+    
+	public function orderPart($order_id){	  
+	  /* @var $order Orders */
+	  $order = Orders::model()->findByPk($order_id);
+	  if(!$order){
+		return false;
+	  }
+	  /* @var $user	User */
+	  $user = User::model()->findByPk($order->uid);
+	  $sum = Billing::model()->getBalance($order->uid);
+	  if(!$user){
+		return false;
+	  }
+	  
+	  $price = $user->convertPrice($order->price)*$order->count;
+	  
 	  if(($sum>$price)&&($price>0)){
 		$row = new Billing();
+		$row->order_id=$order_id;
 		$row->value = -$price;
-		$row->user_id = Yii::app()->user->getId();
+		$row->user_id = $user->id;
 		$row->time = new CDbExpression('CURRENT_TIMESTAMP');  
-		$row->comment = "Оплата заказа ".sprintf("%07d", $order_list_id)." деталь ".$order_articul;
+		$row->comment = "Оплата заказа ".sprintf("%07d", $order->id)." деталь ".$order->articul;
 		$row->save();
+		$order->is_pay = 1;
+		$order->save();
 		return TRUE;
 	  }
 	  return false;
@@ -60,17 +83,8 @@ class Billing extends CActiveRecord {
 		} else {
 		  $id = intval($id);
 		}
-        $result = Billing::model()->findAll(array(
-            'select'=>'time,value,type,comment',
-            'condition'=>'user_id=:user_id',
-            'params'=>array(':user_id'=>$id),
-            'order'=>'time'
-        ));        
-        $answer = array();
-        foreach ($result as $row) {
-            $answer[] = array($row->time,$row->value,$row->comment);
-        }
-        return $answer;                
+        $result = Billing::model()->findAllByAttributes(array('user_id'=>$id),array('order'=>'time'));        
+        return $result;                
     }
     
     public function tableName() {

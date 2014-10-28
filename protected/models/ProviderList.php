@@ -7,8 +7,13 @@ class ProviderList extends CModel {
     public function attributeNames() {
         return array('id');
     }
+	
+	/** @return Provider */
+	public function getProviderByCLSID($clsid){
+	  return isset($this->provider_list[$clsid])?$this->provider_list[$clsid]:false;
+	}
 
-    public function __construct() {
+	public function __construct() {
       $this->provider_list  = array();
 	  $providers = Yii::app()->params['providers_data'];      
       foreach ($providers as $name=>$params) {          
@@ -69,6 +74,17 @@ class ProviderList extends CModel {
 	  return $answer;
     } 
 	
+	public function getFileProvider(){
+	  $answer = array();	
+	  foreach ($this->provider_list as $CLSID=>$provider) {
+		/* @var $provider Provider */
+		if ($provider->isFile()) {
+		  $answer[$CLSID] = $provider;
+		}
+	  }
+	  return $answer;
+	}
+
 	protected function sortByProducer($A,$B) {
 	  if($A->producer>$B->producer) {
 		return 1;

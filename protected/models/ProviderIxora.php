@@ -7,6 +7,10 @@ class ProviderIxora extends Provider {
 	parent::__construct($login, $password, $data);
     $this->_CLSID = 542;
   }
+  	
+  public function getName() {
+	return 'Ixora';
+  }
 
   public function loadPart($uid,$part_id,$maker_id) {
 	/* @var $part Part */

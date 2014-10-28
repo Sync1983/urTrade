@@ -1,12 +1,16 @@
 <?php
 
 class Provider extends Controller {
-    protected $_login = "";
-    protected $_pass = "";
+    protected $_login	  = "";
+    protected $_pass	  = "";
     protected $_cache;
-	protected $_CLSID =	"";
-    
-    const ProducerPrefix    =   "producers";
+	protected $_CLSID	  =	"";
+	protected $_is_file	  = false;
+	protected $_file_name = false;
+	protected $_file_time = false;
+
+
+	const ProducerPrefix    =   "producers";
 	const PartPrefix		=   "parts";
 
     public function __construct($login, $password,$data=null) {
@@ -21,6 +25,22 @@ class Provider extends Controller {
     
 	public function getCLSID() {
 	  return $this->_CLSID;
+	}
+	
+	public function isFile() {
+	  return $this->_is_file;
+	}
+	
+	public function getFileName(){
+	  return $this->_is_file?$this->_file_name:false;
+	}
+	
+	public function getUploadTime(){
+	  return $this->_is_file?$this->_file_time:false;
+	}
+
+	public function getName() {
+	  return 'root';
 	}
 
 	public function loadPart($uid,$part_id,$maker_id) {
@@ -50,12 +70,8 @@ class Provider extends Controller {
 	  }
 	}
   
-  protected function clearPartId($part_id) {
-    /*$part_id = str_replace(" ", "", $part_id);
-    $part_id = str_replace(".", "", $part_id);
-    $part_id = str_replace("-", "", $part_id);*/
-    return preg_replace("/[^a-zA-Z0-9\s]/", "", $part_id);
-    //return $part_id;
+  protected function clearPartId($part_id) {    
+    return preg_replace("/[^a-zA-Z0-9\s]/", "", $part_id);    
   }
 }
 

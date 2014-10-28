@@ -2,11 +2,12 @@
 
 class HtmlHelper {
   
-  public static function AjaxButton($name,$action,$id=null,$params=[]) {
+  public static function AjaxButton($name,$action,$id=null,$params=null) {
 	$text = "<input type=\"button\" class=\"main-button\" onClick=\"$action\" value=\"$name\"";
 	if($id){
 	  $text .= " id=\"$id\" ";
 	}	
+	if($params)
 	foreach ($params as $key => $value) {
 	  if(is_array($value)){
 		$text .= " $key = \"";
@@ -16,9 +17,9 @@ class HtmlHelper {
 		$text .="\"";
 	  } else {
 		$text .= " $key=\"$value\"";
-	  }
-	  $text .= "/>";
+	  }	  
 	}  
+	$text .= "/>";
 	return $text;	
   }
   
