@@ -39,7 +39,8 @@ class Billing extends CActiveRecord {
 		$row->order_id=$order_id;
 		$row->value = -$price;
 		$row->user_id = $user->id;
-		$row->time = new CDbExpression('CURRENT_TIMESTAMP');  
+		$row->time = new CDbExpression('CURRENT_TIMESTAMP'); 
+    $row->type = 0;
 		$row->comment = "Оплата заказа ".sprintf("%07d", $order->id)." деталь ".$order->articul;
 		$row->save();
 		$order->is_pay = 1;
