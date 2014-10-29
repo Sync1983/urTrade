@@ -284,7 +284,8 @@ class UsersController extends Controller {
 	  $row->state = intval($form->state);	
 	  /* @var $user User */
 	  $user = User::model()->findByPk($row->uid);
-	  $row->user_price = $user->convertPrice($row->price);	  
+	  $row->user_price = $user->convertPrice($row->price);	 
+    $row->count = $form->count;
 	  $date = $form->date;	  
 	  $date = strtotime($date);	  
 	  $row->date = Yii::app()->dateFormatter->format('yyyy-MM-dd HH:mm',$date);	 
