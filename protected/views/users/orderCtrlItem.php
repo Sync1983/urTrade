@@ -3,7 +3,7 @@
   $show_date = date("d-m-y <br> H:i:s", $date);
 ?>
 		<td class="dt-body-center underline">
-		  <a href="#" onclick="showControl(this,<?php echo $row->id?>)">
+		  <a href="#" onclick="showControl(<?php echo $row->id?>)">
 		  <img src="/images/settings.png" width="16px" height="16px"/>
 		  </a>
 		  <img src="/images/<?php echo $row->is_pay?"coins":"error" ?>.png" width="16px" height="16px"/>
