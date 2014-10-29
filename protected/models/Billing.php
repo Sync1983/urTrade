@@ -27,7 +27,7 @@ class Billing extends CActiveRecord {
 	  }
 	  /* @var $user	User */
 	  $user = User::model()->findByPk($order->uid);
-	  $sum = Billing::model()->getBalance($order->uid);
+	  $sum = Billing::model()->getBalance($order->uid)+Billing::model()->getCreditBalance($order->uid);
 	  if(!$user){
 		return false;
 	  }
@@ -58,7 +58,7 @@ class Billing extends CActiveRecord {
 		}
         $result = Billing::model()->find(array(
             'select'=>'SUM(`value`) as sum',
-            'condition'=>'user_id=:user_id and type=:type',
+            'condition'=>'user_id=:user_id and `type`=:type',
             'params'=>array(':user_id'=>$id,'type'=>0),
         ));        
         return round($result->sum,2);        
@@ -72,7 +72,7 @@ class Billing extends CActiveRecord {
 		}
         $result = Billing::model()->find(array(
             'select'=>'SUM(`value`) as sum',
-            'condition'=>'user_id=:user_id and type=:type',
+            'condition'=>'user_id=:user_id and `type`=:type',
             'params'=>array(':user_id'=>$id,':type'=>1),
         ));        
         return round($result->sum,2);        
