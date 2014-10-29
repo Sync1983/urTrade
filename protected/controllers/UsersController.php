@@ -183,6 +183,7 @@ class UsersController extends Controller {
 	  $billing->comment = $comment;
 	  $billing->value = $value;
 	  $billing->user_id = $id;
+    $billing->type = 0;
 	  $billing->time = new CDbExpression('CURRENT_TIMESTAMP');
 	  $billing->save();
 	}	
