@@ -42,6 +42,7 @@ $this->breadcrumbs=array(
   
 <?php echo CHtml::endForm(); ?>
 </div><!-- form -->  
+<h5>Общий баланс: <?php echo Billing::model()->getBalance();?> руб. Доступно для заказа: <?php echo Billing::model()->getCreditBalance()+Billing::model()->getBalance();?> руб.</h5>
 
 <div id="answer-table">
   

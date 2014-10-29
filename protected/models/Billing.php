@@ -57,8 +57,8 @@ class Billing extends CActiveRecord {
 		}
         $result = Billing::model()->find(array(
             'select'=>'SUM(`value`) as sum',
-            'condition'=>'user_id=:user_id',
-            'params'=>array(':user_id'=>$id),
+            'condition'=>'user_id=:user_id and type=:type',
+            'params'=>array(':user_id'=>$id,'type'=>0),
         ));        
         return round($result->sum,2);        
     }
