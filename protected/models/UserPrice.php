@@ -40,6 +40,14 @@ class UserPrice extends CActiveRecord {
 		$row->save();
 	  }
 	}
+	
+	public static function delItem($id){
+	  $row = UserPrice::model()->findByPk(intval($id));
+	  if($row->uid!=YII::app()->user->getId()){
+		return false;
+	  }
+	  return $row->delete();	  
+	}
 
 	public function tableName() {
         return 'tbl_user_price';

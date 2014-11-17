@@ -86,7 +86,7 @@ $classes = array(
 		paging: true,
 		"lengthMenu": [ [25, 50, 100, -1], [25, 50, 100, "Все"] ],
 		language: {
-		  search: "Найти в таблице:",	
+		  search: "Быстрый поиск:",	
 		  "emptyTable":     "Нет доступных данных для таблицы",
 		  "info":           "Показаны с _START_ по _END_ из _TOTAL_ записей",
 		  "infoEmpty":      "Таблица пуста",

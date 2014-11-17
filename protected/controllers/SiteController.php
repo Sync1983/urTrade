@@ -119,12 +119,33 @@ class SiteController extends Controller
 			  'model' =>  $model,
 			  'prices'=>  $prices_text));
 	}
+	
+	public function actionDelPricesLine(){
+	  if(Yii::app()->request->isAjaxRequest) {
+		$model = new SettingsForm();
+		$info	 = UserInfo::load();
+		$model->setAttributes($info->attributes,false);
+		
+		$id = intval($_POST['id']);
+		if(!UserPrice::delItem($id)){
+		  echo "Error";
+		  Yii::app()->end();
+		  return;
+		} else {
+		  $prices = UserPrice::getAll();
+		  $this->renderPartial('settings_prices_list', array('prices'=>  $prices,'model'=>$model));
+		  Yii::app()->end();
+		  return;
+		}
+	  }
+	  echo "Use AJAX query";
+	  Yii::app()->end();
+	}
 
-
-  public function actionLogout() {
-	Yii::app()->user->logout();
-	$this->redirect(Yii::app()->homeUrl);
-  }
+	public function actionLogout() {
+	  Yii::app()->user->logout();
+	  $this->redirect(Yii::app()->homeUrl);
+	}
 
   public function actionRequest() {
 	$model=new RequestForm;		

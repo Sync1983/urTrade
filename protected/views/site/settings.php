@@ -97,5 +97,14 @@ $this->breadcrumbs=array(
 	$("#settings-prices>div.buttons").eq(0).before($html);
 	return false;
   }
+  
+  function delPriceLine(event,id){
+	var delId = id;
+	function onOk(data){
+	  $("#prices-list").html(data);
+	}
+
+	document.helper.ajax("/index.php?r=site/DelPricesLine",{id:id},onOk);
+  }
 </script>
 	

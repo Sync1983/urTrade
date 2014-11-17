@@ -3,7 +3,7 @@
 class RequestForm extends CFormModel
 {
   public $part_id = "302060";  
-  public $cross;  
+  public $cross = true;  
   public $price_add;  
   
   public function rules() {

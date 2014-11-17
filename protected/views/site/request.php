@@ -26,8 +26,8 @@ $this->breadcrumbs=array(
                 'type'      =>  'POST',
                 'update'    =>  '.producer-list',
 				'beforeSend' => 'beforeSend',
-				'complete' => 'function(){
-				  $(".preloader").removeClass("show");}',),
+				'complete' => 'function(data){loadSuccess(data);}',
+			),
             array(
                 'class'=>'main-button search-button',
                 'id'=>'submit-button',
@@ -42,7 +42,8 @@ $this->breadcrumbs=array(
   
 <?php echo CHtml::endForm(); ?>
 </div><!-- form -->  
-<h5>Общий баланс: <?php echo Billing::model()->getBalance();?> руб. Доступно для заказа: <?php echo Billing::model()->getCreditBalance()+Billing::model()->getBalance();?> руб.</h5>
+<h5>Ваш баланс: <?php echo Billing::model()->getBalance();?> руб. Доступно для заказа: <?php echo Billing::model()->getCreditBalance()+Billing::model()->getBalance();?> руб.</h5>
+<p style="margin-top: -20px;"><b>Внимание!</b> При заказе Вы несете ответственность за правильность подбора номера (проверяйте по каталогам производителя).</p>
 
 <div id="answer-table">
   
@@ -56,6 +57,14 @@ $this->breadcrumbs=array(
 
 <script type="text/javascript">
   var table;
+  
+  function loadSuccess(data){
+	$(".preloader").removeClass("show");
+	console.log(data);
+	if(data.responseText==""){
+	  $("#answer-table").html("<h4>По Вашему запросу ничего не найдено</h4>");
+	}
+  }
   
   function beforeSend(){	
 	$("#answer-table").html("<h4>Выберите производителя</h4>");
@@ -76,12 +85,12 @@ $this->breadcrumbs=array(
   }
   
   function insertAnswer(answer){	
-	$("#answer-table").html(answer);
+	$("#answer-table").html(answer);	
 	table = $("#part-items").DataTable({
 	  paging: false,
 	  "order": [[ 0, 'asc' ], [ 3, 'asc' ]],
 	  language: {
-        search: "Найти в таблице:"
+        search: "Быстрый поиск:"
 	  }
 	});
   }

@@ -120,7 +120,8 @@ class ProviderForum extends Provider {
       }
     }
     fclose($f);
-    syslog(LOG_WARNING,"File checed $file");	
+	Yii::log("loading OK!","error","system.provider_load");
+    echo "loading ok!";
     $this->_cache->set(self::price_date_name,$time);
 	$this->_cache->set(self::price_file_name,$file);
 	$this->_file_name = $file;

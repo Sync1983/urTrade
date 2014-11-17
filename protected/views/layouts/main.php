@@ -60,6 +60,7 @@
 	<div class="clear"></div>
 
 	<div id="footer">
+	  <p style="font-size: 11px;">*Информация изложенная на сайте не является публичной офертой. По всем вопросам обращайтесь по электронной почте <a href="mailto:sales@atc58.ru">sales@atc58.ru</a></p>
 		Copyright &copy; <?php echo date('Y'); ?> by ATC.<br/>				
 	</div><!-- footer -->
 
