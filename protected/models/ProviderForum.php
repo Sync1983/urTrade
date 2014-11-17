@@ -13,7 +13,8 @@ class ProviderForum extends Provider {
     parent::__construct($login, $password, $data);
     $this->_CLSID	= 145;
     $time = $this->_cache->get(self::price_date_name);
-	$this->_file_name = $this->_cache->get(self::price_file_name);
+    $this->_file_name = $this->_cache->get(self::price_file_name);
+    syslog(LOG_WARNING,"Construct Forum Provider");
     if(!$time){
       $time = 0;
     }
@@ -34,12 +35,15 @@ class ProviderForum extends Provider {
         continue;
       }
       $file_time = filemtime($login."/".$file);
+      syslog(LOG_WARNING,"Check $file ($file_time>=$time)");
       if($file_time>$time) {
+        syslog(LOG_WARNING,"Newer $file");
         $time = $file_time;
         $file_name = $login."/".$file;		
       }
     }
     if($file_name) {
+      syslog(LOG_WARNING,"Load $file");
       $this->loadFile($file_name,$time);
     }
   }
@@ -116,6 +120,7 @@ class ProviderForum extends Provider {
       }
     }
     fclose($f);
+    syslog(LOG_WARNING,"File checed $file");	
     $this->_cache->set(self::price_date_name,$time);
 	$this->_cache->set(self::price_file_name,$file);
 	$this->_file_name = $file;
