@@ -6,6 +6,7 @@
 		<?php echo CHtml::hiddenField('ids[]',$row['id']); ?>
 		<?php echo CHtml::textField('names[]',$row['name'],array('size'=>15,'maxlength'=>15)); ?>
 		<?php echo CHtml::textField('values[]',$row['value'],array('size'=>4,'maxlength'=>4)); ?>		
+		<?php echo CHtml::button('button-del',array('value'=>'Удалить строку','onClick'=>'delPriceLine(event,\''.$row['id'].'\');')); ?>
 	</div>
 
 <?php } ?>
@@ -21,7 +22,7 @@
 		  array(
 			'type' => 'submit',
 			'class'=>'search-button',
-            'id'=>'submit-button',
+            'id'	=>'submit-button',
 		  )); 
 		?>
 	</div>

@@ -4,7 +4,7 @@ $this->breadcrumbs=array(
 	'Баланс',
 );
 ?>
-<h5>Общий баланс: <?php echo Billing::model()->getBalance();?> руб. Доступно для заказа: <?php echo Billing::model()->getCreditBalance()+Billing::model()->getBalance();?> руб.</h5>
+<h5>Ваш баланс: <?php echo Billing::model()->getBalance();?> руб. Доступно для заказа: <?php echo Billing::model()->getCreditBalance()+Billing::model()->getBalance();?> руб.</h5>
 <table id="billing-table" class="stripe hover">
   <caption><h3>Ваши платежи</h3></caption>
   <thead>
@@ -36,7 +36,7 @@ $this->breadcrumbs=array(
 		paging: true,
 		"lengthMenu": [ [25, 50, 100, -1], [25, 50, 100, "Все"] ],
 		language: {
-		  search: "Найти в таблице:",	
+		  search: "Быстрый поиск:",	
 		  "emptyTable":     "Нет доступных данных для таблицы",
 		  "info":           "Показаны с _START_ по _END_ из _TOTAL_ записей",
 		  "infoEmpty":      "Таблица пуста",

@@ -58,7 +58,7 @@ class ProviderIxora extends Provider {
     $result = array();
     foreach($xml->row as $row){
       $part = new Part();
-      $time = strtotime($row->pricedate);
+      $time = strtotime($row->pricedate);	  
       $part->setValues(     strval($row->orderrefernce),
                                             $this->getCLSID(),
                                             strval($row->detailnumber),
@@ -66,7 +66,7 @@ class ProviderIxora extends Provider {
                                             strval($maker_id),
                                             strval($row->detailname),
                                             strval($row->price),
-                                            strval($row->days),
+                                            strval($row->dayswarranty),
                                             strval($row->regionname),
                                             "",
                                             strval($time),
