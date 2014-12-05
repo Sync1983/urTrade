@@ -74,7 +74,7 @@ return array(
 		// this is used in contact page
 		'adminEmail'=>'sales@atc58.ru',
                     'providers_data'=>array(
-                    /*    'Ixora'=>array(
+                        'Ixora'=>array(
                             'login'=>'AVTOTEHS',
                             'pass'=>'6de6b09l',
                             'contract_id'=>'86951',
@@ -86,7 +86,7 @@ return array(
 						'Forum'=>array(
                             'login'=>'/prices/forum',
                             'pass' =>''
-                        ),*/
+                        ),
 						'Armtek'=>array(
                             'login'=>'/prices/armtek',
                             'pass' =>''
