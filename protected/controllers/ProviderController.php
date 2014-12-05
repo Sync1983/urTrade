@@ -92,8 +92,8 @@ class ProviderController extends Controller {
 	  $ext			  = isset($file_info['extension'])?$file_info['extension']:"";
 	  $new_file		  = $dir_name."/".$new_name;
 	  
-	  if(($ext!=='csv')&&($ext!=='zip')){
-		echo "Применяются только файлы *.csv и *.zip<br>";
+	  if(($ext!=='csv')&&($ext!=='zip')&&($ext!=='txt')){
+		echo "Применяются только файлы *.csv, *.zip и *.txt<br>";
 		echo "Файл $new_name не может быть обработан<br>";
 		Yii::app()->end();
 		return;
