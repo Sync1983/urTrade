@@ -91,7 +91,7 @@ class ProviderController extends Controller {
 	  $dir_name		  = isset($file_info_old['dirname'])?$file_info_old['dirname']:false;
 	  $ext			  = isset($file_info['extension'])?$file_info['extension']:"";
 	  $new_file		  = $dir_name."/".$new_name;
-	  
+	 var_dump($_FILES); 
 	  if(($ext!=='csv')&&($ext!=='zip')&&($ext!=='txt')){
 		echo "Применяются только файлы *.csv, *.zip и *.txt<br>";
 		echo "Файл $new_name не может быть обработан<br>";
@@ -99,7 +99,7 @@ class ProviderController extends Controller {
 		return;
 	  }
 	  if(!$dir_name){
-		echo "Немогу найти путь для записи файла<br>";
+		echo "Немогу найти путь для записи файла $dir_name<br>";
 		echo "Файл $new_name не может быть обработан<br>";
 		Yii::app()->end();
 		return;
