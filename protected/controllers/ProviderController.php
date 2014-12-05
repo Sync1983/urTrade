@@ -105,7 +105,7 @@ class ProviderController extends Controller {
 		return;
 	  }	  
 	  if (!move_uploaded_file($tmp_name,$new_file)) {
-		echo "Ошибка записи файла<br>";
+		echo "Ошибка записи файла $tmp_name -> $new_file<br>";
 		echo "Файл $new_name не может быть обработан<br>";
 		Yii::app()->end();
 		return;
