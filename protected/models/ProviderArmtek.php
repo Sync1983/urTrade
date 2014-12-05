@@ -30,7 +30,7 @@ class ProviderArmtek extends Provider {
     }
     $file_name = "";
     foreach($dir as $file){
-      if(!strpos($file,".txt")) {
+      if(!strpos($file,".csv")) {
         continue;
       }
       $file_time = filemtime($login."/".$file);
