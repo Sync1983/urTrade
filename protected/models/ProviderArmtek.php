@@ -12,7 +12,7 @@ class ProviderArmtek extends Provider {
   public function __construct($login, $password, $data = null) {
     parent::__construct($login, $password, $data);
     $this->_CLSID	= 659;
-    $time = $this->_cache->get(self::price_date_name);
+    $time = $this->_cache->get(self::price_date_name);	
 	$this->_file_name = $this->_cache->get(self::price_file_name);
     if(!$time){
       $time = 0;

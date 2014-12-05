@@ -32,7 +32,10 @@ class Provider extends Controller {
 	}
 	
 	public function getFileName(){
-	  return $this->_is_file?$this->_file_name:false;
+	  if($this->_file_name){
+		return $this->_is_file?$this->_file_name:false;
+	  }
+	  return $this->_is_file?$this->_login."/1.txt":false;
 	}
 	
 	public function getUploadTime(){
