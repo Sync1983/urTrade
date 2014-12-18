@@ -14,7 +14,6 @@ class ProviderForum extends Provider {
     $this->_CLSID	= 145;
     $time = $this->_cache->get(self::price_date_name);
     $this->_file_name = $this->_cache->get(self::price_file_name);
-    syslog(LOG_WARNING,"Construct Forum Provider");
     if(!$time){
       $time = 0;
     }
@@ -35,9 +34,7 @@ class ProviderForum extends Provider {
         continue;
       }
       $file_time = filemtime($login."/".$file);
-      syslog(LOG_WARNING,"Check $file ($file_time>=$time)");
       if($file_time>$time) {
-        syslog(LOG_WARNING,"Newer $file");
         $time = $file_time;
         $file_name = $login."/".$file;		
       }
@@ -80,7 +77,7 @@ class ProviderForum extends Provider {
       $str = mb_convert_encoding(fgets($f),"utf-8","Windows-1251");
       $row = explode(";", $str);
       //$row = fgetcsv($f, 0, ";",false);
-      if((!$row[0])||(!isset($row[7]))){
+      if((!$row[0])||(!isset($row[8]))){
         continue;
       }      
       $part_id = $this->clearPartId($row[1]);
@@ -96,7 +93,7 @@ class ProviderForum extends Provider {
       
       $part = new Part();      
 		  $part->setValues(	
-              $row[7], 
+              $row[8], 
 							$this->getCLSID(), 
 							$part_id,
 							$maker_name,
@@ -112,7 +109,7 @@ class ProviderForum extends Provider {
 							$row[7]
 			);
       try{
-        $this->saveCache(self::PartPrefix.$this->getCLSID()."_".$part_id."_".$maker_id,$row[7], $part);      
+        $this->saveCache(self::PartPrefix.$this->getCLSID()."_".$part_id."_".$maker_id,$row[8], $part);      
       }catch (Exception $e){
         Yii::log($e->getMessage(),"error","system.provider_load");
         echo self::ProducerPrefix.$this->getCLSID()."_".$part_id,strval($maker_name);
@@ -120,8 +117,6 @@ class ProviderForum extends Provider {
       }
     }
     fclose($f);
-	Yii::log("loading OK!","error","system.provider_load");
-    echo "loading ok!";
     $this->_cache->set(self::price_date_name,$time);
 	$this->_cache->set(self::price_file_name,$file);
 	$this->_file_name = $file;

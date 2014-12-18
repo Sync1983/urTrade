@@ -23,10 +23,12 @@ class Basket extends CActiveRecord {
 	if(!$part) {
 	  return FALSE;
 	}
-	$result = Basket::model()->findByAttributes(array("part_uid"=>$part->id,"stock"=>$part->stock));
+	$result = Basket::model()->findByAttributes(array("uid"=>Yii::app()->user->getId(),"part_uid"=>$part->id,"stock"=>$part->stock));
 	if(!$result){
 	  $item = new Basket();
 	  $item->setAttributes($part->getDataForBasket(),false);
+	  //$item->uid = Yii::app()->user->getId();
+	  $item->date = new CDbExpression('NOW()');
 	  $item->count = $part->lot_party;
 	  if(!$item->save()){
 		return false;
