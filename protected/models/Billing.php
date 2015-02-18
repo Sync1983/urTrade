@@ -34,7 +34,7 @@ class Billing extends CActiveRecord {
 	  
 	  $price = $user->convertPrice($order->price)*$order->count;
 	  
-	  if(($sum>$price)&&($price>0)){
+	  if(/*($sum>$price)&&*/($price>0)){
 		$row = new Billing();
 		$row->order_id=$order_id;
 		$row->value = -$price;
