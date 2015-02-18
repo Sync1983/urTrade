@@ -22,10 +22,11 @@ class OrdersController extends Controller {
 		/* @var $order Orders */
 		$order = new Orders();		
 		$order->setAttributes($item->getAttributes(),false);
-		$order->id = null;
+		$order->id      = null;
 		$order->list_id = $order_id->id;
-		$order->uid = $uid;	
-		$order->date = Yii::app()->dateFormatter->format('yyyy-MM-dd HH:mm',  time()+86400*Yii::app()->user->convertShiping(0));	
+		$order->uid     = $uid;	
+		$order->date    = Yii::app()->dateFormatter->format('yyyy-MM-dd HH:mm',  time()+86400*Yii::app()->user->convertShiping(0));	
+    $order->comment = $item->commnet;
 			//new CDbExpression('CURRENT_TIMESTAMP');
 		$order->save();
 		$item->delete();
