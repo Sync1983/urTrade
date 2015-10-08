@@ -250,7 +250,8 @@ class UsersController extends Controller {
 	  $date = strtotime($row->date);
 	  $row->date = $date;
 	  $row->user_price = $user->convertPrice($row->price);
-	  $row->provider = $provider_list->getProviderByCLSID($row->provider)->getName();
+	  $row->provider = $provider_list->getProviderByCLSID($row->provider);
+	  $row->provider = $row->provider?$row->provider->getName():"хз";
 	  $row->user = $user_info->caption;
 	}	
 	Yii::app()->clientScript->registerPackage('datatable_q');	

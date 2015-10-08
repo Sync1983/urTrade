@@ -48,7 +48,7 @@
 		  </div>
 		  <div class = "row_time">
 			<div class="hint">
-			  <?php echo "Обновлено ".date("d-m-y в H:i:s",$data->update_time);?>
+			  <?php echo "Обновлено ".date("d-m-y в H:i:s",intval($data->update_time));?>
 			</div>	
 		  </div>
 		  <?php if($data->info!=""):?>

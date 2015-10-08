@@ -31,22 +31,28 @@ class ProviderIxora extends Provider {
        return $answer;
     }
     $ch = curl_init();
-    curl_setopt($ch, CURLOPT_URL, "http://ws.auto-iksora.ru:83/searchdetails/searchdetails.asmx/FindDetailsXML");
-    curl_setopt($ch, CURLOPT_HEADER, 0);
+    curl_setopt($ch, CURLOPT_URL, "http://ws.ixora-auto.ru/soap/ApiService.asmx/FindXML");
+      curl_setopt($ch, CURLOPT_HEADER, 0);
     curl_setopt($ch, CURLOPT_POST, 1);
     curl_setopt($ch, CURLOPT_VERBOSE, false);
     curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+    curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 10);
     $post = array(
-              'DetailNumber'  => $part_id,
-			  'MakerID'               => $maker_id,
-              'ContractID'    => $this->_contract_id,
+              'Number'  => $part_id,
+              'Maker'               => $maker_id,
+//              'ContractID'    => $this->_contract_id,
               'Login'         => $this->_login,
-              'Password'      => $this->_pass,
+              'AuthCode'      => '6632B57702F6F9416B71F9BCD874AD38',
+              'StockOnly'     => 'false',
+              'SubstFilter'   => 'All'
+//              'Password'      => $this->_pass,
       );
     curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query($post));
-
     $site_answer = curl_exec($ch);
     curl_close($ch);
+    if( !$site_answer ){
+      return array();
+    }
 	libxml_use_internal_errors(true);
     try{
       $xml = new SimpleXMLElement($site_answer);
@@ -55,22 +61,25 @@ class ProviderIxora extends Provider {
 	  return array();
     }
 	libxml_use_internal_errors(false);
+    if( $xml === false ){
+      return array();
+    }
     $result = array();
-    foreach($xml->row as $row){
+    foreach($xml->DetailInfo as $row){
       $part = new Part();
-      $time = strtotime($row->pricedate);	  
+      $time = strtotime($row->date);	  
       $part->setValues(						strval($row->orderrefernce),
                                             $this->getCLSID(),
-                                            strval($row->detailnumber),
-                                            strval($row->maker_name),
+                                            strval($row->number),
+                                            strval($row->maker),
                                             strval($maker_id),
-                                            strval($row->detailname),
+                                            strval($row->name),
                                             strval($row->price),
                                             strval($row->dayswarranty),
-                                            strval($row->regionname),
+                                            strval($row->region),
                                             "",
-                                            strval($time),
-                                            (intval($row->groupid)==0),
+                                            intval($time),
+                                            ($row->group=="Original"),
                                             strval($row->quantity),
                                             strval($row->lotquantity)
             );
@@ -88,31 +97,39 @@ class ProviderIxora extends Provider {
     }
 
     $ch = curl_init();
-    curl_setopt($ch, CURLOPT_URL, "http://ws.auto-iksora.ru:83/searchdetails/searchdetails.asmx/GetMakersByDetailNubmerXML");
+    curl_setopt($ch, CURLOPT_URL, "http://ws.ixora-auto.ru/soap/ApiService.asmx/GetMakersXML");
     curl_setopt($ch, CURLOPT_HEADER, 0);
     curl_setopt($ch, CURLOPT_POST, 1);
     curl_setopt($ch, CURLOPT_VERBOSE, false);
     curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+    curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 10);
     $post = array(
-            'DetailNumber'  => $part_id,
-            'ContractID'    => $this->_contract_id,
+            'Number'  => $part_id,
+//            'ContractID'    => $this->_contract_id,
             'Login'         => $this->_login,
-            'Password'      => $this->_pass,
+	    'AuthCode'      => '6632B57702F6F9416B71F9BCD874AD38'
+//            'Password'      => $this->_pass,
     );
     curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query($post));
     $site_answer = curl_exec($ch);
     curl_close($ch);
+    if( !$site_answer ){
+      return array();
+    }
     libxml_use_internal_errors(true);
     try{
 	  $xml = new SimpleXMLElement($site_answer);
     } catch (Exception $error) {
-	  YII::log($error->getMessage().":".$site_answer,"error","system.web");
+	  YII::log($error->getMessage().":".$site_answer,"trace","system.web");
       return array();
     }
 	libxml_use_internal_errors(false);
+    if( $xml === false ){
+      return array();
+    }
     $answer = array();
-    foreach($xml->row as $row){
-	  $answer[strval($row->name)] = intval($row->id);
+    foreach($xml->MakerInfo as $row){
+	  $answer[strval($row->name)] = strval($row->name);//intval($row->id);
 	  $this->saveCache(self::ProducerPrefix.$this->getCLSID()."_".$part_id,strval($row->name),intval($row->id),12*3600);
 	}
 	return $answer;

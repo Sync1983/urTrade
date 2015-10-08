@@ -7,10 +7,23 @@ return array(
 	'name'=>'My Console Application',
 
 	// preloading 'log' component
-	'preload'=>array('log'),
+	'preload'=>array('log','cache'),
+	'import' => array(
+        'application.models.*',
+		'application.components.*',),
 
 	// application components
 	'components'=>array(
+
+        'cache'=>array(
+            'class'=>'ext.redis.CRedisCache',
+            'servers'=>array(
+                array(
+                    'host'=>'127.0.0.1',
+                    'port'=>6379,
+                ),                                
+            ),
+          ),
 		'db'=>array(
 			'connectionString' => 'sqlite:'.dirname(__FILE__).'/../data/testdrive.db',
 		),
