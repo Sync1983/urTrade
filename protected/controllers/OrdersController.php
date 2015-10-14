@@ -4,34 +4,34 @@ class OrdersController extends Controller {
   
   public function actionAdd() {    
     if(Yii::app()->request->isAjaxRequest){	  
-	  $ids	= Yii::app()->request->getPost('ids');
-	  $uid = Yii::app()->user->GetId();
-	  $order_id = new OrdersList();
-	  $order_id->uid = $uid;
-	  $order_id->save();	
-	  $orders = array();
-	  foreach ($ids as $id){
-		$id = intval($id);
-		/* @var $item Basket */
-		$item = Basket::model()->findByPk($id);
-		if((!$item)||($item->uid!=$uid)) {
-		  echo "Указанная позиция ".$item->producer." ".$item->articul." ".$item->name." в корзине не найдена";
-		  Yii::app()->end();
-		  return;
-		}
-		/* @var $order Orders */
-		$order = new Orders();		
-		$order->setAttributes($item->getAttributes(),false);
-		$order->id      = null;
-		$order->list_id = $order_id->id;
-		$order->uid     = $uid;	
-		$order->date    = Yii::app()->dateFormatter->format('yyyy-MM-dd HH:mm',  time()+86400*Yii::app()->user->convertShiping(0));	
-    $order->comment = $item->commnet;
-			//new CDbExpression('CURRENT_TIMESTAMP');
-		$order->save();
-		$item->delete();
-		$orders[] = $order;
-	  }
+      $ids	= Yii::app()->request->getPost('ids');
+      $uid = Yii::app()->user->GetId();
+      $order_id = new OrdersList();
+      $order_id->uid = $uid;
+      $order_id->save();
+      $orders = array();
+      foreach ($ids as $id){
+        $id = intval($id);
+        /* @var $item Basket */
+        $item = Basket::model()->findByPk($id);
+        if((!$item)||($item->uid!=$uid)) {
+          echo "Указанная позиция ".$item->producer." ".$item->articul." ".$item->name." в корзине не найдена";
+          Yii::app()->end();
+          return;
+        }
+        /* @var $order Orders */
+        $order = new Orders();
+        $order->setAttributes($item->getAttributes(),false);
+        $order->id      = null;
+        $order->list_id = $order_id->id;
+        $order->uid     = $uid;
+        $order->date    = Yii::app()->dateFormatter->format('yyyy-MM-dd HH:mm',  time()+86400*Yii::app()->user->convertShiping(0));
+        $order->comment = $item->commnet;
+          //new CDbExpression('CURRENT_TIMESTAMP');
+        $order->save();
+        $item->delete();
+        $orders[] = $order;
+      }
 	}
 	$mailer = new Mailer();
 	$mailer->SendAddNewOrders($orders);

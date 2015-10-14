@@ -60,6 +60,50 @@ class RestController extends Controller{
     
   }
 
+  public function actionOrder(){
+    /* @var $user User */
+    $user = $this->auth();
+
+    if ( !$user ){
+      Yii::app()->end();
+      return;
+    }
+    $percent = $user->getPercent();
+    
+    $order = new Orders();
+    
+    $attributes     = $order->getAttributes();    
+    
+    foreach ($attributes as $attr=>$value){
+      $order->setAttribute($attr,Yii::app()->request->getPost($attr,false));      
+    }
+
+    $order->id      = null;
+    $order->list_id = 0;
+    $order->uid     = $user->id;
+    $order->date    = Yii::app()->dateFormatter->format('yyyy-MM-dd HH:mm',  time());
+    $order->state   = 0;
+    $order->count   = Yii::app()->request->getPost('basket_count',false);
+    $order->user_price = $order->price;
+    $order->user_price = $order->price * $order->count;
+
+    $order->price = round($order->price/(1 + $percent/100),2);
+    
+    if( !$order->save() ) {
+      echo json_encode(array('error'=>'Save Error'));
+    }
+
+    $orders[0] = $order;
+    $mailer = new Mailer();
+    $mailer->SendAddNewOrders($orders);
+
+    echo json_encode(array('status'=>'OK'));
+    
+    Yii::app()->end();
+
+    return;
+  }
+
   //============================= Protected ====================================
   //============================= Private ======================================
   //============================= Constructor - Destructor =====================
