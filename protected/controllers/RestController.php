@@ -50,6 +50,7 @@ class RestController extends Controller{
     
     foreach($makers as $part){
       $part->price = $user->convertPrice($part->price);
+      $part->shiping = intval($part->shiping) + 1;
     }
     
     $this->layout=false;

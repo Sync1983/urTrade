@@ -48,9 +48,9 @@ class ProviderList extends CModel {
 	  }	  
 	  
 	  $list = array();
-	  
+	  $part_id_clear = preg_replace("/[^a-zA-Z0-9\s]/", "", $model->part_id);
 	  foreach ($this->provider_list as $provider) {
-		$producers = $provider->loadPartProducer($part_id);
+			$producers = $provider->loadPartProducer($part_id_clear);
 		if(isset($producers[$maker])) {		  
 		  $list = array_merge($list, $provider->LoadPartList($part_id,$producers[$maker]));
 		}

@@ -23,7 +23,7 @@ class ProviderOnline extends Provider {
 	}
 
 	public function loadPartList($part_id,$maker_id = null){	
-	  $all = $this->loadCache(self::PartPrefix.$this->getCLSID()."_".$part_id."_".$maker_id);		  
+	  $all = $this->loadCache(self::PartPrefix.$this->getCLSID()."_".$part_id."_".$maker_id);		 
 	  if(is_array($all)&&(count($all)>0)) {
 		$answer = array();
 		foreach ($all as $name=>$item){		  
@@ -55,7 +55,7 @@ class ProviderOnline extends Provider {
 		$part = new Part();
 		$row->dataprice = str_replace(".", "-", $row->dataprice);
 		$time = strtotime($row->dataprice);		
-		$part->setValues(	strval($row->uid).strval($row->stock), 
+		$part->setValues(	strval($row->uid).strval($row->stock).strval($row->price), 
 							$this->getCLSID(), 
 							strval($row->code),
 							strval($row->producer),
@@ -70,7 +70,7 @@ class ProviderOnline extends Provider {
 							strval($row->rest),
 							strval($row->amount)
 			);
-		  $this->saveCache(self::PartPrefix.$this->getCLSID()."_".$part_id."_".$maker_id,strval($row->uid).strval($row->stock), $part,3600);
+		  $this->saveCache(self::PartPrefix.$this->getCLSID()."_".$part_id."_".$maker_id,strval($row->uid).strval($row->stock).strval($row->price), $part,3600);
 		  $result[] = $part;
 		}				
 		return $result;	  

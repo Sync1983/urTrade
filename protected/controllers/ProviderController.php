@@ -25,7 +25,7 @@ class ProviderController extends Controller {
         }
         if(Yii::app()->request->isAjaxRequest){ 
             $part_id  = Yii::app()->request->getPost('part_id');
-			$part_id  = preg_replace("/[^a-zA-Z0-9\s]/", "", $part_id);
+	$part_id  = preg_replace("/[^a-zA-Z0-9\s]/", "", $part_id);
 			$model->part_id = $part_id;			
             $producers = $this->providers->getProducers($part_id);			
             $this->renderPartial(   'providers/main',
@@ -45,7 +45,7 @@ class ProviderController extends Controller {
         }
         if(Yii::app()->request->isAjaxRequest){ 
             $model->part_id	  = Yii::app()->request->getPost('part_id'); 
-			$model->part_id  = preg_replace("/[^a-zA-Z0-9\s]/", "", $model->part_id);
+//			$model->part_id  = preg_replace("/[^a-zA-Z0-9\s]/", "", $model->part_id);
 			$model->maker	  =	Yii::app()->request->getPost('maker');			
 			$model->cross	  =	intval(Yii::app()->request->getPost('cross')=="true");
 			$model->price_add = intval(Yii::app()->request->getPost('price_add'));
