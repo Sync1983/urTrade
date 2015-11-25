@@ -45,6 +45,10 @@ class ProviderOnline extends Provider {
 	  
 	  $site_answer = curl_exec($ch);
       curl_close($ch);
+	Yii::log("Online answer: [ $site_answer ]","info");
+	if( !$site_answer ){
+		return array();
+	}
 	  try{
 		$xml = new SimpleXMLElement($site_answer,LIBXML_NOCDATA);
 	  } catch (ErrorException $error) {
@@ -95,7 +99,12 @@ class ProviderOnline extends Provider {
         curl_setopt($ch, CURLOPT_VERBOSE, false);
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);                
         $site_answer = curl_exec($ch);
+	
         curl_close($ch);
+	Yii::log("Online answer: [ $site_answer ]","info");
+	if( !$site_answer ){
+		return array();
+	}
 		libxml_use_internal_errors(true);
         try{
 		  $xml = new SimpleXMLElement($site_answer);
